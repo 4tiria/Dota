@@ -18,7 +18,7 @@ namespace DotA.API.Models
 
     [JsonProperty("mainAttribute")]
     public string MainAttribute { get; set; }
-
+    
     public virtual List<Tag> Tags { get; set; }  = new List<Tag>();
   }
 }

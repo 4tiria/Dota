@@ -9,9 +9,10 @@ namespace DotA.API.Models
   public class Tag
   {
     [Key]
-    [JsonProperty("Name")]
+    [JsonProperty("name")]
     public string Name { get; set; }
 
+    [JsonIgnore]
     public virtual List<Hero> Heroes { get; set; }
   }
 }

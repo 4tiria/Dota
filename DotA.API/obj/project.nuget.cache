@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jMDKj8XmRKPVeE5sL3TLW8m6vOzSudXx092YBvDnSpwglv90g2KGfOKVOnTwOyPMD3L5QF31GdNlo/nHJ9nFAw==",
+  "dgSpecHash": "I6MaJgc0i6uw2ZsGqYRjul88Rci2J0md94d9xmEoWHe7nJEpASERuJ0diYq3Z0CkknLWCLEn1mR62zD98MJIlA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fedro\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",

@@ -14,12 +14,6 @@ namespace DotA.API.Models
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
       base.OnModelCreating(modelBuilder);
-
-      // modelBuilder.Entity<Tag>()
-      //   .HasOne(r => r.Hero)
-      //   .WithMany(b => b.Tags)
-      //   .OnDelete(DeleteBehavior.Cascade);
-
     }
 
     public DbSet<Hero> Heroes { get; set; }

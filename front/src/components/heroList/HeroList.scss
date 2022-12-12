@@ -1,0 +1,44 @@
+﻿//@import "../src/styles/variables";
+//@use "../src/styles/variables" as variables;
+
+$radius: 10px;
+
+.hero-list{
+  display: flex;
+  justify-content: center;
+  //border: 1px solid #55a1ef;
+  margin: 10px 200px;
+}
+
+.hero{
+  border: 1px solid #55a1ef; 
+  border-radius: $radius;
+  font-size: 24px;
+  font-family: "Yahfie", cursive;
+  color: #3b3b3b;
+  width: 100%;
+  margin: 20px;
+}
+
+.hero-selected{
+  border-radius: $radius;
+  cursor: pointer;
+  background-color: #2E3B55;
+  color: white;
+  padding: 2px 50px;
+}
+
+.hero-default{
+  border-radius: $radius;
+  padding: 2px 50px;
+}
+
+.main-attribute{
+  font-size: 14px;
+  font-family: "Yahfie", cursive;
+  color: #55a1ef;
+}
+
+.tag{
+  
+}

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj": {}
+    "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj": {
+    "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+        "projectUniqueName": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
         "projectName": "DotA.API",
-        "projectPath": "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+        "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
         "packagesPath": "C:\\Users\\fedro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fedro\\Рабочий стол\\Контур\\React\\Dota.API\\DotA.API\\obj\\",
+        "outputPath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

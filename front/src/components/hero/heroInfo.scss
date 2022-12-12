@@ -1,0 +1,75 @@
+﻿.hero-container{
+  display: flex;
+  justify-content: center;
+}
+
+.hero-edit-panel{
+  display: flex;
+  justify-content: right;
+  padding-right: 10px;
+  
+  .custom-icon{
+    font-size: 20px;
+    padding: 0 10px 5px 10px;
+  }
+}
+
+.hero-info {
+  width: 1200px;
+  margin: 5px;
+  padding: 20px;
+  border: 1px solid #55a1ef;
+  border-radius: 10px;
+}
+
+.hero-image{
+  background-color: black;
+  width: 256px;
+  height: 144px;
+}
+
+.hero-header{
+  width: 800px;
+  text-align: center;
+  font-family: "Yahfie", cursive;
+
+  .hero-name{
+    color: rgba(35, 35, 35, 0.5);
+    font-size: 50px;
+    font-family: "RussianPunk", serif;
+    text-align: center;
+    text-shadow: 1px 1px #000000;
+  }
+  
+  .hero-attribute{
+    font-size: 22px;
+  }
+  
+  .hero-tags{
+    display: flex;
+    justify-content: center;
+    
+    .hero-tag{
+      margin: 1px 3px;
+      padding: 1px 3px;
+      font-size: 16px;
+      
+      &-selected{
+        color: #000000;
+        background-color: rgba(166, 166, 166, 0.36);
+      }
+      
+      &-in-pull{
+        color: #ffffff;
+        background-color: rgba(0, 106, 148, 0.36);
+      }
+    }
+  }
+  
+  .hero-description{
+    
+  }
+}
+
+
+
