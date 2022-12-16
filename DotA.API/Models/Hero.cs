@@ -15,6 +15,9 @@ namespace DotA.API.Models
 
     [JsonProperty("name")]
     public string Name { get; set; }
+    
+    [JsonProperty("attackType")]
+    public string AttackType { get; set; }
 
     [JsonProperty("mainAttribute")]
     public string MainAttribute { get; set; }

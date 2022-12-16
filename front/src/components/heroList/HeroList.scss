@@ -1,44 +1,85 @@
-﻿//@import "../src/styles/variables";
-//@use "../src/styles/variables" as variables;
-
+﻿
 $radius: 10px;
 
-.hero-list{
+.hero-list {
   display: flex;
   justify-content: center;
   //border: 1px solid #55a1ef;
   margin: 10px 200px;
 }
 
-.hero{
-  border: 1px solid #55a1ef; 
+$hero-height: 100px;
+.hero {
+  border: 1px solid #55a1ef;
   border-radius: $radius;
-  font-size: 24px;
+  font-size: 30px;
+  width: 350px;
   font-family: "Yahfie", cursive;
   color: #3b3b3b;
-  width: 100%;
-  margin: 20px;
+  margin: 20px 30px;
+  height: $hero-height;
+
+  &-empty{
+    background-color: #bdbdbd;
+    border: none;
+  }
+  
+  &-selected {
+    border-radius: $radius;
+    cursor: pointer;
+    background-color: #2E3B55;
+    color: white;
+    padding: 2px 5px 2px 5px;
+    height: $hero-height;
+  }
+
+  &-default {
+    border-radius: $radius;
+    padding: 2px 5px 2px 5px;
+    height: $hero-height;
+  }
 }
 
-.hero-selected{
-  border-radius: $radius;
-  cursor: pointer;
-  background-color: #2E3B55;
-  color: white;
-  padding: 2px 50px;
+
+.hero-name{
+  padding: 2px 0 0 10px;
 }
 
-.hero-default{
-  border-radius: $radius;
-  padding: 2px 50px;
+.fix-padding{
+  padding: 0 0 0 10px;
 }
 
-.main-attribute{
+.attack-type{
+  font-size: 14px;
+}
+
+.main-attribute {
   font-size: 14px;
   font-family: "Yahfie", cursive;
-  color: #55a1ef;
+  padding: 0 0 0 10px;
 }
 
-.tag{
-  
+.tag {
+  font-size: 14px;
+  padding: 0 0 0 5px;
 }
+
+.plus{
+  font-size: 40px;
+  padding: 0 0 8px 0;
+  font-family: Calibri, serif;
+}
+
+.cross{
+  &-hovered{
+    font-size: 16px;
+    margin-top: -15px;
+    color: #bd0000;
+  }
+  &-default{
+    margin-top: -15px;
+    font-size: 16px;
+  }
+}
+
+

@@ -1,8 +1,7 @@
 ﻿import React from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import HeroList from "./heroList/HeroList";
-import HeroInfo from "./hero/heroInfo";
-import Navbar from "./navbar/navbar";
+import HeroInfo from "./hero/HeroInfo";
 
 const AppRouter = () => {
     return (

@@ -8600,7 +8600,7 @@ jQuery.each( [ "radio", "checkbox" ], function() {
 		}
 	};
 	if ( !support.checkOn ) {
-		jQuery.valHooks[ this ].get = function( elem ) {
+		jQuery.valHooks[ this ].getById = function(elem ) {
 			return elem.getAttribute( "value" ) === null ? "on" : elem.value;
 		};
 	}

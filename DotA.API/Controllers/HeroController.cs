@@ -52,7 +52,7 @@ namespace DotA.API.Controllers
         }
 
 
-        [HttpGet("/{id:int}")]
+        [HttpGet("{id:int}")]
         public IActionResult GetHeroById(int id)
         {
             var hero = _apiContext.Heroes
@@ -64,33 +64,56 @@ namespace DotA.API.Controllers
             return Ok(hero);
         }
 
-        [HttpPost]
-        public IActionResult AddOrUpdate([FromBody] Hero hero)
+        [HttpPatch]
+        public IActionResult Update([FromBody] Hero hero)
         {
-            var heroInContext = _apiContext.Heroes
-                .Find(hero.Id);
+            var heroInContext = _apiContext.Heroes.Find(hero.Id);
 
             if (heroInContext is null)
-            {
-                _apiContext.Heroes.Add(hero);
-            }
-            else
-            {
-                heroInContext.Name = hero.Name;
-                heroInContext.MainAttribute = hero.MainAttribute;
-                var (toDelete, toAdd) = GetListsToModifyHeroTag(
-                    heroInContext.Tags.Select(x => x.Name).ToList(),
-                    hero.Tags.Select(x => x.Name).ToList());
+                return NotFound();
 
-                foreach (var stringTag in toDelete)
-                    heroInContext.Tags.Remove(_apiContext.Tags.Find(stringTag));
-                
-                foreach (var stringTag in toAdd)
-                    heroInContext.Tags.Add(_apiContext.Tags.Find(stringTag));
-            }
+            heroInContext.Name = hero.Name;
+            heroInContext.MainAttribute = hero.MainAttribute;
+            heroInContext.AttackType = hero.AttackType;
+            var (toDelete, toAdd) = GetListsToModifyHeroTag(
+                heroInContext.Tags.Select(x => x.Name).ToList(),
+                hero.Tags.Select(x => x.Name).ToList());
+
+            foreach (var stringTag in toDelete)
+                heroInContext.Tags.Remove(_apiContext.Tags.Find(stringTag));
+
+            foreach (var stringTag in toAdd)
+                heroInContext.Tags.Add(_apiContext.Tags.Find(stringTag));
 
             _apiContext.SaveChanges();
 
+            return Ok();
+        }
+
+        [HttpPost("empty")]
+        public IActionResult AddEmptyHero()
+        {
+            var hero = new Hero
+            {
+                Name = "New Hero"
+            };
+
+            _apiContext.Heroes.Add(hero);
+            _apiContext.SaveChanges();
+            return Ok(hero);
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete([FromBody] Hero hero)
+        {
+            var heroInContext = _apiContext.Heroes.Find(hero.Id);
+            if (heroInContext is null)
+            {
+                return NotFound();
+            }
+
+            _apiContext.Heroes.Remove(heroInContext);
+            _apiContext.SaveChanges();
             return Ok();
         }
 

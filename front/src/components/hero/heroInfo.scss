@@ -6,7 +6,7 @@
 .hero-edit-panel{
   display: flex;
   justify-content: right;
-  padding-right: 10px;
+  padding: 10px 10px 0 0;
   
   .custom-icon{
     font-size: 20px;
@@ -42,6 +42,9 @@
   }
   
   .hero-attribute{
+    display: flex;
+    margin: 0 10px 0 10px;
+    justify-content: center;
     font-size: 22px;
   }
   
@@ -54,16 +57,33 @@
       padding: 1px 3px;
       font-size: 16px;
       
-      &-selected{
+      &-own{
         color: #000000;
         background-color: rgba(166, 166, 166, 0.36);
+      }
+      
+      &-selected{
+        color: #000000;
+        background-color: rgb(176, 253, 83);
       }
       
       &-in-pull{
         color: #ffffff;
         background-color: rgba(0, 106, 148, 0.36);
       }
+      
+      &-deselected{
+        color: rgb(255, 255, 255);
+        background-color: rgba(86, 86, 86, 0.36);
+      }
     }
+  }
+  
+  .attack-type{
+    display: flex;
+    margin: 0 10px 0 10px;
+    justify-content: center;
+    font-size: 22px;
   }
   
   .hero-description{
@@ -71,5 +91,8 @@
   }
 }
 
-
+.select-container{
+  padding: 5px;
+  width: 200px;
+}
 

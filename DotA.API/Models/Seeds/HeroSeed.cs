@@ -3,57 +3,132 @@ using System.Linq;
 
 namespace DotA.API.Models.Seeds
 {
-  public class HeroSeed
-  {
-    private readonly ApiContext _context;
-
-    public HeroSeed(ApiContext context)
+    public class HeroSeed
     {
-      _context = context;
-    }
+        private readonly ApiContext _context;
 
-    public void SeedData()
-    {
-      _context.Database.EnsureDeleted();
-      _context.Database.EnsureCreated();
-
-      if (!_context.Tags.Any())
-      {
-        var tags = new List<string>()
-            { "Carry", "Support", "Pusher", "Nuker", "Escape" }
-          .Select(x => new Tag() { Name = x }).ToList();
-
-        foreach (var tag in tags)
-          _context.Tags.Add(tag);
-
-        _context.SaveChanges();
-      }
-
-      if (!_context.Heroes.Any())
-      {
-        var sd = new Hero() { Name = "Shadow Demon", MainAttribute = "Intelligence" };
-        sd.Tags.Add(_context.Tags.First(x => x.Name == "Support"));
-        sd.Tags.Add(_context.Tags.First(x => x.Name == "Nuker"));
-
-        var heroes = new List<Hero>()
+        public HeroSeed(ApiContext context)
         {
-          new Hero() { Name = "Sven", MainAttribute = "Strength", Tags =new List<string>()
-                { "Carry" }.Select(x => _context.Tags.First(f => f.Name == x)).ToList()},
+            _context = context;
+        }
 
-          new Hero() { Name = "Naga Siren", MainAttribute = "Agility", Tags = new List<string>()
-            { "Carry", "Pusher", "Escape" }.Select(x => _context.Tags.First(f => f.Name == x)).ToList() },
+        public void SeedData()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
 
-          new Hero() { Name = "Invoker", MainAttribute = "Intelligence", Tags = new List<string>()
-            { "Carry", "Nuker", "Escape" }.Select(x => _context.Tags.First(f => f.Name == x)).ToList() },
-        };
+            if (!_context.Tags.Any())
+            {
+                var tags = new List<string>()
+                        { "Carry", "Support", "Pusher", "Nuker", "Escape", "Durable", "Disabler", "Initiator" }
+                    .OrderBy(x => x)
+                    .Select(x => new Tag() { Name = x }).ToList();
 
-        heroes.Add(sd);
+                foreach (var tag in tags)
+                    _context.Tags.Add(tag);
 
-        foreach (var hero in heroes)
-          _context.Heroes.Add(hero);
+                _context.SaveChanges();
+            }
 
-        _context.SaveChanges();
-      }
+            if (!_context.Heroes.Any())
+            {
+                var heroes = new List<Hero>()
+                {
+                    new Hero()
+                    {
+                        Name = "Abaddon", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
+                                { "Support", "Carry", "Durable" }.Select(x => _context.Tags.First(f => f.Name == x))
+                            .ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Earthshaker", MainAttribute = "Strength", AttackType = "Melee", Tags =
+                            new List<string>()
+                                    { "Support", "Initiator", "Disabler", "Nuker" }
+                                .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Hoodwink", MainAttribute = "Agility", AttackType = "Range", Tags = new List<string>()
+                                { "Support", "Nuker", "Escape", "Disabler", }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Invoker", MainAttribute = "Intelligence", AttackType = "Range", Tags =
+                            new List<string>()
+                                    { "Carry", "Nuker", "Disabler", "Escape", "Pusher" }
+                                .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Naga Siren", MainAttribute = "Agility", AttackType = "Melee", Tags = new List<string>()
+                                { "Carry", "Support", "Pusher", "Disabler", "Initiator", "Escape" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Shadow Demon", MainAttribute = "Strength", AttackType = "Range", Tags =
+                            new List<string>()
+                                    { "Support", "Disabler", "Initiator", "Nuker" }
+                                .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Slardar", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
+                                { "Carry", "Durable", "Initiator", "Disabler", "Escape" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Snapfire", MainAttribute = "Strength", AttackType = "Range", Tags = new List<string>()
+                                { "Support", "Nuker", "Disabler", "Escape" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Sven", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
+                                { "Carry", "Disabler", "Initiator", "Durable", "Nuker" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Timbersaw", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
+                                { "Nuker", "Durable", "Escape" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+                    new Hero()
+                    {
+                        Name = "Slardar", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
+                                { "Initiator", "Disabler", "Nuker" }
+                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+
+
+                    new Hero()
+                    {
+                        Name = "Vengeful Spirit", MainAttribute = "Agility", AttackType = "Range", Tags =
+                            new List<string>()
+                                    { "Support", "Initiator", "Disabler", "Nuker", "Escape" }
+                                .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
+                    },
+                };
+
+                foreach (var hero in heroes)
+                    _context.Heroes.Add(hero);
+
+                _context.SaveChanges();
+            }
+        }
     }
-  }
 }
