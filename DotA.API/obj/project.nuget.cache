@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "I6MaJgc0i6uw2ZsGqYRjul88Rci2J0md94d9xmEoWHe7nJEpASERuJ0diYq3Z0CkknLWCLEn1mR62zD98MJIlA==",
+  "dgSpecHash": "f/ccUgg/THmYDMYQb7sCPY/JcJ/i5z849kcH//Tmkk/79sUszaeA6wkoJ1+HVVJE7Qe2rNjCn9Ha27wxHjJUBw==",
   "success": true,
   "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
   "expectedPackageFiles": [
@@ -57,7 +57,6 @@
     "C:\\Users\\fedro\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\microsoft.win32.primitives\\4.3.0\\microsoft.win32.primitives.4.3.0.nupkg.sha512",
-    "C:\\Users\\fedro\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\mysql.data\\8.0.30\\mysql.data.8.0.30.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\mysql.entityframeworkcore\\5.0.16\\mysql.entityframeworkcore.5.0.16.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
@@ -98,7 +97,7 @@
     "C:\\Users\\fedro\\.nuget\\packages\\system.diagnostics.tools\\4.3.0\\system.diagnostics.tools.4.3.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\system.diagnostics.tracesource\\4.3.0\\system.diagnostics.tracesource.4.3.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\system.diagnostics.tracing\\4.3.0\\system.diagnostics.tracing.4.3.0.nupkg.sha512",
-    "C:\\Users\\fedro\\.nuget\\packages\\system.drawing.common\\4.7.0\\system.drawing.common.4.7.0.nupkg.sha512",
+    "C:\\Users\\fedro\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\system.dynamic.runtime\\4.3.0\\system.dynamic.runtime.4.3.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\system.globalization\\4.3.0\\system.globalization.4.3.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\system.globalization.calendars\\4.3.0\\system.globalization.calendars.4.3.0.nupkg.sha512",

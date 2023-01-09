@@ -117,3 +117,4 @@ D:\Desktop\Контур\React\Dota.API\DotA.API\obj\Debug\net5.0\DotA.API.dll
 D:\Desktop\Контур\React\Dota.API\DotA.API\obj\Debug\net5.0\ref\DotA.API.dll
 D:\Desktop\Контур\React\Dota.API\DotA.API\obj\Debug\net5.0\DotA.API.pdb
 D:\Desktop\Контур\React\Dota.API\DotA.API\obj\Debug\net5.0\DotA.API.genruntimeconfig.cache
+D:\Desktop\Контур\React\Dota.API\DotA.API\bin\Debug\net5.0\System.Drawing.Common.dll

@@ -1,3 +1,55 @@
-﻿.name-filter{
+﻿$default-margin: 20px 10px;
+
+.name-filter{
+  margin: $default-margin;
+  width: 300px;
+}
+
+.attribute-combobox{
+  margin: $default-margin;
+  width: 150px;
+}
+
+.attack-type-combobox{
+  margin: $default-margin;
+  width: 125px;
+}
+
+.tags{
+  margin: $default-margin;
+  width: 600px;
+}
+
+.reset-filters{
+  margin: 12px 0 0 40px;
+
+  font-size: 30px;
+
   
+  :hover{
+    color: red;
+  }
+  
+  .reset-icon{
+    margin: 0;
+    padding: 0 0 -20px 0;
+  }
+}
+
+.filter-panel{
+  position: relative;
+  z-index: 200;
+}
+
+.reset-cross {
+  &-hovered {
+    margin-top: -8px;
+    font-size: 24px;
+    color: #bd0000;
+  }
+
+  &-default {
+    margin-top: -8px;
+    font-size: 24px;
+  }
 }

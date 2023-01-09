@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using DotA.API.Models.Entities;
 
 namespace DotA.API.Models.Seeds
 {
     public class HeroSeed
     {
         private readonly ApiContext _context;
+        private readonly Random _random = new Random(42);
 
         public HeroSeed(ApiContext context)
         {
@@ -73,7 +76,7 @@ namespace DotA.API.Models.Seeds
 
                     new Hero()
                     {
-                        Name = "Shadow Demon", MainAttribute = "Strength", AttackType = "Range", Tags =
+                        Name = "Shadow Demon", MainAttribute = "Intelligence", AttackType = "Range", Tags =
                             new List<string>()
                                     { "Support", "Disabler", "Initiator", "Nuker" }
                                 .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
@@ -109,14 +112,6 @@ namespace DotA.API.Models.Seeds
 
                     new Hero()
                     {
-                        Name = "Slardar", MainAttribute = "Strength", AttackType = "Melee", Tags = new List<string>()
-                                { "Initiator", "Disabler", "Nuker" }
-                            .Select(x => _context.Tags.First(f => f.Name == x)).ToList()
-                    },
-
-
-                    new Hero()
-                    {
                         Name = "Vengeful Spirit", MainAttribute = "Agility", AttackType = "Range", Tags =
                             new List<string>()
                                     { "Support", "Initiator", "Disabler", "Nuker", "Escape" }
@@ -127,6 +122,49 @@ namespace DotA.API.Models.Seeds
                 foreach (var hero in heroes)
                     _context.Heroes.Add(hero);
 
+                _context.SaveChanges();
+            }
+
+            if (!_context.Matches.Any())
+            {
+                var id = Guid.NewGuid();
+                var firstTestMatch = new Match()
+                {
+                    Id = id,
+                    Start = new DateTime(year: 2022, month: 12, day: 29, hour: 11, minute: 54, second: 0),
+                    End = new DateTime(year: 2022, month: 12, day: 29, hour: 12, minute: 30, second: 40),
+                    Score = "29-12",
+                    Heroes = (new HashSet<string>()
+                            { "Hoodwink", "Sven", "Invoker", "Shadow Demon", "Slardar" })
+                        .Select(x => _context.Heroes.First(y => y.Name == x))
+                        .Select(x => new HeroInMatch()
+                        {
+                            HeroId = x.Id,
+                            MatchId = id,
+                            Side = "Radiant"
+                        })
+                        .Concat(
+                            (new HashSet<string>()
+                                { "Abaddon", "Naga Siren", "Vengeful Spirit", "Timbersaw", "Earthshaker" })
+                            .Select(x => _context.Heroes.First(y => y.Name == x))
+                            .Select(x => new HeroInMatch()
+                            {
+                                HeroId = x.Id,
+                                MatchId = id,
+                                Side = "Dire"
+                            })
+                        )
+                        .Select(x =>
+                        {
+                            x.Gold = _random.Next(10000) + 5000;
+                            x.XP = _random.Next(8000) + 7000;
+                            x.KDA = $"{_random.Next(20)}/{_random.Next(20)}/{_random.Next(40)}";
+                            return x;
+                        })
+                        .ToList(),
+                };
+
+                _context.Matches.Add(firstTestMatch);
                 _context.SaveChanges();
             }
         }

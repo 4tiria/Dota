@@ -22,11 +22,6 @@
   border-radius: 10px;
 }
 
-.hero-image{
-  background-color: black;
-  width: 256px;
-  height: 144px;
-}
 
 .hero-header{
   width: 800px;
@@ -96,3 +91,24 @@
   width: 200px;
 }
 
+.hero-info-image{
+  width: 256px;
+  height: 144px;
+}
+
+.drop-area{
+  background-color: rgba(0, 178, 255, 0.5);
+  border: 2px dashed rgba(0, 178, 255, 0.5);
+}
+
+.image-container{
+  margin: -1px 0 0 -3.5px;
+  position: relative;
+  z-index: 0;
+}
+
+.drag-zone{
+
+  position: absolute;
+  z-index: 10;
+}

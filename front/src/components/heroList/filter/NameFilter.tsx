@@ -1,26 +1,29 @@
-﻿import React, {useState} from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import {ICallBack} from "../../interfaces/ICallBack";
 import {Input} from "@mui/material";
+import {IReset} from "../../interfaces/IReset";
+import {HeroFilterModel} from "../../../models/filterModels/heroFilter";
+import {useDispatch, useSelector} from 'react-redux';
+import {heroFilterSlice} from "../../../store/slices/heroFilterSlice";
+import HeroFilterOptionsReducer, {IHeroFilterState} from "../../../store/reducers/heroFilterOptionsReducer";
+import {updateHeroNameFilter} from "../../../store/actionCreators/heroFilter";
+import {IRootState} from "../../../store/store";
 
-interface INameFilter extends ICallBack<string>{
-    
-}
 
-const NameFilter: React.FC<INameFilter> = ({callBackFunction}) => {
-    const [inputName, setInputName] = useState('');
+const NameFilter = () => {
+    const heroNameFilter = useSelector<IRootState, string>(state => state.heroFilter.name);
+    const dispatch = useDispatch();
     
     return (
-        <div className="name-filter">
-           <Input 
-               defaultValue=''
-               onChange={(event) => {
-                   let newValue = event.target.value;
-                   if(newValue?.length > 0){
-                       setInputName(newValue);
-                       callBackFunction(newValue);
-                   }
-               }}
-           /> 
+        <div>
+            <Input className="name-filter"
+                   placeholder="hero name"
+                   value={heroNameFilter}
+                   onChange={(event) => {
+                       let newValue = event.target.value;
+                       dispatch(updateHeroNameFilter(newValue));
+                   }}
+            />
         </div>
     );
 };

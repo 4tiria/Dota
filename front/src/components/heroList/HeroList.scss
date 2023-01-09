@@ -1,5 +1,4 @@
-﻿
-$radius: 10px;
+﻿$radius: 10px;
 
 .hero-list {
   display: flex;
@@ -9,7 +8,10 @@ $radius: 10px;
 }
 
 $hero-height: 100px;
+$container-padding: 2px 5px 2px 5px;
+
 .hero {
+  z-index: 5;
   border: 1px solid #55a1ef;
   border-radius: $radius;
   font-size: 30px;
@@ -18,38 +20,45 @@ $hero-height: 100px;
   color: #3b3b3b;
   margin: 20px 30px;
   height: $hero-height;
+  background-size: cover;
+  background-blend-mode: color;
+  background-clip: content-box;
 
-  &-empty{
+  &-empty {
     background-color: #bdbdbd;
     border: none;
   }
-  
+
+  &-invisible {
+    visibility: hidden;
+  }
+
   &-selected {
     border-radius: $radius;
     cursor: pointer;
-    background-color: #2E3B55;
     color: white;
-    padding: 2px 5px 2px 5px;
     height: $hero-height;
   }
 
   &-default {
     border-radius: $radius;
-    padding: 2px 5px 2px 5px;
     height: $hero-height;
   }
 }
 
+.container-padding {
+  padding: $container-padding;
+}
 
-.hero-name{
+.hero-name {
   padding: 2px 0 0 10px;
 }
 
-.fix-padding{
+.fix-padding {
   padding: 0 0 0 10px;
 }
 
-.attack-type{
+.attack-type {
   font-size: 14px;
 }
 
@@ -64,22 +73,44 @@ $hero-height: 100px;
   padding: 0 0 0 5px;
 }
 
-.plus{
+.plus {
   font-size: 40px;
-  padding: 0 0 8px 0;
+  padding: 10px 0 8px 0;
   font-family: Calibri, serif;
 }
 
-.cross{
-  &-hovered{
+.cross {
+  &-hovered {
     font-size: 16px;
     margin-top: -15px;
     color: #bd0000;
   }
-  &-default{
+
+  &-default {
     margin-top: -15px;
     font-size: 16px;
   }
 }
 
+hr {
+  margin: 40px 0 0 0;
+  width: min(1600px, 90%);
+  color: inherit;
+  opacity: 0.25;
+}
 
+.hero-container {
+  position: relative;
+  z-index: 100;
+  opacity: 100%;
+}
+
+.hero-image {
+  position: absolute;
+  z-index: 2;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 40%;
+}

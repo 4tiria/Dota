@@ -7,16 +7,18 @@ import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import NameFilter from "./filter/NameFilter";
 import {HeroFilterModel} from "../../models/filterModels/heroFilter";
 import nameFilter from "./filter/NameFilter";
+import {deleteHero, getFilteredList} from "../../api/heroApi";
+import AttributeFilter from "./filter/AttributeFilter";
+import AttackTypeFilter from "./filter/AttackTypeFilter";
+import TagFilter from "./filter/TagFilter";
+import FilterPanel, {noFilterApplied} from "./filter/FilterPanel";
+
 
 const HeroList = (props) => {
     const [list, updateList] = useState<Hero[]>([]);
-    
-    const [filterOptions, setFilterOptions] = useState<HeroFilterModel>(new HeroFilterModel());
-    
-    useEffect(() => {
-        applyFilters(filterOptions);
-    }, [filterOptions]);
-    
+    const [hasFilters, setHasFilters] = useState<boolean>(false);
+    const [memorizedFilterModel, setMemorizedFilterModel] = useState<HeroFilterModel>(new HeroFilterModel());
+
     useEffect(() => {
         axios.get<Hero[]>(heroListPath)
             .then(response => updateList(response.data))
@@ -24,9 +26,16 @@ const HeroList = (props) => {
 
     function getListOfElements(heroes: Hero[]): JSX.Element[] {
         let result = heroes.map(h =>
-            (<HeroInList hero={h} isAddButton={false} isEmpty={false} key={h.id}/>)
+            (<HeroInList hero={h} callBackFunction={deleteHeroFromList} 
+                         isAddButton={false} 
+                         isEmpty={false} 
+                         hasFilters={hasFilters} key={h.id}/>)
         );
-        result.push(<HeroInList hero={null} isAddButton={true} isEmpty={false}/>);
+        if (hasFilters)
+            result.push(<HeroInList hero={null} callBackFunction={deleteHeroFromList} 
+                                    isAddButton={true} 
+                                    hasFilters={hasFilters} 
+                                    isEmpty={false}/>);
         return result;
     }
 
@@ -57,13 +66,21 @@ const HeroList = (props) => {
                 ));
         }
     }
+    
+    function deleteHeroFromList(hero: Hero) {
+        deleteHero(hero).then(() => {
+            applyFilters(memorizedFilterModel);
+        });
+    }
 
     function renderRow(columns: number, array: JSX.Element[]) {
         let difference = columns - array.length;
         if (difference > 0) {
             for (let i = 0; i < difference; i++) {
                 array.push(
-                    <HeroInList hero={null} isAddButton={false} isEmpty={true} key={generateUniqueID()}/>
+                    <HeroInList hero={null} callBackFunction={deleteHeroFromList} 
+                                isAddButton={false} isEmpty={true} hasFilters={hasFilters}
+                                key={generateUniqueID()}/>
                 )
             }
         }
@@ -78,33 +95,30 @@ const HeroList = (props) => {
         )
     }
 
-    function applyFilters(filterOptions: HeroFilterModel){
-        
+    function applyFilters(filterOptions: HeroFilterModel) {
+        getFilteredList(filterOptions).then(response => {
+            updateList(response);
+        });
+
+        setHasFilters(noFilterApplied(filterOptions));
     }
-    
+
     return (
         <div>
+            <FilterPanel callBackFunction={(heroFilterModel) => {
+                setMemorizedFilterModel(heroFilterModel);
+                applyFilters(heroFilterModel);
+            }}/>
             <div className="d-flex justify-content-center">
-                <NameFilter callBackFunction={(value) => {
-                    console.log('function called');
-                    setFilterOptions(prevState => {
-                        return {
-                            ...prevState,
-                            name: value
-                        };
-                    });
-                }
-                }/>
-                {/*todo: add attribute, attack type and tag filters */}
+                <hr/>    
             </div>
-            
             <div className="hero-list">
                 <div>
                     {splitAndRenderAllRows(4)}
                 </div>
             </div>
         </div>
-      
+
     );
 }
 
