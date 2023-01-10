@@ -1,10 +1,11 @@
 ﻿import React, {createRef, DragEventHandler, useEffect, useState} from 'react';
 import {ICallBack} from "../interfaces/ICallBack";
 import {getImage, postImage} from "../../api/imageApi";
-import {downloadBlob, getBlobFromBase64} from "../../helpers/blobHelper";
 import {Hero} from "../../models/Hero";
 import {IEditable} from "../interfaces/IEditable";
 import "./HeroInfo.scss";
+import {downloadAllAssets} from "../../assets/AssetManager";
+import {downloadHeroImages} from "../../assets/HeroImages";
 
 interface IHeroImage extends IEditable {
     hero: Hero;
@@ -37,7 +38,7 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
         const imageFile = URL.createObjectURL(pngFile);
         setPng(pngFile);
         setPngPath(imageFile);
-        postImage(pngFile, hero.id).then();
+        postImage(pngFile, hero.id).then(downloadHeroImages);
     }
 
     function dragInHandler(event) {
@@ -69,7 +70,6 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
             {hero
                 ?
                 <>
-                    {editMode ? <div>Перетащите .png</div> : <></>}
                     <div className="image-container">
                         {editMode
                             ?

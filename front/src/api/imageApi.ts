@@ -18,3 +18,4 @@ export async function getAllHeroImages(): Promise<HeroImage[]> {
     const response = await axios.get<HeroImage[]>(`${imagePath}`);
     return response.data;
 }
+

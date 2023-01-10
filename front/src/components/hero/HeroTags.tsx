@@ -57,7 +57,6 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
             }
         );
         setTagPull(previousState => [...previousState, tag].sort((a, b) => a.name.localeCompare(b.name)));
-        callBackFunction(tags);
     }
 
     function renderTwoPulls() {

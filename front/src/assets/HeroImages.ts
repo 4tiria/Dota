@@ -3,11 +3,23 @@ import {HeroImage} from "../models/HeroImage";
 import {getAllHeroImages} from "../api/imageApi";
 import {getBlobFromBase64} from "../helpers/blobHelper";
 
-export let heroImages: Map<number, Blob> = new Map<number, Blob>([]);
+export class BlobWithPath {
+    blob: Blob;
+    path: string;
 
-export async function downloadHeroImages(): Promise<any>{
+    constructor(blob: Blob) {
+        this.blob = blob;
+        this.path = window.URL.createObjectURL(blob);
+    }
+}
+
+export let heroImages: Map<number, BlobWithPath> = new Map<number, BlobWithPath>([]);
+
+export async function downloadHeroImages(): Promise<any> {
     getAllHeroImages().then(x => {
-            heroImages = new Map(x.map(i => [i.heroId, getBlobFromBase64(i.bytes)]))
+            heroImages = new Map(x.map(i => [i.heroId,
+                new BlobWithPath(getBlobFromBase64(i.bytes))
+            ]))
         }
     );
 }

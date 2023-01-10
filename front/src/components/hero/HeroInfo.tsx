@@ -59,7 +59,6 @@ export const HeroInfo = () => {
 
     function startEdit() {
         setEdit(true);
-        debugger
         setHeroName(hero.name);
         setHeroTags(hero.tags);
         setHeroAttribute(hero.mainAttribute);
@@ -69,7 +68,6 @@ export const HeroInfo = () => {
     function confirm() {
         let flag = true;
         setHero((prevState) => {
-            debugger
             const newState = {
                 ...prevState,
                 name: heroName,

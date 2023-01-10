@@ -21,7 +21,6 @@ export const heroFilterOptionsReducer = (state = initialState,
                                          action: HeroFilterAction): HeroFilterModel => {
     switch (action.type) {
         case HeroFilterOptions.NAME:
-            debugger;
             return {...state, name: action.payload};
         case HeroFilterOptions.ATTACK_TYPE:
             return {...state, attackType: action.payload};

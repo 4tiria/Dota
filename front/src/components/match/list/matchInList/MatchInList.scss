@@ -1,0 +1,24 @@
+.match-in-list-container{
+  display: flex;
+  justify-content: space-between;
+  width: 600px;
+  height: 80px;
+  border: black 1px solid;
+  border-radius: 1px;
+}
+
+.sides-in-match-list{
+  display: flex;
+  justify-content: space-between;
+}
+
+.side{
+  background: blue;
+  &-radiant{
+    background: green;
+  }
+  
+  &-dire{
+    background: red;
+  }
+}

@@ -2,7 +2,7 @@
 import {Match} from "../../../models/Match";
 import {getAllMatches} from "../../../api/matchApi";
 import {Hero} from "../../../models/Hero";
-import MatchInList from "./MatchInList/MatchInList";
+import MatchInList from "./matchInList/MatchInList";
 
 const MatchList = () => {
     const [matchList, setMatchList] = useState<Match[]>([]);
@@ -14,8 +14,12 @@ const MatchList = () => {
         matchList.length == 0
             ? <></>
             :
-            <div>
-                {matchList.map(m => <MatchInList match={m}/>)}
+            <div className="d-flex justify-content-center my-2">
+                {matchList.map(m =>
+                    <div key={m.id}>
+                        <MatchInList match={m}/>
+                    </div>
+                )}
             </div>
     );
 };
