@@ -17,7 +17,7 @@ namespace DotA.API.Models.Seeds
 
         public void SeedData()
         {
-            _context.Database.EnsureDeleted();
+           //_context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
             if (!_context.Tags.Any())

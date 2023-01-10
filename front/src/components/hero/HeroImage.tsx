@@ -1,10 +1,10 @@
 ﻿import React, {createRef, DragEventHandler, useEffect, useState} from 'react';
 import {ICallBack} from "../interfaces/ICallBack";
-import {getTestImage, postImage} from "../../api/heroApi";
+import {getImage, postImage} from "../../api/imageApi";
 import {downloadBlob, getBlobFromBase64} from "../../helpers/blobHelper";
 import {Hero} from "../../models/Hero";
 import {IEditable} from "../interfaces/IEditable";
-import "./heroInfo.scss";
+import "./HeroInfo.scss";
 
 interface IHeroImage extends IEditable {
     hero: Hero;
@@ -17,7 +17,7 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
 
     useEffect(() => {
         if (hero != null) {
-            getTestImage(hero.id).then(data => {
+            getImage(hero.id).then(data => {
                 setPng(data);
             });
         }
@@ -69,6 +69,7 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
             {hero
                 ?
                 <>
+                    {editMode ? <div>Перетащите .png</div> : <></>}
                     <div className="image-container">
                         {editMode
                             ?

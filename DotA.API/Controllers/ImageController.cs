@@ -12,7 +12,6 @@ namespace DotA.API.Controllers
     [ApiController, Route("api/image")]
     public class ImageController : Controller
     {
-        
         //todo: delete controller
         private readonly ApiContext _apiContext;
         
@@ -20,42 +19,32 @@ namespace DotA.API.Controllers
         {
             _apiContext = apiContext;
         }
-        
-        [HttpPost("file")]
-        public IActionResult PostTestFile()
-        {
-            var file = Request.Form.Files[0];
-            using var ms = new MemoryStream();
-            file.CopyTo(ms);
-            var fileBytes = ms.ToArray();
-            _apiContext.HeroImages.Add(new HeroImage() { Bytes = fileBytes});
-            _apiContext.SaveChanges();
 
-            return Ok();
+        [HttpGet]
+        public IActionResult GetAllHeroImages()
+        {
+            var images = _apiContext.HeroImages.ToList();
+            if (!images.Any())
+                return NoContent();
+            
+            return Ok(images);
         }
 
-        [HttpGet("file")]
-        public IActionResult GetTestImage()
+        [HttpPost("guid")]
+        public IActionResult GetImageByGuid([FromBody] string guidString)
         {
-            if (!_apiContext.HeroImages.Any())
+            if (!Guid.TryParse(guidString, out var guid))
+            {
+                return BadRequest();
+            }
+
+            var image = _apiContext.HeroImages.Find(guid);
+            if (image is null)
             {
                 return NotFound();
             }
-            var last = _apiContext.HeroImages.First();
-            return Ok(last);
-        }
 
-        [HttpPost("base64")]
-        public void TestBlob([FromBody] string base64String)
-        {
-            byte[] data = Convert.FromBase64String(base64String);
-            _apiContext.HeroImages.Add(new HeroImage(){Bytes = data});
-            //_apiContext.SaveChanges();
-            using(var stream = new MemoryStream(data, 0, data.Length))
-            {
-                var image = Image.FromStream(stream);
-                image.Save(@"D:\image.png");
-            }
+            return Ok(image);
         }
     }
 }

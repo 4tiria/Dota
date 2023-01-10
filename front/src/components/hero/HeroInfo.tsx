@@ -2,7 +2,7 @@
 import {Hero} from "../../models/Hero";
 import {useNavigate, useParams} from "react-router-dom";
 import {deleteHero, getById, getByName, getTags, updateHero} from "../../api/heroApi";
-import "./heroInfo.scss";
+import "./HeroInfo.scss";
 import "react-bootstrap";
 import {
     IoBanOutline,
@@ -33,6 +33,7 @@ export const HeroInfo = () => {
     const [editMode, setEdit] = useState(false);
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
+    //todo: remake as object
     const [heroName, setHeroName] = useState('');
     const [heroAttackType, setHeroAttackType] = useState('');
     const [heroAttribute, setHeroAttribute] = useState('');
@@ -58,6 +59,7 @@ export const HeroInfo = () => {
 
     function startEdit() {
         setEdit(true);
+        debugger
         setHeroName(hero.name);
         setHeroTags(hero.tags);
         setHeroAttribute(hero.mainAttribute);

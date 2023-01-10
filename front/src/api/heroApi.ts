@@ -57,15 +57,3 @@ export async function getTags(): Promise<Tag[]> {
     return response.data;
 }
 
-export async function postImage(blob: Blob, id: number): Promise<any> {
-    const formData = new FormData();
-    formData.append("image", blob);
-    const response = await axios.patch<any>(`${heroPath}/${id}/image`, formData);
-    return response.data;
-}
-
-export async function getTestImage(id: number): Promise<Blob> {
-    const response = await axios.get<Blob>(`${heroPath}/${id}/image`, {responseType: 'blob'});
-    return response.data;
-}
-

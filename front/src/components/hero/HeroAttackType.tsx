@@ -1,5 +1,5 @@
 ﻿import React, {useState} from 'react';
-import "./heroInfo.scss";
+import "./HeroInfo.scss";
 import {ICallBack} from "../interfaces/ICallBack";
 import {IEditable} from "../interfaces/IEditable";
 import {Hero} from "../../models/Hero";

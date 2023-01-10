@@ -1,5 +1,4 @@
 ﻿import {HeroFilterModel} from "../../models/filterModels/heroFilter";
-import {Tag} from "../../models/Tag";
 
 const initialState: HeroFilterModel = {name: '', attackType: 'All', mainAttribute: 'All', tags: []};
 

@@ -11,11 +11,15 @@ namespace DotA.API.Models.Entities
         [Key, ForeignKey("Hero")]
         [JsonProperty("heroId")]
         public int HeroId { get; set; }
+        
+        [JsonProperty("hero")]
         public virtual Hero Hero { get; set; }
         
         [Key, ForeignKey("Match")]
         [JsonProperty("matchId")]
         public Guid MatchId { get; set; }
+        
+        [JsonProperty("match")]
         public virtual Match Match { get; set; }
         
         [JsonProperty("side")]

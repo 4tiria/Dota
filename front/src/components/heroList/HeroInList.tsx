@@ -33,15 +33,7 @@ const HeroInList: React.FC<IHeroInList> = (
     const [crossIsHovered, setCrossIsHovered] = useState(false);
 
     let navigate = useNavigate();
-
-    useEffect(() => {
-        if (hero?.image) {
-            let blob = getBlobFromBase64(hero.image.bytes);
-            let filePath = window.URL.createObjectURL(blob);
-            setHeroPngPath(filePath);
-        }
-    }, [hero]);
-
+    
 
     function addOrRedirectToHero() {
         if (isEmpty) {
