@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Converters;
 
 namespace DotA.API
 {
@@ -25,7 +26,11 @@ namespace DotA.API
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc();
+      services.AddMvc()
+        .AddNewtonsoftJson(opts => opts.SerializerSettings
+          .Converters
+          .Add(new StringEnumConverter())
+        );
       services.AddControllers().AddNewtonsoftJson(x =>
         x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 

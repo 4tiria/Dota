@@ -5,7 +5,7 @@ using DotA.API.Helpers;
 using DotA.API.Models;
 using DotA.API.Models.Entities;
 using DotA.API.Models.FilterModels;
-using DotA.API.Models.JsModels;
+using DotA.API.Models.JsObjects;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
