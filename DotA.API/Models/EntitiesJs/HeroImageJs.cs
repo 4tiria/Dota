@@ -2,16 +2,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.Entities
+namespace DotA.API.Models.EntitiesJs
 {
-    [Table("heroImage")]
-    public class HeroImage
+    public class HeroImageJs
     {
-        [ForeignKey("Hero"), Key]
         [JsonProperty("heroId")]
         public int HeroId { get; set; }
         
-        public virtual Hero Hero { get; set; }
+        public HeroJs HeroJs { get; set; }
         
         [JsonProperty("bytes")]
         public byte[] Bytes { get; set; }

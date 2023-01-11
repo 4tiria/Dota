@@ -3,24 +3,21 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.Entities
+namespace DotA.API.Models.EntitiesJs
 {
-    [Table("heroInMatch")]
-    public class HeroInMatch
+    public class HeroInMatchJs
     {
-        [Key, ForeignKey("Hero")]
         [JsonProperty("heroId")]
         public int HeroId { get; set; }
         
         [JsonProperty("hero")]
-        public virtual Hero Hero { get; set; }
-        
-        [Key, ForeignKey("Match")]
+        public HeroJs Hero { get; set; }
+     
         [JsonProperty("matchId")]
         public Guid MatchId { get; set; }
         
         [JsonProperty("match")]
-        public virtual Match Match { get; set; }
+        public MatchJs Match { get; set; }
         
         [JsonProperty("side")]
         public string Side { get; set; }

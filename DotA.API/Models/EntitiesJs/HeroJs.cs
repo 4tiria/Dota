@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DotA.API.Models.Entities;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models
+namespace DotA.API.Models.EntitiesJs
 {
-  [Table("hero")]
-  public class Hero
+  public class HeroJs
   {
-    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [JsonProperty("id")]
     public int Id { get; set; }
 
@@ -24,9 +20,9 @@ namespace DotA.API.Models
     public string MainAttribute { get; set; }
     
     [JsonProperty("tags")]
-    public virtual List<Tag> Tags { get; set; }  = new List<Tag>();
+    public List<TagJs> Tags { get; set; }  = new List<TagJs>();
     
     [JsonProperty("image")]
-    public virtual HeroImage Image {get;set;}
+    public HeroImageJs ImageJs {get;set;}
   }
 }

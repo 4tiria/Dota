@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
 
 namespace DataAccess.Models
 {
+    [Table("hero")]
     public class Hero
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

@@ -7,7 +7,9 @@ import MatchInList from "./matchInList/MatchInList";
 const MatchList = () => {
     const [matchList, setMatchList] = useState<Match[]>([]);
     useEffect(() => {
-        getAllMatches().then(x => setMatchList(x));
+        getAllMatches().then(x => {
+            setMatchList(x)
+        });
     }, []);
 
     return (

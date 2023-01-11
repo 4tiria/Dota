@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using AutoMapper;
+using DataAccess;
+using DataAccess.Models;
 using DotA.API.Models;
+using DotA.API.Models.EntitiesJs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotA.API.Controllers
@@ -8,12 +12,13 @@ namespace DotA.API.Controllers
     public class MatchController: Controller
     {
         private readonly ApiContext _context;
+        private readonly IMapper _mapper;
 
-        public MatchController(ApiContext context)
+        public MatchController(ApiContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-
 
         [HttpGet]
         public IActionResult GetAllMatches()
@@ -22,7 +27,11 @@ namespace DotA.API.Controllers
             if (!matches.Any())
                 return NoContent();
             
-            return Ok(matches.OrderByDescending(x => x.End).ToList());
+            return Ok(matches
+                .ToList()
+                .Select(x => _mapper.Map<MatchJs>(x))
+                .OrderByDescending(x => x.End)
+                .ToList());
         }
     }
 }

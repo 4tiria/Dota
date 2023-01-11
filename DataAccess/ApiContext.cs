@@ -1,7 +1,7 @@
-﻿using DotA.API.Models.Entities;
+﻿using DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace DotA.API.Models
+namespace DataAccess
 {
   public class ApiContext : DbContext
   {

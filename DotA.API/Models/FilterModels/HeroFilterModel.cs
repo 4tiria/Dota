@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DotA.API.Models.Entities;
+using DotA.API.Models.EntitiesJs;
 using Newtonsoft.Json;
 
 namespace DotA.API.Models.FilterModels
@@ -16,6 +16,6 @@ namespace DotA.API.Models.FilterModels
         public string AttackType { get; set; }
         
         [JsonProperty("tags")]
-        public List<Tag> Tags { get; set; }
+        public List<TagJs> Tags { get; set; }
     }
 }

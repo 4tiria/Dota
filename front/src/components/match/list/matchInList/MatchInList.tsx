@@ -14,11 +14,11 @@ const MatchInList: React.FC<IMatchInList> = ({match}) => {
     const [duration, setDuration] = useState<string>('');
     
     useEffect(() => {
+        debugger
         let split = match.score.split('-');
         setRadiantKillCount(parseInt(split[0]));
         setDireKillCount(parseInt(split[1]));
-        debugger
-        let difference = match.end.getTime() - match.start.getTime();
+        let difference = match.end - match.start;
         setDuration(new Date(difference).toTimeString());
     }, []);
     

@@ -3,16 +3,14 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.Entities
+namespace DotA.API.Models.EntitiesJs
 {
-  [Table("tag")]
-  public class Tag
+  public class TagJs
   {
-    [Key]
     [JsonProperty("name")]
     public string Name { get; set; }
 
     [JsonIgnore]
-    public virtual List<Hero> Heroes { get; set; }
+    public List<HeroJs> Heroes { get; set; }
   }
 }

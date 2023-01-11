@@ -1,0 +1,15 @@
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.csproj.AssemblyReference.cache
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.AssemblyInfoInputs.cache
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.AssemblyInfo.cs
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.csproj.CoreCompileInputs.cache
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\DataAccess.deps.json
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\DataAccess.runtimeconfig.json
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\DataAccess.runtimeconfig.dev.json
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\DataAccess.dll
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\ref\DataAccess.dll
+D:\Desktop\Контур\React\Dota.API\DataAccess\bin\Debug\net5.0\DataAccess.pdb
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.dll
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\ref\DataAccess.dll
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.pdb
+D:\Desktop\Контур\React\Dota.API\DataAccess\obj\Debug\net5.0\DataAccess.genruntimeconfig.cache

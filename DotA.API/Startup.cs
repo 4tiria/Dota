@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess;
 using DotA.API.Models;
-using DotA.API.Models.Seeds;
+using DataAccess.Seeds;
+using DotA.API.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,7 +27,8 @@ namespace DotA.API
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
-    {
+    {    
+      services.AddAutoMapper(typeof(AppMappingProfile));
       services.AddMvc()
         .AddNewtonsoftJson(opts => opts.SerializerSettings
           .Converters
@@ -39,14 +42,14 @@ namespace DotA.API
           .AllowAnyOrigin()
           .AllowAnyMethod()
           .AllowAnyHeader()));
-
+      
       services.AddDbContext<ApiContext>(options =>
       {
         options.EnableSensitiveDataLogging();
         options.UseMySQL(
           Configuration["Data:ConnectionString"]);
       });
-
+      
       services.AddTransient<HeroSeed>();
     }
 
@@ -61,6 +64,7 @@ namespace DotA.API
       app.UseStaticFiles();
       app.UseHttpsRedirection();
       app.UseRouting();
+      
       // app.UseAuthentication();
       // app.UseAuthorization();
 

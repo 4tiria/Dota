@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccess.Models
 {
+    [Table("heroImage")]
     public class HeroImage
     {
         [ForeignKey("Hero"), Key]

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DotA.API.Models.Entities;
+using DataAccess.Models;
 
-namespace DotA.API.Models.Seeds
+namespace DataAccess.Seeds
 {
     public class HeroSeed
     {
