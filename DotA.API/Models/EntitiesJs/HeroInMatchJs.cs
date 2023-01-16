@@ -22,9 +22,14 @@ namespace DotA.API.Models.EntitiesJs
         [JsonProperty("side")]
         public string Side { get; set; }
         
-        [JsonProperty("kda")]
-        // ReSharper disable once InconsistentNaming
-        public string KDA { get; set; }
+        [JsonProperty("kills")]
+        public int Kills { get; set; }
+        
+        [JsonProperty("deaths")]
+        public int Deaths { get; set; }
+        
+        [JsonProperty("assists")]
+        public int Assists { get; set; }
         
         [JsonProperty("gold")]
         public int Gold { get; set; }

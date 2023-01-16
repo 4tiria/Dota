@@ -23,5 +23,8 @@ namespace DotA.API.Models.EntitiesJs
         
         [JsonProperty("score")]
         public string Score { get; set; }
+        
+        [JsonProperty("winnerSide")]
+        public string WinnerSide { get; set; }
     }
 }

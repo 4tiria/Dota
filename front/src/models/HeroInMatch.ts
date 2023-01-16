@@ -9,7 +9,9 @@ export class HeroInMatch {
     match: Match;
     
     side: string;
-    kda: string;
+    kills: number;
+    deaths: number;
+    assists: number;
     gold: number;
     xp: number;
 }

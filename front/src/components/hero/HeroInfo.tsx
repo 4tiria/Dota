@@ -21,6 +21,7 @@ import HeroTags from "./HeroTags";
 import HeroAttackType from "./HeroAttackType";
 import Modal from 'react-bootstrap/Modal';
 import HeroImage from "./HeroImage";
+import {HeroImageSize} from "../../globalConstants";
 
 function isNumber(n) {
     return !isNaN(parseInt(n));
@@ -178,7 +179,11 @@ export const HeroInfo = () => {
                 </div>
                 <div className="hero-info">
                     <div className="d-flex justify-content-between">
-                        <div className="hero-info-image">
+                        <div
+                            style={{
+                                width: HeroImageSize.full.width,
+                                height: HeroImageSize.full.height
+                            }}>
                             {renderHeroImage()}
                         </div>
                         <div className="hero-header">

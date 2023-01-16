@@ -7,4 +7,5 @@ export const deleteHeroPath = serverPath + "api/hero/delete";
 export const tagPath = serverPath + "api/tag";
 export const matchPath = serverPath + "api/match";
 export const imagePath = serverPath + "api/image";
+export const assetPath = serverPath + "api/asset";
 export const heroInMatchPath = serverPath + "api/match/hero";

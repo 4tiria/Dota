@@ -1,16 +1,60 @@
-.match-in-list-container{
+.match-in-list-container {
   display: flex;
   justify-content: space-between;
-  width: 100%;
+  margin: 0 2px;
 }
 
-.sides-in-match-list{
+.sides-in-match-list {
   display: flex;
   justify-content: space-between;
 }
 
-.score-font{
-  font-size: 28px;
+.score {
+  font-size: 20px;
   font-family: "Audiowide", serif;
   color: gold;
+  width: 30px;
+  text-align: center;
+}
+
+.duration {
+  font-size: 18px;
+  font-family: "Audiowide", serif;
+  color: black;
+  width: 100px;
+  text-align: center;
+}
+
+.score-and-time {
+  width: 150px;
+}
+
+.match-info {
+  border-bottom: 1px solid black;
+}
+
+.start-time {
+  display: flex;
+  align-items: end;
+  font-family: "Calibri", serif;
+  font-size: 12px;
+}
+
+.win {
+  width: 200px;
+  font-family: "Audiowide", serif;
+  font-size: 16px;
+
+  &-radiant {
+    text-align: start;
+    color: #66BB6A;
+    text-shadow: #66BB6A 1px 1px 4px;
+  }
+
+  &-dire {
+    text-align: end;
+    color: #BA4147;
+    text-shadow: #BA4147 1px 1px 4px;
+  }
+
 }

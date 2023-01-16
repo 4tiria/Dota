@@ -18,5 +18,7 @@ namespace DataAccess.Models
         public DateTime End { get; set; }
         
         public string Score { get; set; }
+        
+        public string WinnerSide { get; set; }
     }
 }

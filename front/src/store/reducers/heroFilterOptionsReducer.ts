@@ -10,15 +10,13 @@ export enum HeroFilterOptions {
     RESET = "RESET",
 }
 
-export interface HeroFilterAction {
+export interface IHeroFilterAction {
     type: HeroFilterOptions;
     payload: any;
 }
 
-export type IHeroFilterState = ReturnType<typeof heroFilterOptionsReducer>;
-
 export const heroFilterOptionsReducer = (state = initialState,
-                                         action: HeroFilterAction): HeroFilterModel => {
+                                         action: IHeroFilterAction): HeroFilterModel => {
     switch (action.type) {
         case HeroFilterOptions.NAME:
             return {...state, name: action.payload};

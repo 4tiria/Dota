@@ -6,6 +6,7 @@ import {IEditable} from "../interfaces/IEditable";
 import "./HeroInfo.scss";
 import {downloadAllAssets} from "../../assets/AssetManager";
 import {downloadHeroImages} from "../../assets/HeroImages";
+import {HeroImageSize} from "../../globalConstants";
 
 interface IHeroImage extends IEditable {
     hero: Hero;
@@ -20,6 +21,7 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
         if (hero != null) {
             getImage(hero.id).then(data => {
                 setPng(data);
+            }).catch(error => {
             });
         }
     }, [hero]);
@@ -30,14 +32,12 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
     }, [file]);
 
     function displayFromBlob(blob: Blob) {
-        let filePath = window.URL.createObjectURL(blob);
-        setPngPath(filePath);
+        setPngPath(window.URL.createObjectURL(blob));
     }
 
     function changeImage(pngFile: Blob) {
-        const imageFile = URL.createObjectURL(pngFile);
         setPng(pngFile);
-        setPngPath(imageFile);
+        setPngPath(URL.createObjectURL(pngFile));
         postImage(pngFile, hero.id).then(downloadHeroImages);
     }
 
@@ -92,8 +92,8 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
                             style={{
                                 boxShadow: editMode ? '0px 0px 20px rgba(7, 230, 55, 0.5)' : '',
                                 opacity: editMode ? '20%' : '100%',
-                                width: '256px',
-                                height: '144px',
+                                width: HeroImageSize.full.width,
+                                height:  HeroImageSize.full.height,
                                 display: 'flex',
                                 border: '2px solid tomato',
                             }}/>

@@ -139,24 +139,15 @@ namespace DotA.API.Controllers
         {
             var files = Request.Form.Files;
             if (!files.Any())
-            {
                 return BadRequest();
-            }
 
-            var file = files[0];
-            using var ms = new MemoryStream();
-            file.CopyTo(ms);
-            var fileBytes = ms.ToArray();
+            var bytes = files[0].ToByteArray();
             var heroImage = _apiContext.HeroImages.Find(id);
             if (heroImage is null)
-            {
-                _apiContext.HeroImages.Add(new HeroImage() { Bytes = fileBytes, HeroId = id });
-            }
+                _apiContext.HeroImages.Add(new HeroImage() { Bytes = bytes, HeroId = id });
             else
-            {
-                heroImage.Bytes = fileBytes;
-            }
-
+                heroImage.Bytes = bytes;
+            
             _apiContext.SaveChanges();
 
             return Ok();

@@ -1,23 +1,23 @@
-﻿import {HeroFilterAction, HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
+﻿import {IHeroFilterAction, HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
 import {Tag} from "../../models/Tag";
 
 export const updateHeroNameFilter = (name: string) => {
     return {type: HeroFilterOptions.NAME, payload: name};
 };
 
-export const updateHeroAttackTypeFilter = (attackType: string): HeroFilterAction => {
+export const updateHeroAttackTypeFilter = (attackType: string): IHeroFilterAction => {
     return {type: HeroFilterOptions.ATTACK_TYPE, payload: attackType};
 };
 
-export const updateHeroMainAttributeFilter = (attribute: string): HeroFilterAction => {
+export const updateHeroMainAttributeFilter = (attribute: string): IHeroFilterAction => {
     return {type: HeroFilterOptions.ATTRIBUTE, payload: attribute};
 };
 
-export const updateHeroTagsFilter = (tags: Tag[]) : HeroFilterAction => {
+export const updateHeroTagsFilter = (tags: Tag[]) : IHeroFilterAction => {
     return {type: HeroFilterOptions.TAGS, payload: tags};
 };
 
-export const resetHeroFilters = (): HeroFilterAction => {
+export const resetHeroFilters = (): IHeroFilterAction => {
     return {type: HeroFilterOptions.RESET, payload: null};
 };
 

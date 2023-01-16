@@ -10,7 +10,15 @@
   overflow: hidden;
   display: flex;
   justify-content: center;
-  width: 112px;
-  height: 68px;
+  width: 54px;
+  height: 40px;
   margin: 0 1px;
+}
+
+.border-radiant{
+  border-bottom: 3px #66BB6A solid;
+}
+
+.border-dire{
+  border-bottom: 3px #BA4147 solid;
 }

@@ -5,5 +5,6 @@ export class Match{
     heroes: HeroInMatch[];
     start: number;
     end: number;
-    score: string;    
+    score: string;
+    winnerSide: string;
 }

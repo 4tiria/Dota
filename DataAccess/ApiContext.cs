@@ -35,5 +35,6 @@ namespace DataAccess
     public DbSet<HeroImage> HeroImages { get; set; }
     public DbSet<Match> Matches { get; set; }
     public DbSet<HeroInMatch> HeroesInMatches { get; set; }
+    public DbSet<Asset> Assets { get; set; }
   }
 }
