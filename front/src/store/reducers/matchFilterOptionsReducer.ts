@@ -3,12 +3,10 @@ import {Hero} from "../../models/Hero";
 import {HeroFilterOptions} from "./heroFilterOptionsReducer";
 
 const initialState: MatchFilterModel = {
-    maxDuration: null,
-    minDuration: null,
-    maxEnd: null,
-    minEnd: null,
-    maxStart: null,
-    minStart: null,
+    minDurationInMinutes: null,
+    maxDurationInMinutes: null,
+    minStartedMillisecondsBefore: null,
+    maxStartedMillisecondsBefore: null,
     selfTeam: [],
     otherTeam: [],
     take: 20!,
@@ -17,10 +15,7 @@ const initialState: MatchFilterModel = {
 
 export enum MatchFilterOptions {
     DURATION = "DURATION",
-    MIN_END = "MIN_END",
-    MAX_END = "MAX_END",
-    MIN_START = "MIN_START",
-    MAX_START = "MAX_START",
+    START = "START",
     SELF_TEAM = "SELF_TEAM",
     OTHER_TEAM = "OTHER_TEAM",
     TAKE = "TAKE",
@@ -37,15 +32,9 @@ export const matchFilterOptionsReducer = (state = initialState,
                                           action: IMatchFilterAction) => {
     switch (action.type) {
         case MatchFilterOptions.DURATION:
-            return {...state, minDuration: action.payload[0], maxDuration: action.payload[1]};
-        case MatchFilterOptions.MIN_END:
-            return {...state, minEnd: action.payload};
-        case MatchFilterOptions.MAX_END:
-            return {...state, maxEnd: action.payload};
-        case MatchFilterOptions.MIN_START:
-            return {...state, minStart: action.payload};
-        case MatchFilterOptions.MAX_START:
-            return {...state, maxStart: action.payload};
+            return {...state, minDurationInMinutes: action.payload[0], maxDurationInMinutes: action.payload[1]};
+        case MatchFilterOptions.START:
+            return {...state, minStartedMillisecondsBefore: action.payload[0], maxStartedMillisecondsBefore: action.payload[1]};
         case MatchFilterOptions.SELF_TEAM:
             return {...state, selfTeam: action.payload};
         case MatchFilterOptions.OTHER_TEAM:

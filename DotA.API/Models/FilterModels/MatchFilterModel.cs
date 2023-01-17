@@ -6,23 +6,17 @@ namespace DotA.API.Models.FilterModels
 {
     public class MatchFilterModel
     {
-        [JsonProperty("minDuration")]
-        public int? MinDuration { get; set; }
+        [JsonProperty("minDurationInMinutes")]
+        public int? MinDurationInMinutes { get; set; }
         
-        [JsonProperty("maxDuration")]
-        public int? MaxDuration { get; set; }
+        [JsonProperty("maxDurationInMinutes")]
+        public int? MaxDurationInMinutes { get; set; }
         
-        [JsonProperty("minStart")]
-        public int? MinStart { get; set; }
+        [JsonProperty("minStartedMillisecondsBefore")]
+        public long? MinStartedMillisecondsBefore { get; set; }
         
-        [JsonProperty("maxStart")]
-        public int? MaxStart { get; set; }
-        
-        [JsonProperty("minEnd")]
-        public int? MinEnd { get; set; }
-        
-        [JsonProperty("maxEnd")]
-        public int? MaxEnd { get; set; }
+        [JsonProperty("maxStartedMillisecondsBefore")]
+        public long? MaxStartedMillisecondsBefore { get; set; }
 
         [JsonProperty("selfTeam")]
         public List<Hero> SelfTeam { get; set; } = new List<Hero>();

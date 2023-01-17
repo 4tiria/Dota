@@ -1,12 +1,10 @@
 ﻿import {Hero} from "../Hero";
 
 export class MatchFilterModel {
-    minDuration?: number | undefined = 10;
-    maxDuration?: number | undefined = 80;
-    minStart?: number | undefined;
-    maxStart?: number | undefined;
-    minEnd?: number | undefined;
-    maxEnd?: number | undefined;
+    minDurationInMinutes?: number | undefined = 10;
+    maxDurationInMinutes?: number | undefined = 80;
+    minStartedMillisecondsBefore?: number | undefined;
+    maxStartedMillisecondsBefore?: number | undefined;
     
     selfTeam: Hero[] = [];
     otherTeam: Hero[] = [];

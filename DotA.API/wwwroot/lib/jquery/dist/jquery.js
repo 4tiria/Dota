@@ -8493,7 +8493,7 @@ jQuery.fn.extend( {
 
 			// If set returns undefined, fall back to normal setting
 			if ( !hooks || !( "set" in hooks ) || hooks.set( this, val, "value" ) === undefined ) {
-				this.value = val;
+				this.index = val;
 			}
 		} );
 	}

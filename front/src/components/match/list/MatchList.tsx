@@ -20,6 +20,7 @@ const MatchList = () => {
     //todo: so I will need useDispatch
 
     useEffect(() => {
+        setIsLastData(false);
         setMatchList([]);
     }, [filters])
 

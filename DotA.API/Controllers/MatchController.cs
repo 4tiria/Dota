@@ -55,18 +55,32 @@ namespace DotA.API.Controllers
         private IEnumerable<Match> ApplyFilters(MatchFilterModel matchFilterModel)
         {
             var result = _context.Matches.AsEnumerable();
-            if (matchFilterModel.MinDuration.HasValue)
+            if (matchFilterModel.MinDurationInMinutes.HasValue)
             {
-                var minDurationTicks = (long)matchFilterModel.MinDuration.Value * TimeSpan.TicksPerMinute;
+                var minDurationTicks = matchFilterModel.MinDurationInMinutes.Value * TimeSpan.TicksPerMinute;
                 result = result.Where(x => (x.End.Ticks - x.Start.Ticks) >= minDurationTicks);
             }
-            
-            if (matchFilterModel.MaxDuration.HasValue)
+
+            if (matchFilterModel.MaxDurationInMinutes.HasValue)
             {
-                var minDurationTicks = (long)matchFilterModel.MaxDuration.Value * TimeSpan.TicksPerMinute;
+                var minDurationTicks = matchFilterModel.MaxDurationInMinutes.Value * TimeSpan.TicksPerMinute;
                 result = result.Where(x => (x.End.Ticks - x.Start.Ticks) <= minDurationTicks);
             }
-            
+
+            if (matchFilterModel.MinStartedMillisecondsBefore.HasValue)
+            {
+                var minStartTicks = DateTime.Now.Ticks -
+                                    matchFilterModel.MinStartedMillisecondsBefore.Value * TimeSpan.TicksPerMillisecond;
+                result = result.Where(x => x.Start.Ticks >= minStartTicks);
+            }
+
+            if (matchFilterModel.MaxStartedMillisecondsBefore.HasValue)
+            {
+                var maxStartTicks = DateTime.Now.Ticks -
+                                    matchFilterModel.MaxStartedMillisecondsBefore.Value * TimeSpan.TicksPerMillisecond;
+                result = result.Where(x => x.Start.Ticks <= maxStartTicks);
+            }
+
             //todo: add other filters
 
             return result;
