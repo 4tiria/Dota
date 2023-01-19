@@ -7,4 +7,5 @@ export class Match{
     end: number;
     score: string;
     winnerSide: string;
+    daysAgo: number;
 }

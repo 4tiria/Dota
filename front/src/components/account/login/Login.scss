@@ -1,0 +1,14 @@
+﻿.login-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto;
+  
+  .login-input {
+    width: 450px;
+    margin: 10px;
+  }
+
+  .confirm-button {
+    margin: 10px;
+  }
+}

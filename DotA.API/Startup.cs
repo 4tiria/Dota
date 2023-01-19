@@ -6,6 +6,7 @@ using DataAccess;
 using DotA.API.Models;
 using DataAccess.Seeds;
 using DotA.API.Mappers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 
 namespace DotA.API
@@ -25,10 +27,11 @@ namespace DotA.API
     }
 
     public IConfiguration Configuration { get; }
-
     public void ConfigureServices(IServiceCollection services)
     {    
       services.AddAutoMapper(typeof(AppMappingProfile));
+      AddAuthentication(services);
+      
       services.AddMvc()
         .AddNewtonsoftJson(opts => opts.SerializerSettings
           .Converters
@@ -65,14 +68,14 @@ namespace DotA.API
       app.UseHttpsRedirection();
       app.UseRouting();
       
-      // app.UseAuthentication();
-      // app.UseAuthorization();
+      app.UseAuthentication();
+      app.UseAuthorization();
 
       SetupEndpoints(app);
       seed.SeedData();
     }
 
-    private static void SetupEndpoints(IApplicationBuilder app)
+    private void SetupEndpoints(IApplicationBuilder app)
     {
       app.UseEndpoints(endpoints =>
       {
@@ -80,6 +83,32 @@ namespace DotA.API
           name: "default",
           pattern: "api/{controller}/{action}/{id?}");
       });
+    }
+    
+    private void AddAuthentication(IServiceCollection services)
+    {
+      var authOptionsConfiguration = Configuration.GetSection("Auth");
+      var authOptions = authOptionsConfiguration.Get<AuthOptions>();
+      services.Configure<AuthOptions>(authOptionsConfiguration);
+      
+      services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+          options.RequireHttpsMetadata = false;
+          options.TokenValidationParameters = new TokenValidationParameters()
+          {
+            ValidateIssuer = true,
+            ValidIssuer = authOptions.Issuer,
+
+            ValidateAudience = true,
+            ValidAudience = authOptions.Audience,
+
+            ValidateLifetime = true,
+
+            IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
+            ValidateIssuerSigningKey = true,
+          };
+        });
     }
   }
 }

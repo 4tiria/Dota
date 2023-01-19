@@ -6,6 +6,8 @@ export const addHeroPath = serverPath + "api/hero/empty";
 export const deleteHeroPath = serverPath + "api/hero/delete";
 export const tagPath = serverPath + "api/tag";
 export const matchPath = serverPath + "api/match";
+export const heroInMatchPath = serverPath + "api/match/hero";
 export const imagePath = serverPath + "api/image";
 export const assetPath = serverPath + "api/asset";
-export const heroInMatchPath = serverPath + "api/match/hero";
+export const accountPath = serverPath + "api/account";
+

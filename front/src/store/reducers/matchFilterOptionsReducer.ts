@@ -9,8 +9,9 @@ const initialState: MatchFilterModel = {
     maxStartedMillisecondsBefore: null,
     selfTeam: [],
     otherTeam: [],
-    take: 20!,
-    skip: 0,
+    take: null,
+    skip: null,
+    daysAgo: 0,
 }
 
 export enum MatchFilterOptions {
@@ -21,6 +22,7 @@ export enum MatchFilterOptions {
     TAKE = "TAKE",
     SKIP = "SKIP",
     RESET = "RESET",
+    DAYS_AGO = "DAYS_AGO",
 }
 
 export interface IMatchFilterAction {
@@ -31,6 +33,8 @@ export interface IMatchFilterAction {
 export const matchFilterOptionsReducer = (state = initialState,
                                           action: IMatchFilterAction) => {
     switch (action.type) {
+        case MatchFilterOptions.DAYS_AGO:
+            return {...state, daysAgo: action.payload};
         case MatchFilterOptions.DURATION:
             return {...state, minDurationInMinutes: action.payload[0], maxDurationInMinutes: action.payload[1]};
         case MatchFilterOptions.START:

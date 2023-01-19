@@ -1,66 +1,75 @@
 ﻿import React, {useEffect, useRef, useState} from 'react';
-import {Match} from "../../../models/Match";
-import {getAllMatches, getFilteredMatches} from "../../../api/matchApi";
-import {Hero} from "../../../models/Hero";
-import MatchInList from "./matchInList/MatchInList";
 import "./MatchList.scss";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../store/store";
 import {MatchFilterModel} from "../../../models/filterModels/matchFilterModel";
 import FilterPanel from "./filters/FilterPanel";
-
+import MatchListPerDay from "./matchListPerDay/MatchListPerDay";
 
 const MatchList = () => {
-    const [isLastData, setIsLastData] = useState<boolean>(false);
-    const [matchList, setMatchList] = useState<Match[]>([]);
+    const [lastDayAgo, setLastDayAgo] = useState<number>(0);
+    const [dayArray, setDayArray] = useState<number[]>([]);
+    const [message, setMessage] = useState<string>("");
     const lastElement = useRef();
-    const observer = useRef<IntersectionObserver>()
+    const observer = useRef<IntersectionObserver>();
+
     const filters = useSelector<IRootState, MatchFilterModel>(state => state.matchFilter);
-    //todo: add reset button
-    //todo: so I will need useDispatch
 
     useEffect(() => {
-        setIsLastData(false);
-        setMatchList([]);
-    }, [filters])
+        setDayArray([]);
+        setMessage(prevState => prevState + `ъ`);
+    }, [filters]);
 
-    useEffect(() => {
+    function updateObserver() {
         if (!lastElement.current) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(
             (entries, observer) => {
-                if (entries[0].isIntersecting)
-                    downloadNewBatchOfMatches();
+                if (entries[0].isIntersecting) {
+                    downloadMatchesInDay();
+                }
             }, {});
         observer.current.observe(lastElement.current);
-    }, [matchList]);
-
-
-    function downloadNewBatchOfMatches() {
-        filters.skip = matchList.length;
-        filters.take = 20; //not necessary to give user control of this value
-        if (isLastData) return;
-
-        getFilteredMatches(filters).then(data => {
-            if (data.length == 0) {
-                setIsLastData(true);
-            } else {
-                setMatchList(prevState => {
-                    return [...prevState, ...data];
-                });
-            }
-        });
     }
+
+    function downloadMatchesInDay(): void {
+        setLastDayAgo(lastDayAgo + 1);
+    }
+
+    useEffect(() => {
+        if (dayArray?.length == 0){
+            setMessage(prevState => prevState + `/`);
+            setLastDayAgo(0);
+        }
+           
+    }, [dayArray, filters]);
+
+    useEffect(() => {
+        if (lastDayAgo == 0) {
+            setLastDayAgo(1);
+            return;
+        }
+
+        setDayArray(prevState => [...prevState, lastDayAgo]);
+    }, [lastDayAgo]);
+
 
     return (
         <div className="d-flex justify-content-center my-2">
             <FilterPanel/>
-            <div>
-                {matchList.map(m =>
-                    <div key={m.id} className="m-2">
-                        <MatchInList match={m}/>
-                    </div>
-                )}
+            <div className="list">
+                <div>{JSON.stringify(dayArray)}</div>
+                <div>{message}</div>
+                <div>{JSON.stringify(lastDayAgo)}</div>
+                <div>
+                    {dayArray.map(x => {
+                        return (
+                            <div key={x}>
+                                <MatchListPerDay day={x} callBackFunction={updateObserver}/>
+                            </div>
+                        );
+                    })}
+                </div>
                 <div ref={lastElement} className="last-element"></div>
             </div>
         </div>

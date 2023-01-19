@@ -11,4 +11,5 @@ export class MatchFilterModel {
 
     skip?: number | undefined;
     take?: number | undefined;
+    daysAgo?: number | undefined;
 }

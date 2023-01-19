@@ -17,6 +17,7 @@ namespace DotA.API.Mappers
             CreateMap<HeroInMatch, HeroInMatchJs>().ReverseMap();
             CreateMap<Tag, TagJs>().ReverseMap();
             CreateMap<Asset, AssetJs>().ReverseMap();
+            CreateMap<Account, AccountJs>().ReverseMap();
             
             CreateMap<Match, MatchJs>()
                 .ForMember(x => x.Start,
@@ -24,7 +25,10 @@ namespace DotA.API.Mappers
                         src => src.Start.ToLong()))
                 .ForMember(x => x.End,
                     dest => dest.MapFrom(
-                        src => src.End.ToLong()));
+                        src => src.End.ToLong()))
+                .ForMember(x => x.DaysAgo,
+                    dest => dest.MapFrom(
+                        src => GetDaysAgo(src.Start)));
             
             CreateMap<MatchJs, Match>()
                 .ForMember(x => x.Start,
@@ -34,6 +38,11 @@ namespace DotA.API.Mappers
                     dest => dest.MapFrom(
                         src => src.End.ToDateTime()));
 
+        }
+
+        private int GetDaysAgo(DateTime dateTime)
+        {
+            return (int)(DateTime.Now - dateTime).TotalDays; 
         }
     }
 }

@@ -29,5 +29,8 @@ namespace DotA.API.Models.FilterModels
         
         [JsonProperty("take")]
         public int? Take { get; set; }
+        
+        [JsonProperty("daysAgo")]
+        public int? DaysAgo { get; set; }
     }
 }

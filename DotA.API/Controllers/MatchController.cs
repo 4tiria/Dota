@@ -45,7 +45,7 @@ namespace DotA.API.Controllers
             var result = ApplyFilters(matchFilterModel);
             if (matchFilterModel.Skip.HasValue)
                 result = result.Skip(matchFilterModel.Skip.Value);
-
+            
             if (matchFilterModel.Take.HasValue)
                 result = result.Take(matchFilterModel.Take.Value);
 
@@ -55,6 +55,14 @@ namespace DotA.API.Controllers
         private IEnumerable<Match> ApplyFilters(MatchFilterModel matchFilterModel)
         {
             var result = _context.Matches.AsEnumerable();
+
+            if (matchFilterModel.DaysAgo.HasValue)
+            {
+                var startOfTheDay = DateTime.Today.AddDays(-matchFilterModel.DaysAgo.Value);
+                var endOfTheDay = DateTime.Today.AddDays(1 - matchFilterModel.DaysAgo.Value);
+                result = result.Where(x => x.Start.Ticks >= startOfTheDay.Ticks && x.Start.Ticks < endOfTheDay.Ticks);
+            }
+
             if (matchFilterModel.MinDurationInMinutes.HasValue)
             {
                 var minDurationTicks = matchFilterModel.MinDurationInMinutes.Value * TimeSpan.TicksPerMinute;

@@ -1,0 +1,27 @@
+﻿.registration-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto;
+
+
+  .registration-input {
+    width: 450px;
+    margin: 10px;
+  }
+
+  .confirm-button {
+    margin: 10px;
+  }
+  
+  .checkbox{
+    margin: 10px;
+  }
+
+  .error {
+    color: #980000;
+  }
+
+  .message {
+    color: #67a201;
+  }
+}
