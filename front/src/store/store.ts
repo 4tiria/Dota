@@ -10,3 +10,7 @@ export const rootReducer = combineReducers({
 export const store = configureStore({reducer: rootReducer});
 
 export type IRootState = ReturnType<typeof rootReducer>;
+
+export const ACCESS_TOKEN_KEY = 'accessToken';
+export const REFRESH_TOKEN_KEY = 'refreshToken';
+export const CURRENT_USER_EMAIL = 'email';

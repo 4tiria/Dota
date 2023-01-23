@@ -8,6 +8,7 @@ using DotA.API.Helpers;
 using DotA.API.Models;
 using DotA.API.Models.EntitiesJs;
 using DotA.API.Models.FilterModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotA.API.Controllers
@@ -95,6 +96,7 @@ namespace DotA.API.Controllers
         }
 
         [HttpPost("addRandom/{count:int}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddRandomMatches(int count)
         {
             for (var i = 0; i < count; i++)

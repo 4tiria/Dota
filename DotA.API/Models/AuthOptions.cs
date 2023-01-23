@@ -8,7 +8,8 @@ namespace DotA.API.Models
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public string Secret { get; set; }
-        public int TokenLifeTime { get; set; }
+        public int AccessTokenLifeTimeInSeconds { get; set; }
+        public int RefreshTokenLifeTimeInDays { get; set; }
 
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {

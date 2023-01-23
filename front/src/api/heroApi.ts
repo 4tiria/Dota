@@ -11,6 +11,7 @@ import {
 import {Tag} from "../models/Tag";
 import {HeroFilterModel} from "../models/filterModels/heroFilter";
 import {HeroImage} from "../models/HeroImage";
+import {configure} from "@testing-library/react";
 
 export async function getAll(): Promise<Hero[]> {
     const response = await axios.get<Hero[]>(heroListPath);

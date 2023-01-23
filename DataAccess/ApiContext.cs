@@ -41,5 +41,6 @@ namespace DataAccess
     public DbSet<HeroInMatch> HeroesInMatches { get; set; }
     public DbSet<Asset> Assets { get; set; }
     public DbSet<Account> Accounts { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
   }
 }

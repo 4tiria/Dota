@@ -10,6 +10,7 @@ using DotA.API.Models;
 using DotA.API.Models.EntitiesJs;
 using DotA.API.Models.FilterModels;
 using DotA.API.Models.JsObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -27,13 +28,13 @@ namespace DotA.API.Controllers
             _apiContext = apiContext;
             _mapper = mapper;
         }
-
-        [HttpGet]
-        public IActionResult GetAllHeroes()
+        
+        [HttpGet("list")]
+        public IActionResult GetHeroes()
         {
-            return Ok(_apiContext.Heroes.ToList().Select(hero => _mapper.Map<HeroJs>(hero)));
+            return Ok(_apiContext.Heroes.ToList().Select(_mapper.Map<HeroJs>));
         }
-
+        
         [HttpGet("list/{tagName}")]
         public IActionResult GetHeroesByTag(string tagName)
         {
@@ -44,12 +45,6 @@ namespace DotA.API.Controllers
                 .ToList()
                 .Select(_mapper.Map<TagJs>)
             );
-        }
-
-        [HttpGet("list")]
-        public IActionResult GetHeroes()
-        {
-            return Ok(_apiContext.Heroes.ToList().Select(_mapper.Map<HeroJs>));
         }
 
         [HttpPost("list/filter")]
@@ -109,6 +104,7 @@ namespace DotA.API.Controllers
         }
 
         [HttpPatch]
+        [Authorize(Roles = "Admin")]
         public IActionResult Update([FromBody] HeroJs heroJs)
         {
             var heroInContext = _apiContext.Heroes.Find(heroJs.Id);
@@ -135,6 +131,7 @@ namespace DotA.API.Controllers
         }
 
         [HttpPatch("{id:int}/image")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AddOrChangeHeroImage(int id)
         {
             var files = Request.Form.Files;
@@ -179,6 +176,7 @@ namespace DotA.API.Controllers
         }
 
         [HttpPost("delete")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete([FromBody] HeroJs heroJs)
         {
             var heroInContext = _apiContext.Heroes.Find(heroJs.Id);
