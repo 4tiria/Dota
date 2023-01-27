@@ -3,5 +3,6 @@
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)system.drawing.common\7.0.0\buildTransitive\netcoreapp2.0\System.Drawing.Common.targets" Condition="Exists('$(NuGetPackageRoot)system.drawing.common\7.0.0\buildTransitive\netcoreapp2.0\System.Drawing.Common.targets')" />
     <Import Project="$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets" Condition="Exists('$(NuGetPackageRoot)netstandard.library\2.0.0\build\netstandard2.0\NETStandard.Library.targets')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\7.0.2\buildTransitive\Microsoft.AspNetCore.Identity.UI.targets" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\7.0.2\buildTransitive\Microsoft.AspNetCore.Identity.UI.targets')" />
   </ImportGroup>
 </Project>

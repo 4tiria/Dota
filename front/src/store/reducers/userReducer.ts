@@ -1,33 +1,32 @@
-﻿import {User} from "../../models/temporaryModels/User";
+﻿import {User} from "../../models/dto/User";
+import {ACCESS_TOKEN_KEY} from "../store";
 
 const initialState: User = {
     accessLevel: null,
     email: null,
+    isAuth: false,
 }
 
-export enum UserOptions{
+export enum UserOptions {
     LOGIN = "LOGIN",
     LOGOUT = "LOGOUT",
-    REGISTER = "REGISTER",
     REFRESH = "REFRESH",
 }
 
 
 export interface IUserAction {
     type: UserOptions;
-    payload: any;    
+    payload: any;
 }
 
-export const userReducer = (state: User  = initialState, 
+export const userReducer = (state: User = initialState,
                             action: IUserAction): User => {
-    switch (action.type){
+    switch (action.type) {
         case UserOptions.LOGIN:
-            return { ...action.payload};
+            return {...action.payload, isAuth: true};
         case UserOptions.LOGOUT:
             return {...initialState};
-        case UserOptions.REGISTER:
-            return { ...action.payload};
-        case UserOptions.REFRESH:
-            return { ...action.payload};
+        default:
+            return {...state};
     }
 }

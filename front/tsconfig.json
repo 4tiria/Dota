@@ -10,7 +10,7 @@
     "allowJs": true,
     "jsx": "react",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
   },
   "exclude": [
     "./node_modules/**/*"

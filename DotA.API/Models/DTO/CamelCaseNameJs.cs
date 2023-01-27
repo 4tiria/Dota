@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DotA.API.Models.JsObjects
+namespace DotA.API.Models.DTO
 {
     public class CamelCaseNameJs
     {

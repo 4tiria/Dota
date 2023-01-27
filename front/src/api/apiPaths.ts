@@ -1,18 +1,18 @@
 ﻿import {ACCESS_TOKEN_KEY} from "../store/store";
+import {baseUrl} from "./http";
 
-export const serverPath = "http://localhost:5000/";
-export const heroListPath = serverPath + "api/hero/list";
-export const heroFilteredListPath = serverPath + "api/hero/list/filter";
-export const heroPath = serverPath + "api/hero";
-export const addHeroPath = serverPath + "api/hero/empty";
-export const deleteHeroPath = serverPath + "api/hero/delete";
-export const tagPath = serverPath + "api/tag";
-export const matchPath = serverPath + "api/match";
-export const heroInMatchPath = serverPath + "api/match/hero";
-export const imagePath = serverPath + "api/image";
-export const assetPath = serverPath + "api/asset";
-export const accountPath = serverPath + "api/account";
+export const heroListPath = baseUrl + "/hero/list";
+export const heroFilteredListPath = baseUrl + "/hero/list/filter";
+export const heroPath = baseUrl + "/hero";
+export const addHeroPath = baseUrl + "/hero/empty";
+export const deleteHeroPath = baseUrl + "/hero/delete";
+export const tagPath = baseUrl + "/tag";
+export const matchPath = baseUrl + "/match";
+export const heroInMatchPath = baseUrl + "/match/hero";
+export const imagePath = baseUrl + "/image";
+export const assetPath = baseUrl + "/asset";
+export const accountPath = baseUrl + "/account";
 
 export const getAuthHeader = () => {
-    return {'Authorization' : `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`}
+    return {'Authorization': `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`};
 }

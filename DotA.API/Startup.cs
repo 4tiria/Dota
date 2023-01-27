@@ -1,15 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 using DataAccess;
+using DataAccess.Models;
 using DotA.API.Models;
 using DataAccess.Seeds;
 using DotA.API.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,20 +32,21 @@ namespace DotA.API
         {
             services.AddAutoMapper(typeof(AppMappingProfile));
             AddAuthentication(services);
-
             services.AddMvc()
                 .AddNewtonsoftJson(opts => opts.SerializerSettings
                     .Converters
                     .Add(new StringEnumConverter())
                 );
+            
             services.AddControllers().AddNewtonsoftJson(x =>
                 x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddCors(x => x.AddPolicy("CorsPolicy",
                 options => options
-                    .AllowAnyOrigin()
+                    .SetIsOriginAllowed(_ => true)
                     .AllowAnyMethod()
-                    .AllowAnyHeader()));
+                    .AllowAnyHeader()
+                    .AllowCredentials()));
 
             services.AddDbContext<ApiContext>(options =>
             {
@@ -53,7 +54,8 @@ namespace DotA.API
                 options.UseMySQL(
                     Configuration["Data:ConnectionString"]);
             });
-
+            
+            services.AddSingleton(Configuration);
             services.AddTransient<HeroSeed>();
         }
 

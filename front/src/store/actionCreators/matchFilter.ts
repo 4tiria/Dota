@@ -1,5 +1,4 @@
-﻿import {HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
-import {MatchFilterOptions} from "../reducers/matchFilterOptionsReducer";
+﻿import {MatchFilterOptions} from "../reducers/matchFilterOptionsReducer";
 
 export const updateDaysAgoFilter = (value: number) => {
     return {type: MatchFilterOptions.DAYS_AGO, payload: value};

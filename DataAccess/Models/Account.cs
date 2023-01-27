@@ -12,5 +12,8 @@ namespace DataAccess.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public AccessLevel AccessLevel { get; set; }
+        public bool IsConfirmed { get; set; } = false;
+        
+        public string ConfirmationLink { get; set; }
     }
 }

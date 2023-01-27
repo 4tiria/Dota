@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DotA.API.Models.JsObjects;
+using DotA.API.Models.DTO;
 
 namespace DotA.API.Helpers
 {

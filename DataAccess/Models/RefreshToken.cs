@@ -9,7 +9,7 @@ namespace DataAccess.Models
     {
         [Key] public string Token { get; set; }
 
-        public string JwtId { get; set; }
+        public string AccessTokenId { get; set; }
 
         public DateTime CreationDate { get; set; }
 

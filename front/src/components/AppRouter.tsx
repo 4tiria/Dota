@@ -5,11 +5,9 @@ import HeroInfo from "./hero/HeroInfo";
 import MatchInfo from "./match/MatchInfo";
 import MatchList from "./match/list/MatchList";
 import Registration from "./account/registraion/Registration";
-import {AuthContext} from "../context/AuthContext";
 import Login from "./account/login/Login";
 
 const AppRouter = () => {
-
     return (
         <>
             <Routes>

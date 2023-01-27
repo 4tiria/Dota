@@ -1,7 +1,6 @@
 ﻿import React, {useContext, useState} from 'react';
 import {
     AppBar,
-    Avatar,
     Box,
     Button,
     Container,
@@ -9,12 +8,14 @@ import {
     Menu,
     MenuItem,
     Toolbar,
-    Tooltip,
-    Typography
 } from "@mui/material";
 import {redirect, useNavigate} from "react-router-dom";
 import {MdAccountCircle} from "react-icons/md";
-import {AuthContext} from "../../context/AuthContext";
+import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../../store/actionCreators/user";
+import {User} from "../../models/dto/User";
+import {ACCESS_TOKEN_KEY, IRootState} from "../../store/store";
+import {logoutApi} from "../../api/accountApi";
 
 const pages = [
     {title: 'Герои', redirectTo: '/heroes'},
@@ -23,17 +24,41 @@ const pages = [
 ];
 
 const Navbar = () => {
-    const {isAuth, setIsAuth} = useContext(AuthContext);
+    const dispatch = useDispatch();
+    const user = useSelector<IRootState, User>(state => state.user);
+
     const [settingsMenu, setSettingsMenu] = useState([
-        {title: 'Login', action: () => {redirect('/login')}, ifLoggedIn: false},
-        {title: 'Register', action: () => {redirect('/register')}, ifLoggedIn: false},
-        {title: 'Account', action: () => {redirect('/profile')}, ifLoggedIn: true},
-        {title: 'Quit', action: ()=> {setIsAuth(false)}, ifLoggedIn: true},
-        {title: 'Settings', action: () => {redirect('/settings')}, ifLoggedIn: true},
+        {
+            title: 'Login', action: () => {
+                redirect('/login')
+            }, ifLoggedIn: false
+        },
+        {
+            title: 'Register', action: () => {
+                redirect('/register')
+            }, ifLoggedIn: false
+        },
+        {
+            title: 'Account', action: () => {
+                redirect('/profile')
+            }, ifLoggedIn: true
+        },
+        {
+            title: 'Logout', action: () => {
+                logoutApi({email: user.email}).then();
+                localStorage.removeItem(ACCESS_TOKEN_KEY);
+                dispatch(logout());
+                redirect('/login');
+            }, ifLoggedIn: true
+        },
+        {
+            title: 'Settings', action: () => {
+                redirect('/settings')
+            }, ifLoggedIn: true
+        },
     ]);
     const navigate = useNavigate();
 
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
     const resetAnchor = () => {
@@ -63,41 +88,41 @@ const Navbar = () => {
                             </Button>
                         ))}
                     </Box>
-                    {!isLoggedIn && (
-                        <div>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
-                                <MdAccountCircle/>
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={resetAnchor}
-                            >
-                                {settingsMenu.filter(x => x.ifLoggedIn == isLoggedIn).map(x => {
-                                    return (<div key={x.title}>
-                                        <MenuItem onClick={x.action}>{x.title}</MenuItem>
-                                    </div>)
-                                })}
-                            </Menu>
-                        </div>
-                    )}
+                    <div>
+                        <span>{user.email}</span>
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleMenu}
+                            color="inherit"
+                        >
+                            <MdAccountCircle/>
+                        </IconButton>
+                        <Menu
+                            id="menu-appbar"
+                            anchorEl={anchorElNav}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            keepMounted
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            open={Boolean(anchorElNav)}
+                            onClose={resetAnchor}
+                        >
+                            {settingsMenu.filter(x => x.ifLoggedIn == user.isAuth).map(x => {
+                                return (<div key={x.title}>
+                                    <MenuItem onClick={x.action}>{x.title}</MenuItem>
+                                </div>)
+                            })}
+                        </Menu>
+                    </div>
+
                 </Toolbar>
             </Container>
         </AppBar>

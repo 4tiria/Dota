@@ -19,7 +19,7 @@ export async function downloadHeroImages(): Promise<any> {
     getAllHeroImages().then(x => {
             heroImages = new Map(x.map(i => [i.heroId,
                 new BlobWithPath(getBlobFromBase64(i.bytes))
-            ]))
+            ]));
         }
     );
 }

@@ -22,6 +22,9 @@ import HeroAttackType from "./HeroAttackType";
 import Modal from 'react-bootstrap/Modal';
 import HeroImage from "./HeroImage";
 import {HeroImageSize} from "../../globalConstants";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store/store";
+import {User} from "../../models/dto/User";
 
 function isNumber(n) {
     return !isNaN(parseInt(n));
@@ -34,12 +37,13 @@ export const HeroInfo = () => {
     const [editMode, setEdit] = useState(false);
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
-    //todo: remake as object
     const [heroName, setHeroName] = useState('');
     const [heroAttackType, setHeroAttackType] = useState('');
     const [heroAttribute, setHeroAttribute] = useState('');
     const [tags, setHeroTags] = useState<Tag[]>([]);
     const [tagPull, setTagPull] = useState<Tag[]>([]);
+
+    const user = useSelector<IRootState, User>(state => state.user);
 
     useEffect(() => {
         if (/\d/.test(params.name)) {
@@ -158,24 +162,27 @@ export const HeroInfo = () => {
         <div className="hero-container">
             <div>
                 <div className="hero-edit-panel">
-                    {editMode
+                    {user.accessLevel == "Admin"
                         ?
-                        <div className="d-flex justify-content-center">
-                            <div className="btn custom-icon" onClick={confirm}>
-                                <IoCheckmarkOutline className="tick"/>
+                        <>
+                        {editMode
+                            ?
+                            <div className="d-flex justify-content-center">
+                                <div className="btn custom-icon" onClick={confirm}>
+                                    <IoCheckmarkOutline className="tick"/>
+                                </div>
+                                <div className="btn custom-icon" onClick={cancel}>
+                                    <IoCloseOutline className="cross"/>
+                                </div>
                             </div>
-                            <div className="btn custom-icon" onClick={cancel}>
-                                <IoCloseOutline className="cross"/>
+                            :
+                            <div className="d-flex justify-content-center">
+                                {renderDeleteDialog()}
+                                <div className="btn custom-icon" onClick={startEdit}><IoCreateOutline/></div>
+                                <div className="btn custom-icon" onClick={() => setDeleteDialogVisible(true)}>
+                                    <IoTrashBinOutline/></div>
                             </div>
-                        </div>
-                        :
-                        <div className="d-flex justify-content-center">
-                            {renderDeleteDialog()}
-                            <div className="btn custom-icon" onClick={startEdit}><IoCreateOutline/></div>
-                            <div className="btn custom-icon" onClick={() => setDeleteDialogVisible(true)}>
-                                <IoTrashBinOutline/></div>
-                        </div>
-                    }
+                    }</> : <></>}
                 </div>
                 <div className="hero-info">
                     <div className="d-flex justify-content-between">

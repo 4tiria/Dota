@@ -1,10 +1,12 @@
 ﻿import {configureStore, combineReducers} from "@reduxjs/toolkit";
 import {heroFilterOptionsReducer} from "./reducers/heroFilterOptionsReducer";
 import {matchFilterOptionsReducer} from "./reducers/matchFilterOptionsReducer";
+import {userReducer} from "./reducers/userReducer";
 
 export const rootReducer = combineReducers({
     heroFilter: heroFilterOptionsReducer,
     matchFilter: matchFilterOptionsReducer,
+    user: userReducer
 });
 
 export const store = configureStore({reducer: rootReducer});

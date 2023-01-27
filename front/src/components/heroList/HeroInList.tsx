@@ -12,12 +12,16 @@ import {GiBroadsword, GiPocketBow, GiPointySword} from "react-icons/gi";
 import {attributes} from "../../styles/attributes";
 import {getBlobFromBase64} from "../../helpers/blobHelper";
 import {heroImages} from "../../assets/HeroImages";
+import {useDispatch, useSelector} from "react-redux";
+import {IRootState} from "../../store/store";
+import {HeroFilterModel} from "../../models/filterModels/heroFilter";
+import {User} from "../../models/dto/User";
 
 interface IHeroInList extends ICallBack<Hero> {
     hero: Hero;
     isAddButton: boolean;
     isEmpty: boolean;
-    hasFilters: boolean
+    hasNoFilters: boolean
 }
 
 const HeroInList: React.FC<IHeroInList> = (
@@ -26,12 +30,15 @@ const HeroInList: React.FC<IHeroInList> = (
         callBackFunction,
         isAddButton = false,
         isEmpty = false,
-        hasFilters = false
+        hasNoFilters = false
     }) => {
 
     const [heroPngPath, setHeroPngPath] = useState<string>(null);
     const [isHovering, setIsHovering] = useState(false);
     const [crossIsHovered, setCrossIsHovered] = useState(false);
+
+    const user = useSelector<IRootState, User>(state => state.user);
+    let navigate = useNavigate();
 
     useEffect(() => {
         if (hero) {
@@ -41,8 +48,6 @@ const HeroInList: React.FC<IHeroInList> = (
         }
     }, []);
 
-    let navigate = useNavigate();
-
 
     function addOrRedirectToHero() {
         if (isEmpty) {
@@ -51,7 +56,7 @@ const HeroInList: React.FC<IHeroInList> = (
 
         if (isAddButton) {
             addEmptyHero().then(response => {
-                navigate(`../hero/${response.id}`)
+                navigate(`../hero/${response.id}`);
             });
 
             return;
@@ -123,9 +128,10 @@ const HeroInList: React.FC<IHeroInList> = (
                         {renderTags()}
                     </div>
                     <div>
+                        {user.accessLevel == "Admin"  && (
                         <IoCloseOutline className={crossIsHovered ? "cross-hovered" : "cross-default"}
                                         onMouseOver={() => setCrossIsHovered(true)}
-                                        onMouseOut={() => setCrossIsHovered(false)}/>
+                                        onMouseOut={() => setCrossIsHovered(false)}/>)}
                     </div>
                 </div>
 
@@ -133,30 +139,30 @@ const HeroInList: React.FC<IHeroInList> = (
     }
 
     return (
-            <div className="hero-container">
-                <div className={isEmpty
-                    ?
-                    hasFilters
-                        ? "hero hero-empty"
-                        : "hero hero-invisible"
-                    : (isHovering
-                        ? "hero hero-selected"
-                        : "hero hero-default")}
-                     onClick={addOrRedirectToHero}
-                     style={{
-                         backgroundImage: `url(${heroPngPath}), ${isHovering
-                             ? 'linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.8))'
-                             : 'linear-gradient(90deg, rgba(255,255,255,0.9) 33%, rgba(0,0,0,0.2) 70%)'
-                         }`,
-                     }}
-                     onMouseOver={() => setIsHovering(true)}
-                     onMouseOut={() => setIsHovering(false)}
-                >
-                    <div className="container-padding">
-                        {renderHeroContainer()}
-                    </div>
+        <div className="hero-container">
+            <div className={isEmpty
+                ?
+                hasNoFilters
+                    ? "hero hero-empty"
+                    : "hero hero-invisible"
+                : (isHovering
+                    ? "hero hero-selected"
+                    : "hero hero-default")}
+                 onClick={addOrRedirectToHero}
+                 style={{
+                     backgroundImage: `url(${heroPngPath}), ${isHovering
+                         ? 'linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.8))'
+                         : 'linear-gradient(90deg, rgba(255,255,255,0.9) 33%, rgba(0,0,0,0.2) 70%)'
+                     }`,
+                 }}
+                 onMouseOver={() => setIsHovering(true)}
+                 onMouseOut={() => setIsHovering(false)}
+            >
+                <div className="container-padding">
+                    {renderHeroContainer()}
                 </div>
             </div>
+        </div>
     );
 }
 

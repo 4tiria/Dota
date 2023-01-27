@@ -1,24 +1,27 @@
 ﻿import React, {useContext, useEffect, useState} from 'react';
 import Button from "@mui/material/Button";
-import {register} from "../../../api/accountApi";
-import {AuthData} from "../../../models/temporaryModels/AuthData";
+import {registerApi} from "../../../api/accountApi";
+import {AuthRequest} from "../../../models/dto/requests/AuthRequest";
 import "./Registration.scss";
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
-import {AuthContext} from "../../../context/AuthContext";
+import {ACCESS_TOKEN_KEY} from "../../../store/store";
+import {useDispatch} from "react-redux";
+import {login} from "../../../store/actionCreators/user";
+import {useNavigate} from "react-router-dom";
 
 const Registration = () => {
-    const {isAuth, setIsAuth} = useContext(AuthContext);
-
     const [isValid, setIsValid] = useState<boolean>(false);
-    const [error, setError] = useState<string>(null);
-    const [message, setMessage] = useState<string>('');
+    const [message, setMessage] = useState<string>(null);
     const [repeatedPassword, setRepeatedPassword] = useState<string>('');
-    const [authData, setAuthData] = useState<AuthData>({
+    const [authData, setAuthData] = useState<AuthRequest>({
         email: '',
         password: '',
         accessLevel: 'Default'
     });
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
     useEffect(() => {
         setValidation();
     }, [authData, repeatedPassword])
@@ -49,34 +52,36 @@ const Registration = () => {
     function setValidation(): void {
         if (!isValidEmail(authData.email)) {
             setIsValid(false);
-            setError('Email is invalid');
+            setMessage('Email is invalid');
             return;
         }
 
         if (!isValidPassword(authData.password)) {
             setIsValid(false);
-            setError('Password is invalid');
+            setMessage('Password is invalid');
             return;
         }
-        
-        if (authData.password != repeatedPassword){
+
+        if (authData.password != repeatedPassword) {
             setIsValid(false);
-            setError('Passwords do not match');
+            setMessage('Passwords do not match');
             return;
         }
 
         setIsValid(true);
-        setError(null);
+        setMessage(null);
     }
 
 
     function signUp() {
-        register(authData).then(data => {
-            setMessage(JSON.stringify(data));
-            setIsAuth(true);
-            //todo: redirect somewhere
-        }).catch(error =>
-            setMessage(JSON.stringify(error)));
+        registerApi(authData).then(data => {
+            localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
+            dispatch(login(authData.email, authData.accessLevel));
+            setMessage("");
+            navigate(`../heroes`);
+        }).catch(error => {
+            setMessage("Something's wrong");
+        });
     }
 
     return (
@@ -109,7 +114,7 @@ const Registration = () => {
                             label="Repeat password"
                             type="password"
                             variant="outlined"
-                            value={authData.password}
+                            value={repeatedPassword}
                             onChange={handleRepeatPasswordChange}
                         />
                     </div>
@@ -144,8 +149,7 @@ const Registration = () => {
                             </Button>
                         </div>
                     </div>
-                    <div className="error">{error}</div>
-                    <div className="message">{message}</div>
+                    <div className="error">{message}</div>
                 </div> : <></>}
         </div>
     );

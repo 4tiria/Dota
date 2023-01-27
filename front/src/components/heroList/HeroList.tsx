@@ -7,35 +7,42 @@ import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
 import NameFilter from "./filter/NameFilter";
 import {HeroFilterModel} from "../../models/filterModels/heroFilter";
 import nameFilter from "./filter/NameFilter";
-import {deleteHero, getFilteredList} from "../../api/heroApi";
+import {deleteHero, getAllHeroes, getFilteredList} from "../../api/heroApi";
 import AttributeFilter from "./filter/AttributeFilter";
 import AttackTypeFilter from "./filter/AttackTypeFilter";
 import TagFilter from "./filter/TagFilter";
 import FilterPanel, {noFilterApplied} from "./filter/FilterPanel";
+import {useSelector} from "react-redux";
+import {IRootState} from "../../store/store";
+import {User} from "../../models/dto/User";
 
 
 const HeroList = (props) => {
-    const [list, updateList] = useState<Hero[]>([]);
-    const [hasFilters, setHasFilters] = useState<boolean>(false);
+    const [list, setList] = useState<Hero[]>([]);
+    const [hasNoFilters, setHasNoFilters] = useState<boolean>(false);
     const [memorizedFilterModel, setMemorizedFilterModel] = useState<HeroFilterModel>(new HeroFilterModel());
 
-    useEffect(() => {
-        axios.get<Hero[]>(heroListPath)
-            .then(response => updateList(response.data))
-    }, []);
+    const user = useSelector<IRootState, User>(state => state.user);
 
     function getListOfElements(heroes: Hero[]): JSX.Element[] {
         let result = heroes.map(h =>
-            (<HeroInList hero={h} callBackFunction={deleteHeroFromList} 
-                         isAddButton={false} 
-                         isEmpty={false} 
-                         hasFilters={hasFilters} key={h.id}/>)
+            (<HeroInList
+                hero={h}
+                callBackFunction={deleteHeroFromList}
+                isAddButton={false}
+                isEmpty={false}
+                hasNoFilters={hasNoFilters}
+                key={h.id}/>)
         );
-        if (hasFilters)
-            result.push(<HeroInList hero={null} callBackFunction={deleteHeroFromList} 
-                                    isAddButton={true} 
-                                    hasFilters={hasFilters} 
-                                    isEmpty={false}/>);
+        if (hasNoFilters && user.accessLevel == "Admin") {
+            result.push(<HeroInList
+                hero={null}
+                callBackFunction={deleteHeroFromList}
+                isAddButton={true}
+                hasNoFilters={hasNoFilters}
+                isEmpty={false}/>);
+        }
+
         return result;
     }
 
@@ -66,7 +73,7 @@ const HeroList = (props) => {
                 ));
         }
     }
-    
+
     function deleteHeroFromList(hero: Hero) {
         deleteHero(hero).then(() => {
             applyFilters(memorizedFilterModel);
@@ -78,9 +85,13 @@ const HeroList = (props) => {
         if (difference > 0) {
             for (let i = 0; i < difference; i++) {
                 array.push(
-                    <HeroInList hero={null} callBackFunction={deleteHeroFromList} 
-                                isAddButton={false} isEmpty={true} hasFilters={hasFilters}
-                                key={generateUniqueID()}/>
+                    <HeroInList
+                        hero={null}
+                        callBackFunction={deleteHeroFromList}
+                        isAddButton={false}
+                        isEmpty={true}
+                        hasNoFilters={hasNoFilters}
+                        key={generateUniqueID()}/>
                 )
             }
         }
@@ -97,10 +108,10 @@ const HeroList = (props) => {
 
     function applyFilters(filterOptions: HeroFilterModel) {
         getFilteredList(filterOptions).then(response => {
-            updateList(response);
+            setList(response);
         });
 
-        setHasFilters(noFilterApplied(filterOptions));
+        setHasNoFilters(noFilterApplied(filterOptions));
     }
 
     return (
@@ -110,7 +121,7 @@ const HeroList = (props) => {
                 applyFilters(heroFilterModel);
             }}/>
             <div className="d-flex justify-content-center">
-                <hr/>    
+                <hr/>
             </div>
             <div className="hero-list">
                 <div>

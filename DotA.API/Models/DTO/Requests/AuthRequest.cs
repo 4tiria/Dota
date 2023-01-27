@@ -1,9 +1,9 @@
 ﻿using DataAccess.Enums;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.JsObjects
+namespace DotA.API.Models.DTO.Requests
 {
-    public class AuthDataJs
+    public class AuthRequest
     {
         [JsonProperty("email")]
         public string Email { get; set; }   
