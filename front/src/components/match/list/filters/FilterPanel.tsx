@@ -1,7 +1,7 @@
 ﻿import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import {IRootState} from "../../../../store/store";
-import {MatchFilterModel} from "../../../../models/filterModels/matchFilterModel";
+import {MatchListFilterModel} from "../../../../models/filterModels/matchListFilterModel";
 import "./FilterPanel.scss";
 import DurationFilter from "./durationFilter/DurationFilter";
 import StartFilter from "./startFilter/StartFilter";

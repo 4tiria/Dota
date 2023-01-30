@@ -1,4 +1,4 @@
-﻿import React, {useContext} from 'react';
+﻿import React, {useContext, useState} from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import HeroList from "./heroList/HeroList";
 import HeroInfo from "./hero/HeroInfo";
@@ -6,8 +6,10 @@ import MatchInfo from "./match/MatchInfo";
 import MatchList from "./match/list/MatchList";
 import Registration from "./account/registraion/Registration";
 import Login from "./account/login/Login";
+import Settings from "./account/settings/Settings";
+import {ThemeContext} from "../context/ThemeContext";
 
-const AppRouter = () => {
+const AppRouter = () => {    
     return (
         <>
             <Routes>
@@ -18,6 +20,7 @@ const AppRouter = () => {
                 <Route path='/matches' element={<MatchList/>}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Registration/>}/>
+                <Route path='/settings' element={<Settings/>}/>
             </Routes>
         </>
     );

@@ -17,7 +17,6 @@ namespace DotA.API.Mappers
             CreateMap<HeroInMatch, HeroInMatchJs>().ReverseMap();
             CreateMap<Tag, TagJs>().ReverseMap();
             CreateMap<Asset, AssetJs>().ReverseMap();
-            CreateMap<Account, AccountJs>().ReverseMap();
             
             CreateMap<Match, MatchJs>()
                 .ForMember(x => x.Start,

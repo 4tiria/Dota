@@ -1,4 +1,4 @@
-﻿import React, {useEffect, useMemo, useState} from 'react';
+﻿import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {Hero} from "../../models/Hero";
 import axios from "axios";
 import HeroInList from "./HeroInList";
@@ -15,9 +15,12 @@ import FilterPanel, {noFilterApplied} from "./filter/FilterPanel";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store/store";
 import {User} from "../../models/dto/User";
+import {ThemeContext} from "../../context/ThemeContext";
 
 
 const HeroList = (props) => {
+    const {theme, setTheme} = useContext(ThemeContext);
+    
     const [list, setList] = useState<Hero[]>([]);
     const [hasNoFilters, setHasNoFilters] = useState<boolean>(false);
     const [memorizedFilterModel, setMemorizedFilterModel] = useState<HeroFilterModel>(new HeroFilterModel());
@@ -115,13 +118,13 @@ const HeroList = (props) => {
     }
 
     return (
-        <div>
+        <div data-theme={theme}>
             <FilterPanel callBackFunction={(heroFilterModel) => {
                 setMemorizedFilterModel(heroFilterModel);
                 applyFilters(heroFilterModel);
             }}/>
             <div className="d-flex justify-content-center">
-                <hr/>
+                <hr className="hr-hero"/>
             </div>
             <div className="hero-list">
                 <div>

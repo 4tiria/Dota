@@ -5,7 +5,7 @@ import "./MatchInList.scss";
 import HeroSmallImage from "./heroSmallImage/HeroSmallImage";
 import {commonIcons} from "../../../../assets/CommonIcons";
 import {BlobWithPath, heroImages} from "../../../../assets/HeroImages";
-import {getFullDateString} from "../../../../helpers/dateHelpers";
+import {getFullDateString, getTimeString} from "../../../../helpers/dateHelpers";
 
 interface IMatchInList {
     match: Match;
@@ -16,8 +16,6 @@ const MatchInList: React.FC<IMatchInList> = ({match}) => {
     const [direKillCount, setDireKillCount] = useState<number>(0);
     const [duration, setDuration] = useState<string>('');
     const [start, setStart] = useState<string>('');
-    // const [radiantLogoBlobWithPath, setRadiantLogoBlobWithPath] = useState<BlobWithPath>(null);
-    // const [direLogoBlobWithPath, setDireLogoBlobWithPath] = useState<BlobWithPath>(null);
 
     useEffect(() => {
         if (!match) return;
@@ -25,7 +23,7 @@ const MatchInList: React.FC<IMatchInList> = ({match}) => {
         let split = match.score.split('-');
         setRadiantKillCount(parseInt(split[0]));
         setDireKillCount(parseInt(split[1]));
-        setStart(getFullDateString(new Date(match.start)));
+        setStart(getTimeString(new Date(match.start)));
         let difference = match.end - match.start;
         let duration = new Date(difference);
         duration.setUTCHours(-4);
@@ -56,7 +54,6 @@ const MatchInList: React.FC<IMatchInList> = ({match}) => {
                     <div className="win win-radiant">{match.winnerSide == 'Radiant'? 'Radiant Win' : ''}</div>
                     <div className="start-time">{start}</div>
                     <div className="win win-dire">{match.winnerSide == 'Dire'? 'Dire win' : ''}</div>
-                    
                 </div>
                 <div key={match.id} className="match-in-list-container">
                     <div className="side side-radiant">

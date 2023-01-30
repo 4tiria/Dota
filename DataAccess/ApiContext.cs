@@ -17,10 +17,6 @@ namespace DataAccess
       base.OnModelCreating(modelBuilder);
       modelBuilder.Entity<HeroImage>().Property(p => p.Bytes)
         .HasColumnType("MediumBlob");
-      
-      modelBuilder.Entity<Account>()
-        .Property(c => c.AccessLevel)
-        .HasConversion<string>();
 
       modelBuilder.Entity<Hero>()
         .HasOne(s => s.Image)
@@ -40,7 +36,5 @@ namespace DataAccess
     public DbSet<Match> Matches { get; set; }
     public DbSet<HeroInMatch> HeroesInMatches { get; set; }
     public DbSet<Asset> Assets { get; set; }
-    public DbSet<Account> Accounts { get; set; }
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
   }
 }

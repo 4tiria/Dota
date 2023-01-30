@@ -1,24 +1,21 @@
-﻿import React, {useEffect, useRef, useState} from 'react';
+﻿import React, {useContext, useEffect, useRef, useState} from 'react';
 import "./MatchList.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../store/store";
-import {MatchFilterModel} from "../../../models/filterModels/matchFilterModel";
+import {MatchListFilterModel} from "../../../models/filterModels/matchListFilterModel";
 import FilterPanel from "./filters/FilterPanel";
 import MatchListPerDay from "./matchListPerDay/MatchListPerDay";
+import Button from "@mui/material/Button";
+import {ThemeContext} from "../../../context/ThemeContext";
 
 const MatchList = () => {
-    const [lastDayAgo, setLastDayAgo] = useState<number>(0);
+    const {theme, setTheme} = useContext(ThemeContext);
+    const [lastDayAgo, setLastDayAgo] = useState<number>(null);
     const [dayArray, setDayArray] = useState<number[]>([]);
-    const [message, setMessage] = useState<string>("");
     const lastElement = useRef();
     const observer = useRef<IntersectionObserver>();
 
-    const filters = useSelector<IRootState, MatchFilterModel>(state => state.matchFilter);
-
-    useEffect(() => {
-        setDayArray([]);
-        setMessage(prevState => prevState + `ъ`);
-    }, [filters]);
+    const filters = useSelector<IRootState, MatchListFilterModel>(state => state.matchFilter);
 
     function updateObserver() {
         if (!lastElement.current) return;
@@ -33,44 +30,53 @@ const MatchList = () => {
     }
 
     function downloadMatchesInDay(): void {
-        setLastDayAgo(lastDayAgo + 1);
+        let minLastDayAgo = filters.maxStartedMillisecondsBefore
+            ? Math.floor(filters.maxStartedMillisecondsBefore / (1000 * 60 * 60 * 24))
+            : 0;
+        setLastDayAgo(prevState => prevState == null ? minLastDayAgo : prevState + 1);
     }
 
     useEffect(() => {
-        if (dayArray?.length == 0){
-            setMessage(prevState => prevState + `/`);
-            setLastDayAgo(0);
+        if (lastDayAgo != null) {
+            setDayArray(prevState => [...prevState, lastDayAgo]);
         }
-           
-    }, [dayArray, filters]);
-
-    useEffect(() => {
-        if (lastDayAgo == 0) {
-            setLastDayAgo(1);
-            return;
-        }
-
-        setDayArray(prevState => [...prevState, lastDayAgo]);
     }, [lastDayAgo]);
 
+    useEffect(() => {
+        if (lastDayAgo != null) {
+            setDayArray([]);
+            setLastDayAgo(null);
+        }
+
+    }, [filters]);
 
     return (
-        <div className="d-flex justify-content-center my-2">
+        <div 
+            className="match-list-container d-flex justify-content-center my-2"
+            id={theme}
+        >
             <FilterPanel/>
             <div className="list">
-                <div>{JSON.stringify(dayArray)}</div>
-                <div>{message}</div>
-                <div>{JSON.stringify(lastDayAgo)}</div>
                 <div>
                     {dayArray.map(x => {
                         return (
                             <div key={x}>
-                                <MatchListPerDay day={x} callBackFunction={updateObserver}/>
+                                <MatchListPerDay daysAgo={x} callBackFunction={updateObserver}/>
                             </div>
                         );
                     })}
                 </div>
-                <div ref={lastElement} className="last-element"></div>
+                <div
+                    ref={lastElement}
+                    className="last-element d-flex justify-content-center">
+                    <Button
+                        sx={{width: 500, height: 60}}
+                        variant="text"
+                        onClick={_ => downloadMatchesInDay()}
+                    >
+                        Load more
+                    </Button>
+                </div>
             </div>
         </div>
     );
