@@ -1,75 +1,76 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
-using System.Net.Mail;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using AutoMapper;
-using DataAccess;
-using DataAccess.Enums;
-using DataAccess.Models;
-using DotA.API.Helpers;
-using DotA.API.Models;
-using DotA.API.Models.DTO.Requests;
-using DotA.API.Models.DTO.Responses;
-using MailKit.Net.Imap;
+using Dota.Auth.Helpers;
+using Dota.Auth.Models;
+using Dota.Auth.Models.DTO.Requests;
+using Dota.Auth.Models.DTO.Responses;
+using Dota.Auth.Models.Entities;
+using Dota.Auth.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Cookie = DotA.API.Helpers.Cookie;
 
-namespace DotA.API.Controllers.Auth
+namespace Dota.Auth.Controllers
 {
-    [ApiController, Route("api/account")]
+    [ApiController, Route("auth")]
     public class AccountController : Controller
     {
-        private readonly ApiContext _context;
-        private readonly IMapper _mapper;
+        private readonly AuthContext _context;
         private readonly IOptions<AuthOptions> _authOptions;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
 
-        public AccountController(ApiContext context,
-            IMapper mapper,
+        public AccountController(AuthContext context,
             IOptions<AuthOptions> authOptions,
-            TokenValidationParameters tokenValidationParameters, 
-            IConfiguration configuration)
+            TokenValidationParameters tokenValidationParameters,
+            IConfiguration configuration,
+            IEmailService emailService)
         {
             _context = context;
-            _mapper = mapper;
             _authOptions = authOptions;
             _tokenValidationParameters = tokenValidationParameters;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         [HttpPost("login")]
-        [ValidateAntiForgeryToken]
-        public IActionResult Login([FromBody] AuthRequest authRequest)
+        public IActionResult Login([FromBody] LoginRequest loginRequest)
         {
-            if (authRequest is null)
+            if (loginRequest is null)
                 return BadRequest();
 
-            var account = AuthenticateUser(authRequest.Email, authRequest.Password);
+            var account = AuthenticateUser(loginRequest.Email, loginRequest.Password);
             if (account is null) return Unauthorized();
+            var contextAccount = _context.Accounts.FirstOrDefault(x => x.Email == loginRequest.Email);
+            if (contextAccount is null)
+                return NotFound();
 
-            var jwt = GenerateJwt(account);
-            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(x => x.AccountEmail == authRequest.Email));
-            var refreshTokenString = CreateAndSaveRefreshToken(jwt, authRequest.Email);
+            var jwt = Generate.Jwt(account, _authOptions.Value);
+            _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(x => x.AccountId == contextAccount.Id));
+            var refreshTokenString = CreateAndSaveRefreshToken(jwt, contextAccount.Id);
 
             var jwtString = new JwtSecurityTokenHandler().WriteToken(jwt);
             Response.Cookies.Append(Cookie.RefreshToken, refreshTokenString, new CookieOptions() { HttpOnly = true });
             return Ok(new AuthResponse()
             {
                 AccessToken = jwtString,
-                UserEmail = account.Email
+                AccountResponse = new AccountResponse()
+                {
+                    Avatar = contextAccount.Avatar,
+                    Email = contextAccount.Email,
+                    Id = contextAccount.Id,
+                    AccessLevel = contextAccount.AccessLevel,
+                    IsConfirmed = contextAccount.IsConfirmed,
+                    UserName = contextAccount.UserName
+                }
             });
         }
 
@@ -88,43 +89,53 @@ namespace DotA.API.Controllers.Auth
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] AuthRequest authRequest)
+        public IActionResult Register([FromBody] RegistrationRequest registrationRequest)
         {
-            var hashCodePassword = authRequest.Password.PasswordToStringHashCode();
-            if (_context.Accounts.Any(x => x.Email == authRequest.Email))
-            {
+            var hashCodePassword = registrationRequest.Password.PasswordToStringHashCode();
+            if (_context.Accounts.Any(x => x.Email == registrationRequest.Email))
                 return BadRequest("user with this email already registered");
-            }
 
             var confirmationJwtToken = GenerateEmailConfirmationJwtToken();
             var confirmationJwtTokenString = new JwtSecurityTokenHandler().WriteToken(confirmationJwtToken);
+            var guid = new Guid();
             var callbackUrl = Url.Action(
                 "ConfirmEmail",
                 "Account",
-                new { email = authRequest.Email, code = confirmationJwtTokenString },
+                new { userId = guid, code = confirmationJwtTokenString },
                 protocol: HttpContext.Request.Scheme);
+
             var newAccount = new Account()
             {
-                Email = authRequest.Email,
+                Id = guid,
+                Avatar = null,
+                UserName = registrationRequest.UserName,
+                Email = registrationRequest.Email,
                 Password = hashCodePassword,
-                AccessLevel = authRequest.AccessLevel,
-                ConfirmationLink = callbackUrl
+                AccessLevel = registrationRequest.AccessLevel,
+                ConfirmationLink = callbackUrl,
+                ConfirmationExpiration =
+                    DateTime.UtcNow.AddDays(int.Parse(_configuration["Confirmation:ExpiresInDays"])),
             };
 
-            SendEmail(authRequest.Email,
-                $"Для подтверждения почты перейдите по ссылке: <a href='{callbackUrl}'>link</a>");
+            _emailService.SendEmail(registrationRequest.Email,
+                $"Для подтверждения почты перейдите по ссылке: <a href='{callbackUrl}'>{callbackUrl}</a>");
 
             newAccount.ConfirmationLink = callbackUrl;
             _context.Accounts.Add(newAccount);
 
-            await _context.SaveChangesAsync();
-            return Login(authRequest);
+            _context.SaveChanges();
+            return Login(new LoginRequest()
+            {
+                Email = registrationRequest.Email,
+                Password = registrationRequest.Password,
+            });
         }
 
         [HttpPost("logout")]
         public IActionResult Logout([FromBody] LogoutRequest logoutRequest)
         {
-            var refreshToken = _context.RefreshTokens.Find(logoutRequest.Email);
+            var refreshToken =
+                _context.RefreshTokens.FirstOrDefault(x => x.AccountId.ToString() == logoutRequest.AccountId);
             if (Request.Cookies.TryGetValue(Cookie.RefreshToken, out _))
                 Response.Cookies.Delete(Cookie.RefreshToken);
 
@@ -139,12 +150,12 @@ namespace DotA.API.Controllers.Auth
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string email, string code)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
         {
-            if (email is null || code is null)
+            if (userId is null || code is null)
                 return BadRequest();
 
-            var account = await _context.Accounts.FindAsync(email);
+            var account = await _context.Accounts.FindAsync(userId);
             if (account == null)
                 return NotFound();
 
@@ -192,8 +203,8 @@ namespace DotA.API.Controllers.Auth
                 throw new NotImplementedException("the refreshToken does not match this JWT");
             }
 
-            var account = _context.Accounts.Find(storedRefreshToken.AccountEmail);
-            var newAccessToken = GenerateJwt(account);
+            var account = _context.Accounts.Find(storedRefreshToken.AccountId);
+            var newAccessToken = Generate.Jwt(account, _authOptions.Value);
             var newAccessTokenString = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
 
             storedRefreshToken.AccessTokenId =
@@ -227,19 +238,18 @@ namespace DotA.API.Controllers.Auth
             return _context.Accounts.FirstOrDefault(x => x.Email == email && x.Password == passwordHashCode);
         }
 
-        private string CreateAndSaveRefreshToken(JwtSecurityToken jwt, string accountEmail)
+        private string CreateAndSaveRefreshToken(JwtSecurityToken jwt, Guid accountId)
         {
             var authParams = _authOptions.Value;
-            var generatedKeyForRefreshToken = GenerateTokenId();
+            var generatedKeyForRefreshToken = Generate.TokenId();
             var securityKey = authParams.GetSymmetricSecurityKey();
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var jwtId = jwt.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, generatedKeyForRefreshToken),
-                new Claim(JwtRegisteredClaimNames.Email, accountEmail),
+                new Claim(JwtRegisteredClaimNames.Email, accountId.ToString()),
             };
 
             var expirationDate = DateTime.Now.AddDays(_authOptions.Value.RefreshTokenLifeTimeInDays);
@@ -255,7 +265,7 @@ namespace DotA.API.Controllers.Auth
             {
                 Token = refreshJwtString,
                 AccessTokenId = jwtId,
-                AccountEmail = accountEmail,
+                AccountId = accountId,
                 CreationDate = DateTime.Now,
                 ExpireDate = expirationDate,
             };
@@ -266,34 +276,9 @@ namespace DotA.API.Controllers.Auth
             return refreshJwtString;
         }
 
-        private JwtSecurityToken GenerateJwt(Account account)
-        {
-            var authParams = _authOptions.Value;
-
-            var securityKey = authParams.GetSymmetricSecurityKey();
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var id = GenerateTokenId();
-
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Jti, id),
-                new Claim(JwtRegisteredClaimNames.Email, account.Email),
-                new Claim("role", Enum.GetName(typeof(AccessLevel), account.AccessLevel) ?? string.Empty)
-            };
-
-            var jwt = new JwtSecurityToken(
-                authParams.Issuer,
-                authParams.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(authParams.AccessTokenLifeTimeInMinutes),
-                signingCredentials: credentials);
-
-            return jwt;
-        }
-
         private JwtSecurityToken GenerateEmailConfirmationJwtToken()
         {
-            var id = GenerateTokenId();
+            var id = Generate.TokenId();
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, id),
@@ -304,35 +289,6 @@ namespace DotA.API.Controllers.Auth
                 expires: DateTime.Now.AddMonths(1));
 
             return jwt;
-        }
-
-        private static string GenerateTokenId()
-        {
-            var randomNumber = new byte[64];
-            using var rng = RandomNumberGenerator.Create();
-            rng.GetBytes(randomNumber);
-            return Convert.ToBase64String(randomNumber);
-        }
-
-        public void SendEmail(string email, string message)
-        {
-            var mail = new MailMessage()
-            {
-                From = new MailAddress("phowar@yandex.ru"),
-                To = { new MailAddress(email) },
-                Subject = "Email confirmation",
-                Body = message,
-                IsBodyHtml = true,
-            };
-
-            var smtpClient = new SmtpClient("smtp.yandex.ru")
-            {
-                Credentials = new NetworkCredential("phowar@yandex.ru", "Ph0warthef1rst"),
-                Port = 587,
-                EnableSsl = true,
-            };
-
-            smtpClient.Send(mail);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿export class User {
     isAuth: boolean;
-    email: string;
+    accountId: string;
     accessLevel: AccessLevel;
 }

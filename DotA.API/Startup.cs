@@ -55,7 +55,7 @@ namespace DotA.API
                     Configuration["Data:ConnectionString"]);
             });
             
-            services.AddSingleton(Configuration);
+            //services.AddSingleton(Configuration);
             services.AddTransient<HeroSeed>();
         }
 

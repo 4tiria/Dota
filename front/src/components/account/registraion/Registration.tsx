@@ -1,7 +1,7 @@
 ﻿import React, {useContext, useEffect, useState} from 'react';
 import Button from "@mui/material/Button";
-import {registerApi} from "../../../api/accountApi";
-import {AuthRequest} from "../../../models/dto/requests/AuthRequest";
+import {registerOnServer} from "../../../api/accountApi";
+import {RegistrationRequest} from "../../../models/dto/requests/RegistrationRequest";
 import "./Registration.scss";
 import {Checkbox, FormControlLabel, TextField} from "@mui/material";
 import {ACCESS_TOKEN_KEY} from "../../../store/store";
@@ -13,9 +13,11 @@ const Registration = () => {
     const [isValid, setIsValid] = useState<boolean>(false);
     const [message, setMessage] = useState<string>(null);
     const [repeatedPassword, setRepeatedPassword] = useState<string>('');
-    const [authData, setAuthData] = useState<AuthRequest>({
+    const [userName, setUserName] = useState<string>('');
+    const [authData, setAuthData] = useState<RegistrationRequest>({
         email: '',
         password: '',
+        userName: '',
         accessLevel: 'Default'
     });
 
@@ -36,6 +38,10 @@ const Registration = () => {
 
     function handleEmailChange(event): void {
         setAuthData(prevState => ({...prevState, email: event.target.value}));
+    }
+    
+    function handleUserNameChange(event): void{
+        setAuthData(prevState => ({...prevState, userName: event.target.value}))
     }
 
     function handlePasswordChange(event): void {
@@ -74,9 +80,9 @@ const Registration = () => {
 
 
     function signUp() {
-        registerApi(authData).then(data => {
+        registerOnServer(authData).then(data => {
             localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
-            dispatch(login(authData.email, authData.accessLevel));
+            dispatch(login(data.account.id, data.account.accessLevel));
             setMessage("");
             navigate(`../heroes`);
         }).catch(error => {
@@ -88,6 +94,16 @@ const Registration = () => {
         <div className="registration-container">
             {authData ?
                 <div className="registration-form">
+                    <div>
+                        <TextField
+                            className="registration-input"
+                            label="User Name"
+                            type="text"
+                            variant="outlined"
+                            value={authData.userName}
+                            onChange={handleUserNameChange}
+                        />
+                    </div>
                     <div>
                         <TextField
                             className="registration-input"

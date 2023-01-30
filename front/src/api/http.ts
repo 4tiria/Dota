@@ -9,7 +9,8 @@ import {AuthResponse} from "../models/dto/responses/AuthResponse";
 //todo: 5. Вынести аутентификацию и авторизацию в отдельный проект
 
 
-export const baseUrl = "http://localhost:5000/api";
+export const baseApiUrl = "http://localhost:5000/api";
+export const baseAuthUrl = "http://localhost:34072/auth";
 
 export const api = axios.create({
     withCredentials: true,
@@ -27,7 +28,7 @@ api.interceptors.response.use((config) => {
     if (error.response.status == 401 && error.config && !error.config._isRetry) {
         originalRequest._isRetry = true;
         try {
-            const response = await axios.get<AuthResponse>(`${baseUrl}/account/refresh`, {withCredentials: true})
+            const response = await axios.get<AuthResponse>(`${baseAuthUrl}/refresh`, {withCredentials: true})
             localStorage.setItem('token', response.data.accessToken);
             return api.request(originalRequest);
         } catch (e) {

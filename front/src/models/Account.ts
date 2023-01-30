@@ -1,6 +1,9 @@
-﻿export class Account{
+﻿export class Account {
+    id: string;
+    userName: string;
     email: string;
     password: string;
     accessLevel: AccessLevel;
-    //todo: avatar and smth else
+    isConfirmed: boolean;
+    avatar: Blob;
 }

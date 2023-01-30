@@ -1,41 +1,47 @@
-﻿import React, {useState} from 'react';
+﻿import React, {KeyboardEventHandler, useState} from 'react';
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import "./Login.scss";
-import {loginApi} from "../../../api/accountApi";
-import {AuthRequest} from "../../../models/dto/requests/AuthRequest";
+import {loginOnServer} from "../../../api/accountApi";
+import {RegistrationRequest} from "../../../models/dto/requests/RegistrationRequest";
 import {ACCESS_TOKEN_KEY} from "../../../store/store";
 import {login} from "../../../store/actionCreators/user";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {LoginRequest} from "../../../models/dto/requests/LoginRequest";
 
 const Login = () => {
-    const [authData, setAuthData] = useState<AuthRequest>({
+    const [authData, setAuthData] = useState<LoginRequest>({
         email: '',
-        password: '',
-        accessLevel: 'Default'
+        password: ''
     });
-    
+
     const [message, setMessage] = useState<string>('');
-    
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     function signIn() {
-        loginApi(authData).then(data => {
+        loginOnServer(authData).then(data => {
             localStorage.setItem(ACCESS_TOKEN_KEY, data.accessToken);
             setMessage("");
-            dispatch(login(authData.email, authData.accessLevel));
+            dispatch(login(data.account.id, data.account.accessLevel));
             navigate(`../heroes`);
         }).catch(error => {
-            if (error.response.status == 401){
+            if (error.response.status == 401) {
                 setMessage("Wrong email or password");
+            } else {
+                setMessage("Server error");
             }
         });
     }
 
     return (
-        <div className="login-container">
+        <div className="login-container" onKeyDown={event => {
+            if (event.key == "Enter") {
+                signIn();
+            }
+        }}>
             {authData ?
                 <div>
                     <div>
@@ -70,7 +76,7 @@ const Login = () => {
                             Sign In
                         </Button>
                     </div>
-                   
+
                 </div> : <></>}
         </div>
     );

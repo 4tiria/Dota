@@ -1,17 +1,17 @@
 ﻿import {ACCESS_TOKEN_KEY} from "../store/store";
-import {baseUrl} from "./http";
+import {baseApiUrl, baseAuthUrl} from "./http";
 
-export const heroListPath = baseUrl + "/hero/list";
-export const heroFilteredListPath = baseUrl + "/hero/list/filter";
-export const heroPath = baseUrl + "/hero";
-export const addHeroPath = baseUrl + "/hero/empty";
-export const deleteHeroPath = baseUrl + "/hero/delete";
-export const tagPath = baseUrl + "/tag";
-export const matchPath = baseUrl + "/match";
-export const heroInMatchPath = baseUrl + "/match/hero";
-export const imagePath = baseUrl + "/image";
-export const assetPath = baseUrl + "/asset";
-export const accountPath = baseUrl + "/account";
+export const heroListPath = baseApiUrl + "/hero/list";
+export const heroFilteredListPath = baseApiUrl + "/hero/list/filter";
+export const heroPath = baseApiUrl + "/hero";
+export const addHeroPath = baseApiUrl + "/hero/empty";
+export const deleteHeroPath = baseApiUrl + "/hero/delete";
+export const tagPath = baseApiUrl + "/tag";
+export const matchPath = baseApiUrl + "/match";
+export const heroInMatchPath = baseApiUrl + "/match/hero";
+export const imagePath = baseApiUrl + "/image";
+export const assetPath = baseApiUrl + "/asset";
+export const accountPath = baseAuthUrl;
 
 export const getAuthHeader = () => {
     return {'Authorization': `Bearer ${localStorage.getItem(ACCESS_TOKEN_KEY)}`};

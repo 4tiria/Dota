@@ -1,3 +1,3 @@
 ﻿export class LogoutRequest{
-    email: string;
+    accountId: string;
 }

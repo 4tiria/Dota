@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout} from "../../store/actionCreators/user";
 import {User} from "../../models/dto/User";
 import {ACCESS_TOKEN_KEY, IRootState} from "../../store/store";
-import {logoutApi} from "../../api/accountApi";
+import {logoutOnServer} from "../../api/accountApi";
 
 const pages = [
     {title: 'Герои', redirectTo: '/heroes'},
@@ -45,7 +45,7 @@ const Navbar = () => {
         },
         {
             title: 'Logout', action: () => {
-                logoutApi({email: user.email}).then();
+                logoutOnServer({accountId: user.accountId}).then();
                 localStorage.removeItem(ACCESS_TOKEN_KEY);
                 dispatch(logout());
                 redirect('/login');
@@ -89,7 +89,7 @@ const Navbar = () => {
                         ))}
                     </Box>
                     <div>
-                        <span>{user.email}</span>
+                        <span>{user.accountId}</span>
                         <IconButton
                             size="large"
                             aria-label="account of current user"

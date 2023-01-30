@@ -1,3 +1,6 @@
-﻿export class AuthResponse{
+﻿import {Account} from "../../Account";
+
+export class AuthResponse{
     accessToken: string;
+    account: Account;
 }

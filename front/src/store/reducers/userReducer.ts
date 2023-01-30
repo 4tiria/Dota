@@ -3,7 +3,7 @@ import {ACCESS_TOKEN_KEY} from "../store";
 
 const initialState: User = {
     accessLevel: null,
-    email: null,
+    accountId: null,
     isAuth: false,
 }
 

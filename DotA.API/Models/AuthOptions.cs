@@ -9,7 +9,7 @@ namespace DotA.API.Models
         public string Audience { get; set; }
         public string Secret { get; set; }
         public int AccessTokenLifeTimeInMinutes { get; set; }
-        public int RefreshTokenLifeTimeInDays { get; set; }
+        public int RefreshTokenLifeTimeInDays { get; set; } //todo: remove it
 
         public SymmetricSecurityKey GetSymmetricSecurityKey()
         {
