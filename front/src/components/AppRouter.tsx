@@ -7,7 +7,6 @@ import MatchList from "./match/list/MatchList";
 import Registration from "./account/registraion/Registration";
 import Login from "./account/login/Login";
 import Settings from "./account/settings/Settings";
-import {ThemeContext} from "../context/ThemeContext";
 
 const AppRouter = () => {    
     return (

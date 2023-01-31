@@ -4,19 +4,33 @@ import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import Navbar from "./components/navbar/navbar";
 import {downloadAllAssets} from "./assets/AssetManager";
-import {ACCESS_TOKEN_KEY} from "./store/store";
+import {ACCESS_TOKEN_KEY, IRootState} from "./store/store";
 import {login, logout} from "./store/actionCreators/user";
 import jwt from 'jwt-decode';
-import {useDispatch} from "react-redux";
-import useLocalStorage from "use-local-storage";
+import {useDispatch, useSelector} from "react-redux";
 import "./App.scss";
-import {ThemeContext} from "./context/ThemeContext";
+import {createTheme, CssBaseline, Paper, ThemeOptions, ThemeProvider} from "@mui/material";
+import {setPaletteFromLocalStorage} from "./store/actionCreators/palette";
 
 export const App: React.FC = () => {
     const dispatch = useDispatch();
-    const [theme, setTheme] = useState<Theme>('Light');
+    const themeMode = useSelector<IRootState, Palette>(state => state.palette);
+    const themeOptions: ThemeOptions = {
+        palette: {
+            mode: themeMode,
+            primary: {
+                main: '#242424',
+            },
+            secondary: {
+                main: '#369df3',
+            },
+        },
+    };
+
+    const theme = createTheme(themeOptions);
 
     useEffect(() => {
+        dispatch(setPaletteFromLocalStorage());
         downloadAllAssets().then(_ => initAuthData());
     }, []);
 
@@ -31,17 +45,13 @@ export const App: React.FC = () => {
     }
 
     return (
-        <ThemeContext.Provider value={{
-            theme: theme,
-            setTheme: setTheme
-        }}>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
             <BrowserRouter>
                 <Navbar/>
                 <AppRouter/>
             </BrowserRouter>
-        </ThemeContext.Provider>
-
-
+        </ThemeProvider>
     );
 }
 

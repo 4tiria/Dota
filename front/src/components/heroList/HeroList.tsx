@@ -1,26 +1,16 @@
-﻿import React, {useContext, useEffect, useMemo, useState} from 'react';
+﻿import React, {useState} from 'react';
 import {Hero} from "../../models/Hero";
-import axios from "axios";
 import HeroInList from "./HeroInList";
-import {heroListPath} from "../../api/apiPaths";
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import NameFilter from "./filter/NameFilter";
 import {HeroFilterModel} from "../../models/filterModels/heroFilter";
-import nameFilter from "./filter/NameFilter";
 import {deleteHero, getAllHeroes, getFilteredList} from "../../api/heroApi";
-import AttributeFilter from "./filter/AttributeFilter";
-import AttackTypeFilter from "./filter/AttackTypeFilter";
-import TagFilter from "./filter/TagFilter";
 import FilterPanel, {noFilterApplied} from "./filter/FilterPanel";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store/store";
 import {User} from "../../models/dto/User";
-import {ThemeContext} from "../../context/ThemeContext";
+import {Container, Paper} from "@mui/material";
 
-
-const HeroList = (props) => {
-    const {theme, setTheme} = useContext(ThemeContext);
-    
+const HeroList = () => {
     const [list, setList] = useState<Hero[]>([]);
     const [hasNoFilters, setHasNoFilters] = useState<boolean>(false);
     const [memorizedFilterModel, setMemorizedFilterModel] = useState<HeroFilterModel>(new HeroFilterModel());
@@ -100,12 +90,12 @@ const HeroList = (props) => {
         }
 
         return (
-            <div className="d-flex justify-content-center mx-5">
-                {array.map(el =>
-                    (<div key={el.key}>
-                        {el}
-                    </div>))}
-            </div>
+                <div className="d-flex justify-content-center mx-5">
+                    {array.map(el =>
+                        (<div key={el.key}>
+                            {el}
+                        </div>))}
+                </div>
         )
     }
 
@@ -118,7 +108,7 @@ const HeroList = (props) => {
     }
 
     return (
-        <div data-theme={theme}>
+        <Paper sx={{paddingBottom: 20}} variant="elevation" square={true}>
             <FilterPanel callBackFunction={(heroFilterModel) => {
                 setMemorizedFilterModel(heroFilterModel);
                 applyFilters(heroFilterModel);
@@ -131,7 +121,7 @@ const HeroList = (props) => {
                     {splitAndRenderAllRows(4)}
                 </div>
             </div>
-        </div>
+        </Paper>
 
     );
 }

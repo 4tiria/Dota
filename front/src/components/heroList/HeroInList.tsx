@@ -6,15 +6,13 @@ import {redirect, useNavigate} from "react-router-dom";
 import {ToCamelCase} from "../../helpers/stringHelper";
 import {Button} from "@mui/material";
 import {IoAdd, IoCloseOutline} from "react-icons/io5";
-import {addEmptyHero, deleteHero, updateHero} from "../../api/heroApi";
+import {addEmptyHero} from "../../api/heroApi";
 import {ICallBack} from "../interfaces/ICallBack";
-import {GiBroadsword, GiPocketBow, GiPointySword} from "react-icons/gi";
+import {GiBroadsword, GiPocketBow} from "react-icons/gi";
 import {attributes} from "../../styles/attributes";
-import {getBlobFromBase64} from "../../helpers/blobHelper";
 import {heroImages} from "../../assets/HeroImages";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../store/store";
-import {HeroFilterModel} from "../../models/filterModels/heroFilter";
 import {User} from "../../models/dto/User";
 
 interface IHeroInList extends ICallBack<Hero> {
@@ -23,6 +21,9 @@ interface IHeroInList extends ICallBack<Hero> {
     isEmpty: boolean;
     hasNoFilters: boolean
 }
+
+const light = 'rgba(255,255,255,0.9)';
+const dark = 'rgba(0,0,0,0.8)';
 
 const HeroInList: React.FC<IHeroInList> = (
     {
@@ -38,6 +39,7 @@ const HeroInList: React.FC<IHeroInList> = (
     const [crossIsHovered, setCrossIsHovered] = useState(false);
 
     const user = useSelector<IRootState, User>(state => state.user);
+    const themeMode = useSelector<IRootState, Palette>(state => state.palette);
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -47,8 +49,7 @@ const HeroInList: React.FC<IHeroInList> = (
                 setHeroPngPath(blobWithPath.path);
         }
     }, []);
-
-
+    
     function addOrRedirectToHero() {
         if (isEmpty) {
             return;
@@ -70,7 +71,6 @@ const HeroInList: React.FC<IHeroInList> = (
         let urlHeroName = ToCamelCase(hero?.name);
         navigate(`../hero/${urlHeroName}`);
     }
-
 
     function renderAttackType() {
         return (<div className="attack-type">{hero?.attackType == "Melee"
@@ -145,14 +145,14 @@ const HeroInList: React.FC<IHeroInList> = (
                 hasNoFilters
                     ? "hero hero-empty"
                     : "hero hero-invisible"
-                : (isHovering
+                : (isHovering !== (themeMode=='dark')
                     ? "hero hero-selected"
                     : "hero hero-default")}
                  onClick={addOrRedirectToHero}
                  style={{
-                     backgroundImage: `url(${heroPngPath}), ${isHovering
-                         ? 'linear-gradient(90deg, rgba(0,0,0,0.8), rgba(0,0,0,0.8))'
-                         : 'linear-gradient(90deg, rgba(255,255,255,0.9) 33%, rgba(0,0,0,0.2) 70%)'
+                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode=='dark'))
+                         ? `linear-gradient(90deg, ${dark}, rgba(0,0,0,0.2))`
+                         : `linear-gradient(90deg, ${light}, 50%, rgba(0,0,0,0.2) 70%)`
                      }`,
                  }}
                  onMouseOver={() => setIsHovering(true)}

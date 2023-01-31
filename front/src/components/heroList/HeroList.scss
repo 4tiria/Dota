@@ -36,7 +36,7 @@ $container-padding: 2px 5px 2px 5px;
   &-selected {
     border-radius: $radius;
     cursor: pointer;
-    color: white;
+    color: rgba(222, 222, 222, 0.8);
     height: $hero-height;
   }
 

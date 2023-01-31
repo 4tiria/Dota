@@ -1,5 +1,4 @@
 ﻿import {User} from "../../models/dto/User";
-import {ACCESS_TOKEN_KEY} from "../store";
 
 const initialState: User = {
     accessLevel: null,

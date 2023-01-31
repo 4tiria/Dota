@@ -6,10 +6,9 @@ import {MatchListFilterModel} from "../../../models/filterModels/matchListFilter
 import FilterPanel from "./filters/FilterPanel";
 import MatchListPerDay from "./matchListPerDay/MatchListPerDay";
 import Button from "@mui/material/Button";
-import {ThemeContext} from "../../../context/ThemeContext";
 
 const MatchList = () => {
-    const {theme, setTheme} = useContext(ThemeContext);
+
     const [lastDayAgo, setLastDayAgo] = useState<number>(null);
     const [dayArray, setDayArray] = useState<number[]>([]);
     const lastElement = useRef();
@@ -53,7 +52,6 @@ const MatchList = () => {
     return (
         <div 
             className="match-list-container d-flex justify-content-center my-2"
-            id={theme}
         >
             <FilterPanel/>
             <div className="list">

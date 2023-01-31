@@ -74,7 +74,7 @@ const Navbar = () => {
     };
 
     return (
-        <AppBar style={{background: '#2E3B55'}} position="relative">
+        <AppBar color="primary" position="relative">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
@@ -116,9 +116,15 @@ const Navbar = () => {
                             onClose={resetAnchor}
                         >
                             {settingsMenu.filter(x => x.ifLoggedIn == user.isAuth).map(x => {
-                                return (<div key={x.title}>
-                                    <MenuItem onClick={x.action}>{x.title}</MenuItem>
-                                </div>)
+                                return (
+                                    <div key={x.title}>
+                                        <MenuItem onClick={() => {
+                                            x.action();
+                                            resetAnchor();
+                                        }}>
+                                            {x.title}
+                                        </MenuItem>
+                                    </div>)
                             })}
                         </Menu>
                     </div>

@@ -1,21 +1,32 @@
 ﻿import React, {useContext, useEffect, useState} from 'react';
-import {FormControlLabel, FormGroup, Switch} from "@mui/material";
+import {FormControlLabel, FormGroup, Paper, Switch} from "@mui/material";
 import "./Settings.scss";
-import {ThemeContext} from "../../../context/ThemeContext";
+import {useDispatch, useSelector} from "react-redux";
+import {IRootState} from "../../../store/store";
+import {setPalette} from "../../../store/actionCreators/palette";
 
 const Settings = () => {
-    const {theme, setTheme} = useContext(ThemeContext);
+    const theme = useSelector<IRootState, Palette>(state => state.palette);
+    const dispatch = useDispatch();
 
     function handleChange(event): void {
-        setTheme(event.target.checked ? 'Dark' : 'Light');
+        dispatch(setPalette(event.target.checked ? 'dark' : 'light'));
     }
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div className="settings-container" id={theme}>
             <FormGroup>
-                <FormControlLabel control={
-                    <Switch onChange={handleChange}/>
-                } label={`${theme} Theme`}/>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            onChange={handleChange}
+                            checked={theme == 'dark'}/>
+                    }
+                    label={`${theme} theme`}/>
             </FormGroup>
         </div>
     );
