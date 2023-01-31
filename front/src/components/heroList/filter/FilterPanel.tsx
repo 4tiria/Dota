@@ -1,12 +1,10 @@
-﻿import React, {EventHandler, SyntheticEvent, useEffect, useState} from 'react';
+﻿import React, {useEffect, useState} from 'react';
 import NameFilter from "./NameFilter";
 import AttributeFilter from "./AttributeFilter";
 import AttackTypeFilter from "./AttackTypeFilter";
 import TagFilter from "./TagFilter";
 import {HeroFilterModel} from "../../../models/filterModels/heroFilter";
 import {ICallBack} from "../../interfaces/ICallBack";
-import {getTags} from "../../../api/heroApi";
-import {Tag} from "../../../models/Tag";
 import {IoCloseOutline} from "react-icons/io5";
 import {resetHeroFilters} from "../../../store/actionCreators/heroFilter";
 import {useDispatch, useSelector} from "react-redux";
@@ -31,7 +29,6 @@ const FilterPanel: React.FC<IFilterPanel> = ({callBackFunction}) => {
         callBackFunction(filters);
     }, [filters]);
     
-
     return (
         <div className="d-flex justify-content-center filter-panel">
             <NameFilter/>

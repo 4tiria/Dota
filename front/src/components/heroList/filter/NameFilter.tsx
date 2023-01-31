@@ -11,17 +11,15 @@ import {IRootState} from "../../../store/store";
 const NameFilter = () => {
     const heroNameFilter = useSelector<IRootState, string>(state => state.heroFilter.name);
     const dispatch = useDispatch();
-    
+
     return (
-        <div>
-            <Input className="name-filter"
-                   placeholder="hero name"
-                   value={heroNameFilter}
-                   onChange={(event) => {
-                       dispatch(updateHeroNameFilter(event.target.value));
-                   }}
-            />
-        </div>
+        <Input className="name-filter"
+               placeholder="hero name"
+               value={heroNameFilter}
+               onChange={(event) => {
+                   dispatch(updateHeroNameFilter(event.target.value));
+               }}
+        />
     );
 };
 

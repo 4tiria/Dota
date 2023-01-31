@@ -20,6 +20,6 @@ export const paletteReducer = (state = initialState, action: IPaletteAction): Pa
             localStorage.setItem(THEME, action.payload);
             return action.payload;
         default:
-            return initialState;
+            return state;
     }
 }

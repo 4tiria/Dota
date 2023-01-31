@@ -13,10 +13,6 @@ const Settings = () => {
         dispatch(setPalette(event.target.checked ? 'dark' : 'light'));
     }
 
-    useEffect(() => {
-
-    }, [])
-
     return (
         <div className="settings-container" id={theme}>
             <FormGroup>

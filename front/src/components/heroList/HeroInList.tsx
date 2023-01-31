@@ -49,7 +49,7 @@ const HeroInList: React.FC<IHeroInList> = (
                 setHeroPngPath(blobWithPath.path);
         }
     }, []);
-    
+
     function addOrRedirectToHero() {
         if (isEmpty) {
             return;
@@ -128,10 +128,17 @@ const HeroInList: React.FC<IHeroInList> = (
                         {renderTags()}
                     </div>
                     <div>
-                        {user.accessLevel == "Admin"  && (
-                        <IoCloseOutline className={crossIsHovered ? "cross-hovered" : "cross-default"}
-                                        onMouseOver={() => setCrossIsHovered(true)}
-                                        onMouseOut={() => setCrossIsHovered(false)}/>)}
+                        {user.accessLevel == "Admin" && (
+                            <IoCloseOutline
+                                className={
+                                    crossIsHovered
+                                        ? "cross-hovered"
+                                        : "cross-default"
+                                }
+                                onMouseOver={() => setCrossIsHovered(true)}
+                                onMouseOut={() => setCrossIsHovered(false)}
+                            />
+                        )}
                     </div>
                 </div>
 
@@ -145,12 +152,12 @@ const HeroInList: React.FC<IHeroInList> = (
                 hasNoFilters
                     ? "hero hero-empty"
                     : "hero hero-invisible"
-                : (isHovering !== (themeMode=='dark')
+                : (isHovering !== (themeMode == 'dark')
                     ? "hero hero-selected"
                     : "hero hero-default")}
                  onClick={addOrRedirectToHero}
                  style={{
-                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode=='dark'))
+                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode == 'dark'))
                          ? `linear-gradient(90deg, ${dark}, rgba(0,0,0,0.2))`
                          : `linear-gradient(90deg, ${light}, 50%, rgba(0,0,0,0.2) 70%)`
                      }`,
