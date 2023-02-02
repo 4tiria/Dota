@@ -1,4 +1,4 @@
-﻿import {MatchListFilterModel} from "../../models/filterModels/matchListFilterModel";
+﻿import {IMatchListFilterFactory, MatchListFilterModel} from "../../models/filterModels/matchListFilterModel";
 import {Hero} from "../../models/Hero";
 import {HeroFilterOptions} from "./heroFilterOptionsReducer";
 

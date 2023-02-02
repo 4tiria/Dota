@@ -5,17 +5,14 @@ import {deleteHero, getById, getByName, getTags, updateHero} from "../../api/her
 import "./HeroInfo.scss";
 import "react-bootstrap";
 import {
-    IoBanOutline,
     IoCheckmarkOutline,
     IoCloseOutline,
     IoCreateOutline,
-    IoRemoveOutline,
     IoTrashBinOutline
 } from "react-icons/io5";
 import "../../styles/App.scss"
 import {Tag} from "../../models/Tag";
 import HeroName from "./HeroName";
-import {ToCamelCase} from "../../helpers/stringHelper";
 import HeroAttribute from "./HeroAttribute";
 import HeroTags from "./HeroTags";
 import HeroAttackType from "./HeroAttackType";
@@ -25,6 +22,12 @@ import {HeroImageSize} from "../../globalConstants";
 import {useSelector} from "react-redux";
 import {IRootState} from "../../store/store";
 import {User} from "../../models/dto/User";
+import {Box, Paper} from "@mui/material";
+
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 function isNumber(n) {
     return !isNaN(parseInt(n));
@@ -34,7 +37,7 @@ export const HeroInfo = () => {
     const params = useParams();
     const navigate = useNavigate();
     const [hero, setHero] = useState<Hero>();
-    const [editMode, setEdit] = useState(false);
+    const [editMode, setEditMode] = useState(false);
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const [heroName, setHeroName] = useState('');
@@ -63,7 +66,7 @@ export const HeroInfo = () => {
     }, []);
 
     function startEdit() {
-        setEdit(true);
+        setEditMode(true);
         setHeroName(hero.name);
         setHeroTags(hero.tags);
         setHeroAttribute(hero.mainAttribute);
@@ -83,7 +86,7 @@ export const HeroInfo = () => {
             if (flag) {
                 flag = false;
                 updateHero(newState).then(() => {
-                    setEdit(false);
+                    setEditMode(false);
                 });
             }
 
@@ -92,7 +95,7 @@ export const HeroInfo = () => {
     }
 
     function cancel() {
-        setEdit(false);
+        setEditMode(false);
     }
 
     function callDeleteHero() {
@@ -160,39 +163,42 @@ export const HeroInfo = () => {
 
     return (
         <div className="hero-container">
-            <div>
+            <Box>
                 <div className="hero-edit-panel">
                     {user.accessLevel == "Admin"
                         ?
                         <>
-                        {editMode
-                            ?
-                            <div className="d-flex justify-content-center">
-                                <div className="btn custom-icon" onClick={confirm}>
-                                    <IoCheckmarkOutline className="tick"/>
+                            {editMode
+                                ?
+                                <div className="d-flex justify-content-center">
+                                    <div className="btn custom-icon" onClick={confirm}>
+                                        <CheckOutlinedIcon className="tick"/>
+                                    </div>
+                                    <div className="btn custom-icon" onClick={cancel}>
+                                        <ClearOutlinedIcon className="cross"/>
+                                    </div>
                                 </div>
-                                <div className="btn custom-icon" onClick={cancel}>
-                                    <IoCloseOutline className="cross"/>
+                                :
+                                <div className="d-flex justify-content-center">
+                                    {renderDeleteDialog()}
+                                    <div className="btn custom-icon" onClick={startEdit}>
+                                        <EditOutlinedIcon/>
+                                    </div>
+                                    <div className="btn custom-icon" onClick={() => setDeleteDialogVisible(true)}>
+                                        <DeleteOutlineOutlinedIcon/>
+                                    </div>
                                 </div>
-                            </div>
-                            :
-                            <div className="d-flex justify-content-center">
-                                {renderDeleteDialog()}
-                                <div className="btn custom-icon" onClick={startEdit}><IoCreateOutline/></div>
-                                <div className="btn custom-icon" onClick={() => setDeleteDialogVisible(true)}>
-                                    <IoTrashBinOutline/></div>
-                            </div>
-                    }</> : <></>}
+                            }</> : <></>}
                 </div>
-                <div className="hero-info">
+                <Paper className="hero-info">
                     <div className="d-flex justify-content-between">
-                        <div
+                        <Paper
                             style={{
                                 width: HeroImageSize.full.width,
                                 height: HeroImageSize.full.height
                             }}>
                             {renderHeroImage()}
-                        </div>
+                        </Paper>
                         <div className="hero-header">
                             {!!hero
                                 ?
@@ -211,8 +217,8 @@ export const HeroInfo = () => {
                     <div className="hero-description">
 
                     </div>
-                </div>
-            </div>
+                </Paper>
+            </Box>
         </div>
     );
 };

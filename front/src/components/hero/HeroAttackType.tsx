@@ -3,8 +3,8 @@ import "./HeroInfo.scss";
 import {ICallBack} from "../interfaces/ICallBack";
 import {IEditable} from "../interfaces/IEditable";
 import {Hero} from "../../models/Hero";
-import Select from 'react-select';
 import {attackTypes} from "../../styles/attackTypes";
+import {MenuItem, Select} from "@mui/material";
 
 interface IHeroAttackType extends IEditable, ICallBack<string> {
     hero: Hero;
@@ -20,17 +20,25 @@ const HeroAttackType: React.FC<IHeroAttackType> = ({editMode, callBackFunction, 
     function renderCombobox() {
         return (
             <Select className="select-container"
-                    options={attackTypesOptions}
-                    defaultValue={attackTypesOptions.find(at => at.value == heroAttackType)}
+                    value={heroAttackType}
                     onChange={e => {
-                        setHeroAttackType(e.value);
-                        callBackFunction(e.value);
+                        let value = e.target.value as string;
+                        setHeroAttackType(value);
+                        callBackFunction(value);
                     }}
-            />
+            >
+                {attackTypesOptions.map(x =>
+                    <MenuItem
+                        value={x.value}
+                        key={x.value}
+                    >
+                        {x.label}
+                    </MenuItem>)}
+            </Select>
         );
     }
-    
-    function renderAttackType(){
+
+    function renderAttackType() {
         return (
             <div>
                 {attackTypesOptions.find(at => at.value == heroAttackType)?.label}

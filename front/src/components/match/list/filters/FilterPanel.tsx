@@ -5,17 +5,18 @@ import {MatchListFilterModel} from "../../../../models/filterModels/matchListFil
 import "./FilterPanel.scss";
 import DurationFilter from "./durationFilter/DurationFilter";
 import StartFilter from "./startFilter/StartFilter";
+import {Paper} from "@mui/material";
 
 const FilterPanel = () => {
     return (
-        <div className="filter-panel-container">
+        <Paper className="filter-panel-container">
             <div className="filter-container">
                 <DurationFilter/>
             </div>
             <div className="filter-container">
                 <StartFilter/>
             </div>
-        </div>
+        </Paper>
     );
 };
 

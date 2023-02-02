@@ -1,9 +1,9 @@
-﻿import React, {useContext, useEffect, useState} from 'react';
-import {FormControlLabel, FormGroup, Paper, Switch} from "@mui/material";
+﻿import React from 'react';
+import {FormControlLabel, FormGroup, Switch} from "@mui/material";
 import "./Settings.scss";
 import {useDispatch, useSelector} from "react-redux";
-import {IRootState} from "../../../store/store";
 import {setPalette} from "../../../store/actionCreators/palette";
+import {IRootState} from "../../../store/store";
 
 const Settings = () => {
     const theme = useSelector<IRootState, Palette>(state => state.palette);

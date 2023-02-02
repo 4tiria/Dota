@@ -3,10 +3,10 @@ import {
     AppBar,
     Box,
     Button,
-    Container,
+    Container, FormControlLabel, FormGroup,
     IconButton,
     Menu,
-    MenuItem,
+    MenuItem, Switch,
     Toolbar,
 } from "@mui/material";
 import {redirect, useNavigate} from "react-router-dom";
@@ -16,16 +16,18 @@ import {logout} from "../../store/actionCreators/user";
 import {User} from "../../models/dto/User";
 import {ACCESS_TOKEN_KEY, IRootState} from "../../store/store";
 import {logoutOnServer} from "../../api/accountApi";
+import {setPalette} from "../../store/actionCreators/palette";
 
 const pages = [
-    {title: 'Герои', redirectTo: '/heroes'},
-    {title: 'Матчи', redirectTo: '/matches'},
-    {title: 'Игроки', redirectTo: '/players'}
+    {title: 'Heroes', redirectTo: '/heroes'},
+    {title: 'Matches', redirectTo: '/matches'},
+    {title: 'Players', redirectTo: '/players'}
 ];
 
 const Navbar = () => {
     const dispatch = useDispatch();
     const user = useSelector<IRootState, User>(state => state.user);
+    const theme = useSelector<IRootState, Palette>(state => state.palette);
 
     const [settingsMenu, setSettingsMenu] = useState([
         {
@@ -73,6 +75,10 @@ const Navbar = () => {
         setAnchorElNav(event.currentTarget);
     };
 
+    const handleThemeChange = (event): void => {
+        dispatch(setPalette(event.target.checked ? 'dark' : 'light'));
+    }
+
     return (
         <AppBar color="primary" position="relative">
             <Container maxWidth="xl">
@@ -89,7 +95,7 @@ const Navbar = () => {
                         ))}
                     </Box>
                     <div>
-                        <span>{user.accountId}</span>
+                        <span>{user?.accountId}</span>
                         <IconButton
                             size="large"
                             aria-label="account of current user"
@@ -118,17 +124,28 @@ const Navbar = () => {
                             {settingsMenu.filter(x => x.ifLoggedIn == user.isAuth).map(x => {
                                 return (
                                     <div key={x.title}>
-                                        <MenuItem onClick={() => {
-                                            x.action();
-                                            resetAnchor();
-                                        }}>
+                                        <MenuItem
+                                            onClick={() => {
+                                                x.action();
+                                                resetAnchor();
+                                            }}
+                                        >
                                             {x.title}
                                         </MenuItem>
                                     </div>)
                             })}
                         </Menu>
                     </div>
-
+                    <FormGroup>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    onChange={handleThemeChange}
+                                    checked={theme == 'dark'}
+                                />
+                            }
+                            label={`${theme}`}/>
+                    </FormGroup>
                 </Toolbar>
             </Container>
         </AppBar>

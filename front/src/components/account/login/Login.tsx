@@ -1,9 +1,8 @@
-﻿import React, {KeyboardEventHandler, useState} from 'react';
+﻿import React, {useState} from 'react';
 import {TextField} from "@mui/material";
 import Button from "@mui/material/Button";
 import "./Login.scss";
 import {loginOnServer} from "../../../api/accountApi";
-import {RegistrationRequest} from "../../../models/dto/requests/RegistrationRequest";
 import {ACCESS_TOKEN_KEY} from "../../../store/store";
 import {login} from "../../../store/actionCreators/user";
 import {useDispatch} from "react-redux";

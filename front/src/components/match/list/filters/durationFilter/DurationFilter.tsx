@@ -5,7 +5,7 @@ import {MatchListFilterModel} from "../../../../../models/filterModels/matchList
 import "./DurationFilter.scss";
 import Slider from "@mui/material/Slider";
 import {updateDurationFilter, updateStartFilter} from "../../../../../store/actionCreators/matchFilter";
-import {Checkbox} from "@mui/material";
+import {Box, Checkbox} from "@mui/material";
 
 const minDistance = 2;
 const waitForInputMilliseconds = 500;
@@ -58,13 +58,14 @@ const DurationFilter = () => {
     };
 
     return (
-        <div>
+        <Box>
             <div className="d-flex justify-content-between">
                 <div>
                     Duration: {`${value[0]}:00 - ${value[1]}:00`}
                 </div>
                 <div>
                     <Checkbox
+                        color="secondary"
                         checked={enableFilter}
                         onChange={event => setEnableFilter(event.target.checked)}/>
                 </div>
@@ -75,13 +76,14 @@ const DurationFilter = () => {
                 getAriaLabel={() => 'Minimum distance shift'}
                 value={value}
                 max={120}
+                color="secondary"
                 onChange={handleChange}
                 valueLabelDisplay="auto"
                 marks={marks}
                 getAriaValueText={() => `${value[0]}:00 - ${value[1]}:00`}
                 disableSwap
             />
-        </div>
+        </Box>
     );
 };
 

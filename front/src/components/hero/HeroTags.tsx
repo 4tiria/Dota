@@ -4,6 +4,7 @@ import {ICallBack} from "../interfaces/ICallBack";
 import {Tag} from "../../models/Tag";
 import {Hero} from "../../models/Hero";
 import {getTags} from "../../api/heroApi";
+import {Typography} from "@mui/material";
 
 interface IHeroTags extends IEditable, ICallBack<Tag[]> {
     hero: Hero;
@@ -61,22 +62,30 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
 
     function renderTwoPulls() {
         if (editMode) {
-            return (<div>
-                <div className="hero-tags">
-                    {tags.map(tag => {
-                        return <div
-                            onClick={() => removeTag(tag)}
-                            className="btn btn-sm hero-tag hero-tag-selected" key={tag?.name}>{tag?.name}</div>
-                    })}</div>
-                <hr/>
-                <div className="hero-tags">
-                    {tagPull.map(tag => {
-                        return <div
-                            onClick={() => addTag(tag)}
-                            className="btn btn-sm hero-tag hero-tag-in-pull" key={tag?.name}>{tag?.name}</div>
-                    })}
+            return (
+                <div>
+                    <div className="hero-tags">
+                        {tags.map(tag => {
+                            return <div
+                                onClick={() => removeTag(tag)}
+                                className="btn btn-sm hero-tag hero-tag-selected" key={tag?.name}>
+                                    {tag?.name}
+                            </div>
+                        })}</div>
+                    <hr/>
+                    <div className="hero-tags">
+                        {tagPull.map(tag => {
+                            return <div
+                                onClick={() => addTag(tag)}
+                                className="btn btn-sm hero-tag hero-tag-in-pull" key={tag?.name}>
+
+                                {tag?.name}
+
+                            </div>
+                        })}
+                    </div>
                 </div>
-            </div>)
+            );
         }
 
         return (<div className="hero-tags">

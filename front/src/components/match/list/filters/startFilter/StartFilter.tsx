@@ -134,6 +134,7 @@ const StartFilter = () => {
                 </div>
                 <div>
                     <Checkbox
+                        color="secondary"
                         checked={enableFilter}
                         onChange={event => setEnableFilter(event.target.checked)}/>
                 </div>
@@ -143,6 +144,7 @@ const StartFilter = () => {
                 disabled={!enableFilter}
                 getAriaLabel={() => 'Minimum distance shift'}
                 value={value.map(x => x.index)}
+                color="secondary"
                 min={0}
                 max={12}
                 onChange={handleFilterChange}

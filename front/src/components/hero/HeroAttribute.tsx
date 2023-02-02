@@ -2,8 +2,8 @@
 import {IEditable} from "../interfaces/IEditable";
 import {ICallBack} from "../interfaces/ICallBack";
 import {Hero} from "../../models/Hero";
-import Select from "react-select";
 import {attributes} from "../../styles/attributes";
+import {MenuItem, Select} from "@mui/material";
 
 interface IHeroAttribute extends IEditable, ICallBack<string> {
     hero: Hero;
@@ -19,31 +19,40 @@ function getMainAttributeStyle(attributeName: string) {
 
 const HeroAttribute: React.FC<IHeroAttribute> = ({editMode, callBackFunction, hero}) => {
     const [heroAttribute, setHeroAttribute] = useState(hero?.mainAttribute);
-    
-    function renderCombobox(){
+
+    function renderCombobox() {
         return (
             <Select className="select-container"
-                options={colors}
-                defaultValue={colors.find(c => c.value == heroAttribute)}
-                onChange={event => {
-                    setHeroAttribute(event.value);
-                    callBackFunction(event.value);
-                }}
-            />
+                    value={heroAttribute}
+                    onChange={event => {
+                        let value = event.target.value as string;
+                        setHeroAttribute(value);
+                        callBackFunction(value);
+                    }}
+            >
+                {colors.map(x =>
+                    <MenuItem
+                        value={x.value}
+                        key={x.value}>
+                        {x.label}
+                    </MenuItem>)}
+            </Select>
         )
     }
-    
-    function renderAttribute(){
+
+    function renderAttribute() {
         return (
             colors.find(c => c.value == hero?.mainAttribute)?.label
         )
     }
-    
+
     return (
         <div className="hero-attribute">
             {editMode
                 ?
-                renderCombobox()
+                <>
+                    {renderCombobox()}
+                </>
                 :
                 renderAttribute()
             }

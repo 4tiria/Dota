@@ -47,11 +47,20 @@ const MatchList = () => {
             setLastDayAgo(null);
         }
 
-    }, [filters]);
+    }, [
+        filters.minStartedMillisecondsBefore,
+        filters.maxStartedMillisecondsBefore, 
+        filters.minDurationInMinutes,
+        filters.maxDurationInMinutes,
+        filters.skip,
+        filters.take,
+        filters.selfTeam,
+        filters.otherTeam,
+    ]);
 
     return (
-        <div 
-            className="match-list-container d-flex justify-content-center my-2"
+        <div
+            className="d-flex justify-content-center my-2"
         >
             <FilterPanel/>
             <div className="list">
@@ -59,7 +68,10 @@ const MatchList = () => {
                     {dayArray.map(x => {
                         return (
                             <div key={x}>
-                                <MatchListPerDay daysAgo={x} callBackFunction={updateObserver}/>
+                                <MatchListPerDay
+                                    daysAgo={x}
+                                    callBackFunction={updateObserver}
+                                />
                             </div>
                         );
                     })}
@@ -68,7 +80,11 @@ const MatchList = () => {
                     ref={lastElement}
                     className="last-element d-flex justify-content-center">
                     <Button
-                        sx={{width: 500, height: 60}}
+                        sx={{
+                            width: 500,
+                            height: 60,
+                            color: 'grey'
+                        }}
                         variant="text"
                         onClick={_ => downloadMatchesInDay()}
                     >

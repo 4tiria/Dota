@@ -12,3 +12,7 @@ export class MatchListFilterModel {
     skip?: number | undefined;
     take?: number | undefined;
 }
+
+export interface IMatchListFilterFactory{
+    matchListFilterModel: MatchListFilterModel
+}
