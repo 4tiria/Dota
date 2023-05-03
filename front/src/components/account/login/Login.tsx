@@ -67,7 +67,8 @@ const Login = () => {
                         <div className="error mx-2">
                             {message}
                         </div>
-                        <Button
+                        <Button 
+                            color="secondary"
                             className="confirm-button"
                             variant="outlined"
                             onClick={signIn}

@@ -8061,11 +8061,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+      "projectUniqueName": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DotA.API\\DotA.API.csproj",
       "projectName": "DotA.API",
-      "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+      "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DotA.API\\DotA.API.csproj",
       "packagesPath": "C:\\Users\\fedro\\.nuget\\packages\\",
-      "outputPath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\obj\\",
+      "outputPath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DotA.API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -8088,8 +8088,8 @@
         "net5.0-windows7.0": {
           "targetAlias": "net5.0-windows",
           "projectReferences": {
-            "D:\\Desktop\\Контур\\React\\Dota.API\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API\\DataAccess\\DataAccess.csproj"
+            "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DataAccess\\DataAccess.csproj"
             }
           }
         }

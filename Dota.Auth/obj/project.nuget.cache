@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fY0/ouWUsm2fNtIesk2LNPuKclgygDn+sRwDcUoxWD9Ka3sI+e9MgU/a0JY4Ped4YTBtpEVDbr24onCu93wKOA==",
+  "dgSpecHash": "2ASvedEZu0Cq2bXPrkAGyxYgCR07IxbiZEjSYqZrE9Rdr53qYfnZUm0KU32KUyNqN1/ME5GWs/cE/beMgQGAZQ==",
   "success": true,
-  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\Dota.Auth.csproj",
+  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\Dota.Auth.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fedro\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",

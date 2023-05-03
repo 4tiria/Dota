@@ -150,7 +150,7 @@ const HeroInList: React.FC<IHeroInList> = (
             <div className={isEmpty
                 ?
                 hasNoFilters
-                    ? "hero hero-empty"
+                    ? "hero hero-empty hero-invisible"
                     : "hero hero-invisible"
                 : (isHovering !== (themeMode == 'dark')
                     ? "hero hero-selected"

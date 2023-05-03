@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JH0yNhfQbbVlJn18k7g3/YxYfSGcUjf/h31lcdgP8t3QZ0Awso4O2BQaWm2GLu/cZebj12XOIk4MMJnXa5Jneg==",
+  "dgSpecHash": "8ukb9QrLyZIwem96oQBXJ8FPOhhC/EmgPnSYMlu422Qa0qdqVcOsDTUFRFLDBzqmNxPzmJKF8Ex4qAksP8mMHA==",
   "success": true,
-  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API\\DataAccess\\DataAccess.csproj",
+  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DataAccess\\DataAccess.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fedro\\.nuget\\packages\\castle.core\\4.4.1\\castle.core.4.4.1.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\google.protobuf\\3.19.4\\google.protobuf.3.19.4.nupkg.sha512",

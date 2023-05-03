@@ -1,0 +1,25 @@
+﻿$square-side: 64px;
+
+.item-group-column {
+  width: $square-side;
+  
+  .item-group {
+    height: $square-side;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    border-radius: 8px;
+    margin: 2px;
+    
+    &-black{
+      background-color: black;
+    }
+
+    &-white{
+      background-color: #6c757d;
+    }
+
+  }
+
+}

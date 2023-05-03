@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gqS2ieTg5Ft1BBISDRwtA8PSU8HFhjDClJa/NUZhnD5AdXKSlXud+soAI8Ifa88wjbv1qkRJrUArczuIj1aD0Q==",
+  "dgSpecHash": "LJ8dXG/2XzBGFOM+6fcOBnX/cReItVGGY+mBudl/YLY3qlgfg3nBvN0RldesPiDUocRByoTEneNfwXnRDdwlqw==",
   "success": true,
-  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API\\DotA.API\\DotA.API.csproj",
+  "projectFilePath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\DotA.API\\DotA.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fedro\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
     "C:\\Users\\fedro\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",

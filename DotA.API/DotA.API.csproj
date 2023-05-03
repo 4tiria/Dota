@@ -28,10 +28,4 @@
       <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Controllers\Auth" />
-      <Folder Include="Models\DTO\Requests" />
-      <Folder Include="Models\DTO\Responses" />
-    </ItemGroup>
-
 </Project>

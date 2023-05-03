@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\Dota.Auth.csproj": {}
+    "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\Dota.Auth.csproj": {}
   },
   "projects": {
-    "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\Dota.Auth.csproj": {
+    "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\Dota.Auth.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\Dota.Auth.csproj",
+        "projectUniqueName": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\Dota.Auth.csproj",
         "projectName": "Dota.Auth",
-        "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\Dota.Auth.csproj",
+        "projectPath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\Dota.Auth.csproj",
         "packagesPath": "C:\\Users\\fedro\\.nuget\\packages\\",
-        "outputPath": "D:\\Desktop\\Контур\\React\\Dota.API\\Dota.Auth\\obj\\",
+        "outputPath": "D:\\Desktop\\Контур\\React\\Dota.API.v3\\Dota\\Dota.Auth\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

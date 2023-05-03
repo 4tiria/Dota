@@ -21,7 +21,8 @@ import {setPalette} from "../../store/actionCreators/palette";
 const pages = [
     {title: 'Heroes', redirectTo: '/heroes'},
     {title: 'Matches', redirectTo: '/matches'},
-    {title: 'Players', redirectTo: '/players'}
+    {title: 'Items', redirectTo: '/items'},
+    {title: 'Players', redirectTo: '/players'},
 ];
 
 const Navbar = () => {

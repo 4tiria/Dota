@@ -24,10 +24,10 @@ import {IRootState} from "../../store/store";
 import {User} from "../../models/dto/User";
 import {Box, Paper} from "@mui/material";
 
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 function isNumber(n) {
     return !isNaN(parseInt(n));
