@@ -50,8 +50,7 @@ namespace DotA.API
                 options.UseMySQL(
                     Configuration["Data:ConnectionString"]);
             });
-            
-            //services.AddSingleton(Configuration);
+
             services.AddTransient<HeroSeed>();
         }
 
@@ -63,25 +62,19 @@ namespace DotA.API
                 app.UseCors("CorsPolicy");
             }
 
-            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
-            SetupEndpoints(app);
-            seed.SeedData();
-        }
-
-        private void SetupEndpoints(IApplicationBuilder app)
-        {
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "api/{controller}/{action}/{id?}");
             });
+            seed.SeedData();
         }
 
         private void AddAuthentication(IServiceCollection services)

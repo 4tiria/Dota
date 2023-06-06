@@ -1,0 +1,14 @@
+/.vs
+DataAccess/bin/
+DataAccess/obj/
+Dota.API/bin/
+Dota.API/obj/
+Dota.API.Test/bin/
+Dota.API.Test/obj/
+Dota.API.Tests/bin/
+Dota.API.Tests/obj/
+Dota.Auth/bin/
+Dota.Auth/obj/
+front/node_modules/
+**/bin/
+**/obj/
