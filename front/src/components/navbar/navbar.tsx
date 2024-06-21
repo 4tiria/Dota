@@ -87,6 +87,7 @@ const Navbar = () => {
                     <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                         {pages.map((page) => (
                             <Button
+                                id={`${page.title}MenuItem`}
                                 key={page.title}
                                 onClick={() => redirect(page.redirectTo)}
                                 sx={{py: 2, px: 4, color: 'white', display: 'block'}}

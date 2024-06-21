@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccess.Models;
+using Dota.Common;
 
 namespace DataAccess.Seeds
 {
-    public class HeroSeed
+    public class HeroSeed : ISeed
     {
         private readonly ApiContext _context;
         private readonly Random _random = new Random(42);
