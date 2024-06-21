@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using NoSql.Enums;
 
 namespace NoSql.Models;
 
-[Table("hero")]
 public class Hero
 {
     [BsonId]
-    public int Id { get; set; }
+    public ObjectId Id { get; set; }
 
     public string Name { get; set; }
 
@@ -16,7 +15,7 @@ public class Hero
 
     public string MainAttribute { get; set; }
 
-    public virtual List<Tag> Tags { get; set; } = new List<Tag>();
+    public List<string> Tags { get; set; } = [];
 
-    public virtual HeroImage Image { get; set; }
+    public byte[] Image { get; set; }
 }

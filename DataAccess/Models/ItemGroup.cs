@@ -7,6 +7,5 @@ namespace DataAccess.Models
     {
         [Key]
         public int Id { get; set; }
-       // pu
     }
 }

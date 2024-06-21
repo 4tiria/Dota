@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using NoSql;
-using NoSql.MongoDbRepository;
 using Dota.Common;
 using NoSql.Seeds;
+using CoreModule.Heroes.Repository;
+using CoreModule.Matches.Repository;
+using NoSql.Repositories.NewsRepository;
 
 namespace DotA.API;
 
@@ -43,7 +45,11 @@ public class Startup
                 .AllowCredentials()));
 
         services.Configure<MongoDBSettings>(Configuration.GetSection("MongoDB"));
-        services.AddSingleton<IMongoDbRepository, MongoDbRepository>();
+
+        services.AddSingleton<MongoDbContext>();
+        services.AddTransient<IHeroRepository, HeroRepository>();
+        services.AddTransient<IMatchRepository, MatchRepository>();
+        services.AddTransient<INewsRepository, NewsRepository>();     
 
         services.AddDbContext<ApiContext>(options =>
         {

@@ -1,21 +1,14 @@
 ﻿using Dota.Common;
 using NoSql.Models;
-using NoSql.MongoDbRepository;
+using NoSql.Repositories.NewsRepository;
 
 namespace NoSql.Seeds;
 
-public class NewsSeed : ISeed
+public class NewsSeed(INewsRepository newsRepository) : ISeed
 {
-    private readonly IMongoDbRepository _repository;
-
-    public NewsSeed(IMongoDbRepository repository)
-    {
-        _repository = repository;
-    }
-
     public void SeedData()
     {
-        _repository.DeleteAll();
+        newsRepository.DeleteAll();
         var collection = new List<News>()
         {
             new()
@@ -39,7 +32,7 @@ public class NewsSeed : ISeed
 
         foreach (var news in collection)
         {
-            _repository.Create(news).ConfigureAwait(true);
+            newsRepository.CreateAsync(news).ConfigureAwait(true);
         }
     }
 }

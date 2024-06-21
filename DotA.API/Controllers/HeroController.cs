@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using DataAccess;
 using DataAccess.Models;
 using DotA.API.Helpers;
-using DotA.API.Mappers;
-using DotA.API.Models;
 using DotA.API.Models.DTO;
 using DotA.API.Models.EntitiesJs;
 using DotA.API.Models.FilterModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace DotA.API.Controllers
 {
