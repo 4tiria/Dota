@@ -10,7 +10,7 @@ namespace DotA.API.Models.EntitiesJs
     public class MatchJs
     {
         [JsonProperty("id")] 
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("heroes")] 
         public List<HeroInMatchJs> Heroes { get; set; }

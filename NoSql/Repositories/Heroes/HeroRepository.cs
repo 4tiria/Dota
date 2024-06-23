@@ -17,7 +17,7 @@ public class HeroRepository(MongoDbContext context) : IHeroRepository
         return await _heroes.Find(hero => true).ToListAsync();
     }
 
-    public async Task<Hero> GetHeroByIdAsync(ObjectId id)
+    public async Task<Hero> GetHeroByIdAsync(int id)
     {
         return await _heroes.Find(hero => hero.Id == id).FirstOrDefaultAsync();
     }
@@ -36,7 +36,7 @@ public class HeroRepository(MongoDbContext context) : IHeroRepository
         }
     }
 
-    public async Task DeleteHeroAsync(ObjectId id)
+    public async Task DeleteHeroAsync(int id)
     {
         var hero = await GetHeroByIdAsync(id);
         if (hero != null)

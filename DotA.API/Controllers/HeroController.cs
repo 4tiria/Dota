@@ -59,7 +59,7 @@ namespace DotA.API.Controllers
             {
                 result = result.ToList().Where(x => x.Tags
                     .Select(t => t.Name)
-                    .ToHashSet().IsSupersetOf(filterOptions.Tags.Select(t => t.Name)));
+                    .ToHashSet().IsSupersetOf(filterOptions.Tags.Select(t => Enum.GetName(t))));
             }
 
             if (filterOptions.Name.Length > 0)
@@ -110,7 +110,7 @@ namespace DotA.API.Controllers
             heroInContext.AttackType = heroJs.AttackType;
             var (toDelete, toAdd) = GetListsToModifyHeroTag(
                 heroInContext.Tags.Select(x => x.Name).ToList(),
-                heroJs.Tags.Select(x => x.Name).ToList());
+                heroJs.Tags.Select(x => Enum.GetName(x)).ToList());
 
             foreach (var stringTag in toDelete)
                 heroInContext.Tags.Remove(_apiContext.Tags.Find(stringTag));

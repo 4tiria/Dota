@@ -7,7 +7,7 @@ namespace NoSql.Models;
 public class Hero
 {
     [BsonId]
-    public ObjectId Id { get; set; }
+    public int Id { get; set; }
 
     public string Name { get; set; }
 

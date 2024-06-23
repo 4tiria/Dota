@@ -1,16 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Newtonsoft.Json;
+﻿namespace DotA.API.Models.EntitiesJs;
 
-namespace DotA.API.Models.EntitiesJs
+public enum TagJs
 {
-  public class TagJs
-  {
-    [JsonProperty("name")]
-    public string Name { get; set; }
-
-    [JsonIgnore]
-    public List<HeroJs> Heroes { get; set; }
-  }
+    Strength = 0,
+    Agility = 1,
+    Intelligence = 2,
+    Carry = 3,
+    Support = 4,
+    Pusher = 5,
+    Nuker = 6,
+    Escape = 7,
+    Durable = 8,
+    Disabler = 9,
+    Initiator = 10,
 }

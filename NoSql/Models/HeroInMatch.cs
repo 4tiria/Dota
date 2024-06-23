@@ -10,7 +10,7 @@ namespace NoSql.Models;
 
 public class HeroInMatch
 {
-    public ObjectId HeroId { get; set; }
+    public Hero Hero { get; set; }
 
     public string Side { get; set; }
 

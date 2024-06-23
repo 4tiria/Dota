@@ -44,7 +44,7 @@ public class Startup
                 .AllowAnyHeader()
                 .AllowCredentials()));
 
-        services.Configure<MongoDBSettings>(Configuration.GetSection("MongoDB"));
+        services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDB"));
 
         services.AddSingleton<MongoDbContext>();
         services.AddTransient<IHeroRepository, HeroRepository>();
