@@ -1,40 +1,40 @@
 ﻿using AutoMapper;
-using DataAccess;
-using DataAccess.Models;
 using DotA.API.Helpers;
 using DotA.API.Models.DTO;
 using DotA.API.Models.EntitiesJs;
 using DotA.API.Models.FilterModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
+using NoSql;
+using NoSql.Models;
 
 namespace DotA.API.Controllers
 {
     [ApiController, Route("api/hero")]
     public class HeroController : Controller
     {
-        private readonly ApiContext _apiContext;
+        private readonly MongoDbContext _context;
         private readonly IMapper _mapper;
 
-        public HeroController(ApiContext apiContext, IMapper mapper)
+        public HeroController(MongoDbContext apiContext, IMapper mapper)
         {
-            _apiContext = apiContext;
+            _context = apiContext;
             _mapper = mapper;
         }
         
         [HttpGet("list")]
         public IActionResult GetHeroes()
         {
-            return Ok(_apiContext.Heroes.ToList().Select(_mapper.Map<HeroJs>));
+            return Ok(_context.Heroes.Find(hero => true).ToEnumerable().Select(_mapper.Map<HeroJs>));
         }
         
         [HttpGet("list/{tagName}")]
         public IActionResult GetHeroesByTag(string tagName)
         {
             tagName = tagName.ToLower();
-            var tag = _apiContext.Tags.First(x => x.Name.ToLower() == tagName);
-            return Ok(_apiContext.Heroes
-                .Where(x => x.Tags.Any(t => t.Name == tag.Name))
+            return Ok(_context.Heroes
+                .Find(hero => hero.Tags.Any(t => t == tagName))
                 .ToList()
                 .Select(_mapper.Map<TagJs>)
             );
@@ -43,7 +43,7 @@ namespace DotA.API.Controllers
         [HttpPost("list/filter")]
         public IActionResult GetFilteredHeroes([FromBody] HeroFilterModel filterOptions)
         {
-            var result = _apiContext.Heroes.AsEnumerable();
+            var result = _context.Heroes.Find(hero => true).ToEnumerable();
 
             if (filterOptions.AttackType != "All")
             {
@@ -57,15 +57,17 @@ namespace DotA.API.Controllers
 
             if (filterOptions.Tags.Any())
             {
-                result = result.ToList().Where(x => x.Tags
-                    .Select(t => t.Name)
-                    .ToHashSet().IsSupersetOf(filterOptions.Tags.Select(t => Enum.GetName(t))));
+                result = result
+                    .ToList()
+                    .Where(x => x.Tags
+                        .ToHashSet()
+                        .IsSupersetOf(filterOptions.Tags.Select(Enum.GetName)));
             }
 
             if (filterOptions.Name.Length > 0)
             {
                 var lowerNameFilter = filterOptions.Name.ToLower().TrimStart().TrimEnd();
-                result = result.Where(x => x.Name.ToLower().StartsWith(lowerNameFilter));
+                result = result.Where(hero => hero.Name.ToLower().StartsWith(lowerNameFilter));
             }
 
             return Ok(result.ToList().Select(_mapper.Map<HeroJs>));
@@ -74,8 +76,8 @@ namespace DotA.API.Controllers
         [HttpPost("byName")]
         public IActionResult GetHeroByName([FromBody] CamelCaseNameJs camelCaseNameJs)
         {
-            var hero = _apiContext.Heroes
-                .FirstOrDefault(x => x.Name == camelCaseNameJs.FromCamelCase());
+            var hero = _context.Heroes
+                .Find(h => h.Name == camelCaseNameJs.FromCamelCase());
 
             if (hero is null)
                 return NotFound();
@@ -87,8 +89,8 @@ namespace DotA.API.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetHeroById(int id)
         {
-            var hero = _apiContext.Heroes
-                .FirstOrDefault(x => x.Id == id);
+            var hero = _context.Heroes
+                .Find(h => h.Id == id);
 
             if (hero is null)
                 return NotFound();
@@ -100,7 +102,8 @@ namespace DotA.API.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Update([FromBody] HeroJs heroJs)
         {
-            var heroInContext = _apiContext.Heroes.Find(heroJs.Id);
+            var heroInContext = _context.Heroes
+                .Find(hero => hero.Id == heroJs.Id).Single();
 
             if (heroInContext is null)
                 return NotFound();
@@ -108,17 +111,7 @@ namespace DotA.API.Controllers
             heroInContext.Name = heroJs.Name;
             heroInContext.MainAttribute = heroJs.MainAttribute;
             heroInContext.AttackType = heroJs.AttackType;
-            var (toDelete, toAdd) = GetListsToModifyHeroTag(
-                heroInContext.Tags.Select(x => x.Name).ToList(),
-                heroJs.Tags.Select(x => Enum.GetName(x)).ToList());
-
-            foreach (var stringTag in toDelete)
-                heroInContext.Tags.Remove(_apiContext.Tags.Find(stringTag));
-
-            foreach (var stringTag in toAdd)
-                heroInContext.Tags.Add(_apiContext.Tags.Find(stringTag));
-
-            _apiContext.SaveChanges();
+            heroInContext.Tags = heroJs.Tags.Select(Enum.GetName).ToList();
 
             return Ok();
         }
@@ -132,27 +125,9 @@ namespace DotA.API.Controllers
                 return BadRequest();
 
             var bytes = files[0].ToByteArray();
-            var heroImage = _apiContext.HeroImages.Find(id);
-            if (heroImage is null)
-                _apiContext.HeroImages.Add(new HeroImage() { Bytes = bytes, HeroId = id });
-            else
-                heroImage.Bytes = bytes;
-            
-            _apiContext.SaveChanges();
+            _context.Heroes.UpdateOne(h => h.Id == id, Builders<Hero>.Update.Set(h => h.Image, bytes));
 
             return Ok();
-        }
-
-        [HttpGet("{id:int}/image")]
-        public IActionResult GetHeroImage(int id)
-        {
-            var heroImage = _apiContext.HeroImages.Find(id);
-            if (heroImage is null)
-            {
-                return NotFound();
-            }
-
-            return File(heroImage.Bytes, "image/png");
         }
 
         [HttpPost("empty")]
@@ -163,8 +138,7 @@ namespace DotA.API.Controllers
                 Name = "New Hero"
             };
 
-            _apiContext.Heroes.Add(hero);
-            _apiContext.SaveChanges();
+            _context.Heroes.InsertOne(hero);
             return Ok(_mapper.Map<HeroJs>(hero));
         }
 
@@ -172,14 +146,7 @@ namespace DotA.API.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete([FromBody] HeroJs heroJs)
         {
-            var heroInContext = _apiContext.Heroes.Find(heroJs.Id);
-            if (heroInContext is null)
-            {
-                return NotFound();
-            }
-
-            _apiContext.Heroes.Remove(heroInContext);
-            _apiContext.SaveChanges();
+            var heroInContext = _context.Heroes.DeleteOne(hero => hero.Id == heroJs.Id);
             return Ok();
         }
 

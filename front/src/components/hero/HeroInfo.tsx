@@ -1,17 +1,10 @@
 ﻿import React, {useEffect, useState} from 'react';
 import {Hero} from "../../models/Hero";
 import {useNavigate, useParams} from "react-router-dom";
-import {deleteHero, getById, getByName, getTags, updateHero} from "../../api/heroApi";
+import {deleteHero, getById, getByName, updateHero} from "../../api/heroApi";
 import "./HeroInfo.scss";
 import "react-bootstrap";
-import {
-    IoCheckmarkOutline,
-    IoCloseOutline,
-    IoCreateOutline,
-    IoTrashBinOutline
-} from "react-icons/io5";
 import "../../styles/App.scss"
-import {Tag} from "../../models/Tag";
 import HeroName from "./HeroName";
 import HeroAttribute from "./HeroAttribute";
 import HeroTags from "./HeroTags";
@@ -28,10 +21,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-
-function isNumber(n) {
-    return !isNaN(parseInt(n));
-}
+import { Tag } from '../../models/Tag';
 
 export const HeroInfo = () => {
     const params = useParams();
@@ -44,7 +34,6 @@ export const HeroInfo = () => {
     const [heroAttackType, setHeroAttackType] = useState('');
     const [heroAttribute, setHeroAttribute] = useState('');
     const [tags, setHeroTags] = useState<Tag[]>([]);
-    const [tagPull, setTagPull] = useState<Tag[]>([]);
 
     const user = useSelector<IRootState, User>(state => state.user);
 
@@ -165,7 +154,7 @@ export const HeroInfo = () => {
         <div className="hero-container">
             <Box>
                 <div className="hero-edit-panel">
-                    {user.accessLevel == "Admin"
+                    {user.accessLevel === "Admin"
                         ?
                         <>
                             {editMode

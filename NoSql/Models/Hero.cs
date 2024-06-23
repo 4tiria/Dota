@@ -15,7 +15,8 @@ public class Hero
 
     public string MainAttribute { get; set; }
 
+    public byte[] Image { get; set; }
+
     public List<string> Tags { get; set; } = [];
 
-    public byte[] Image { get; set; }
 }

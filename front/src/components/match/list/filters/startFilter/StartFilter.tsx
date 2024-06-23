@@ -67,7 +67,7 @@ const valueArray: ValueMs[] = nonLinearLabels.map((x, index) => {
     return {index: index, label: x.label, ms: x.ms};
 });
 
-const marks = valueArray.filter(x => x.index % 3 == 0).map(x => {
+const marks = valueArray.filter(x => x.index % 3 === 0).map(x => {
     return {value: x.index, label: x.label};
 });
 

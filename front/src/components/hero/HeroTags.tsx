@@ -1,10 +1,8 @@
 ﻿import React, {useEffect, useState} from 'react';
 import {IEditable} from "../interfaces/IEditable";
 import {ICallBack} from "../interfaces/ICallBack";
-import {Tag} from "../../models/Tag";
 import {Hero} from "../../models/Hero";
-import {getTags} from "../../api/heroApi";
-import {Typography} from "@mui/material";
+import { Tag } from '../../models/Tag';
 
 interface IHeroTags extends IEditable, ICallBack<Tag[]> {
     hero: Hero;
@@ -21,14 +19,12 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
     const [allTags, setAllTags] = useState<TagSelection[]>();
 
     useEffect(() => {
-        getTags().then(tagListResponse => {
-            let tagNames = tags.map(t => t.name);
-            setAllTags(tagListResponse.map(t => {
-                return {tag: t, isSelected: tagNames.includes(t.name)};
-            }));
-            let filteredTagList = tagListResponse.filter(t => !tagNames.includes(t.name));
-            setTagPull(filteredTagList);
-        });
+        const tags = Object.values(Tag).filter(value => typeof value === 'number') as Tag[];
+        setAllTags(tags.map(t => {
+            return {tag: t, isSelected: hero.tags.includes(t)};
+        }));
+
+        setTagPull(tags.filter(t => !hero.tags.includes(t)));
     }, []);
 
     function changeTag(ts: TagSelection) {
@@ -41,9 +37,9 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
     }
 
     function addTag(tag: Tag) {
-        setTagPull(previousState => previousState.filter(t => t.name !== tag.name).sort((a, b) => a.name.localeCompare(b.name)))
+        setTagPull(previousState => previousState.filter(t => t !== tag).sort((a, b) => Tag[a].localeCompare(Tag[b])))
         setHeroTags(previousState => {
-                let newTagArray = [...previousState, tag].sort((a, b) => a.name.localeCompare(b.name));
+                let newTagArray = [...previousState, tag].sort((a, b) => Tag[a].localeCompare(Tag[b]));
                 callBackFunction(newTagArray);
                 return newTagArray;
             }
@@ -52,12 +48,12 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
 
     function removeTag(tag: Tag) {
         setHeroTags(previousState => {
-                let newTagArray = previousState.filter(t => t.name !== tag.name).sort((a, b) => a.name.localeCompare(b.name));
+                let newTagArray = previousState.filter(t => t !== tag).sort((a, b) => Tag[a].localeCompare(Tag[b]));
                 callBackFunction(newTagArray);
                 return newTagArray;
             }
         );
-        setTagPull(previousState => [...previousState, tag].sort((a, b) => a.name.localeCompare(b.name)));
+        setTagPull(previousState => [...previousState, tag].sort((a, b) => Tag[a].localeCompare(Tag[b])));
     }
 
     function renderTwoPulls() {
@@ -68,8 +64,8 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
                         {tags.map(tag => {
                             return <div
                                 onClick={() => removeTag(tag)}
-                                className="btn btn-sm hero-tag hero-tag-selected" key={tag?.name}>
-                                    {tag?.name}
+                                className="btn btn-sm hero-tag hero-tag-selected" key={tag}>
+                                    {tag}
                             </div>
                         })}</div>
                     <hr/>
@@ -77,10 +73,8 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
                         {tagPull.map(tag => {
                             return <div
                                 onClick={() => addTag(tag)}
-                                className="btn btn-sm hero-tag hero-tag-in-pull" key={tag?.name}>
-
-                                {tag?.name}
-
+                                className="btn btn-sm hero-tag hero-tag-in-pull" key={tag}>
+                                {tag}
                             </div>
                         })}
                     </div>
@@ -91,7 +85,7 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
         return (<div className="hero-tags">
             {hero?.tags.map(tag => {
                 return <div
-                    className="btn btn-sm hero-tag hero-tag-own" key={tag?.name}>{tag?.name}</div>
+                    className="btn btn-sm hero-tag hero-tag-own" key={tag}>{tag}</div>
             })}</div>)
     }
 
@@ -104,10 +98,10 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
                             className={ts.isSelected
                                 ? "btn btn-sm hero-tag hero-tag-selected"
                                 : "btn btn-sm hero-tag hero-tag-deselected"}
-                            key={ts.tag.name}
+                            key={ts.tag}
                             onClick={() => changeTag(ts)}
                         >
-                            {ts.tag.name}
+                            {ts.tag}
                         </div>
                     })}
                 </div>
@@ -118,7 +112,7 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
             <div className="hero-tags">
                 {hero?.tags.map(tag => {
                     return <div
-                        className="btn btn-sm hero-tag hero-tag-own" key={tag?.name}>{tag?.name}</div>
+                        className="btn btn-sm hero-tag hero-tag-own" key={tag}>{tag}</div>
                 })}</div>
         )
     }

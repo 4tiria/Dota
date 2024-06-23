@@ -1,5 +1,4 @@
-﻿import {Tag} from "./Tag";
-import {HeroImage} from "./HeroImage";
+﻿import { Tag } from "./Tag";
 
 export class Hero {
     id: number;
@@ -7,5 +6,5 @@ export class Hero {
     attackType: string;
     mainAttribute: string;
     tags: Tag[];
-    image: HeroImage | undefined;
+    image: string;
 }

@@ -15,7 +15,7 @@ interface IPaletteAction {
 export const paletteReducer = (state = initialState, action: IPaletteAction): Palette => {
     switch (action.type) {
         case PaletteOptions.SET_FROM_LOCAL_STORAGE:
-            return localStorage.getItem(THEME) == "dark" ? "dark" : "light";
+            return localStorage.getItem(THEME) === "dark" ? "dark" : "light";
         case PaletteOptions.SET:
             localStorage.setItem(THEME, action.payload);
             return action.payload;

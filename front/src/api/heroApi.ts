@@ -1,17 +1,13 @@
 ﻿import {Hero} from "../models/Hero";
-import axios from "axios";
 import {
     addHeroPath,
     deleteHeroPath,
     heroFilteredListPath,
     heroListPath,
     heroPath,
-    tagPath
 } from "./apiPaths";
 import {Tag} from "../models/Tag";
 import {HeroFilterModel} from "../models/filterModels/heroFilter";
-import {HeroImage} from "../models/HeroImage";
-import {configure} from "@testing-library/react";
 
 import {api} from "./http";
 
@@ -55,8 +51,10 @@ export async function deleteHero(hero: Hero): Promise<Hero> {
     return response.data;
 }
 
-export async function getTags(): Promise<Tag[]> {
-    const response = await api.get<Tag[]>(tagPath);
+export async function postImage(blob: Blob, id: number): Promise<any> {
+    const formData = new FormData();
+    formData.append("image", blob);
+    const response = await api.patch<any>(`${heroPath}/${id}/image`, formData);
     return response.data;
 }
 

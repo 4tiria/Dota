@@ -32,7 +32,7 @@ const MatchList = () => {
         let minLastDayAgo = filters.maxStartedMillisecondsBefore
             ? Math.floor(filters.maxStartedMillisecondsBefore / (1000 * 60 * 60 * 24))
             : 0;
-        setLastDayAgo(prevState => prevState == null ? minLastDayAgo : prevState + 1);
+        setLastDayAgo(prevState => prevState === null ? minLastDayAgo : prevState + 1);
     }
 
     useEffect(() => {

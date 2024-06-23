@@ -41,7 +41,7 @@ const HeroAttackType: React.FC<IHeroAttackType> = ({editMode, callBackFunction, 
     function renderAttackType() {
         return (
             <div>
-                {attackTypesOptions.find(at => at.value == heroAttackType)?.label}
+                {attackTypesOptions.find(at => at.value === heroAttackType)?.label}
             </div>
         )
     }

@@ -13,8 +13,8 @@ interface IMatchListPerDay extends ICallBack<any> {
 }
 
 function getDaysAgoString(day: number): string {
-    if (day == 0) return "today";
-    if (day == 1) return "yesterday";
+    if (day === 0) return "today";
+    if (day === 1) return "yesterday";
     return `${day} days ago`;
 }
 

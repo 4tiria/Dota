@@ -123,7 +123,7 @@ const Navbar = () => {
                             open={Boolean(anchorElNav)}
                             onClose={resetAnchor}
                         >
-                            {settingsMenu.filter(x => x.ifLoggedIn == user.isAuth).map(x => {
+                            {settingsMenu.filter(x => x.ifLoggedIn === user.isAuth).map(x => {
                                 return (
                                     <div key={x.title}>
                                         <MenuItem
@@ -143,7 +143,7 @@ const Navbar = () => {
                             control={
                                 <Switch
                                     onChange={handleThemeChange}
-                                    checked={theme == 'dark'}
+                                    checked={theme === 'dark'}
                                 />
                             }
                             label={`${theme}`}/>

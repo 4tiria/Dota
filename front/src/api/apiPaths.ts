@@ -6,11 +6,8 @@ export const heroFilteredListPath = baseApiUrl + "/hero/list/filter";
 export const heroPath = baseApiUrl + "/hero";
 export const addHeroPath = baseApiUrl + "/hero/empty";
 export const deleteHeroPath = baseApiUrl + "/hero/delete";
-export const tagPath = baseApiUrl + "/tag";
 export const matchPath = baseApiUrl + "/match";
 export const heroInMatchPath = baseApiUrl + "/match/hero";
-export const imagePath = baseApiUrl + "/image";
-export const assetPath = baseApiUrl + "/asset";
 export const accountPath = baseAuthUrl;
 
 export const getAuthHeader = () => {

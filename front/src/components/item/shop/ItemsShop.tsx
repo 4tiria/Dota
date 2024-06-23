@@ -30,7 +30,7 @@ const ItemsMain = () => {
             {groups.map(g => {
                 return (
                     <div className="item-group-column" key={g.id}>
-                        <div className={`item-group ${themeMode == "dark"
+                        <div className={`item-group ${themeMode === "dark"
                             ? "item-group-black"
                             : "item-group-white"}`}
                         >

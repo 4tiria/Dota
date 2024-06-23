@@ -140,7 +140,7 @@ const Registration = () => {
                                 control={
                                     <Checkbox
                                         className="checkbox"
-                                        checked={authData.accessLevel == "Admin"}
+                                        checked={authData.accessLevel === "Admin"}
                                         onChange={event => {
                                             setAuthData(prevState => {
                                                 return ({

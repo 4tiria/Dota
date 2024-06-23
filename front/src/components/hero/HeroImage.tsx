@@ -1,12 +1,10 @@
 ﻿import React, {createRef, DragEventHandler, useEffect, useState} from 'react';
-import {ICallBack} from "../interfaces/ICallBack";
-import {getImage, postImage} from "../../api/imageApi";
 import {Hero} from "../../models/Hero";
 import {IEditable} from "../interfaces/IEditable";
 import "./HeroInfo.scss";
-import {downloadAllAssets} from "../../assets/AssetManager";
-import {downloadHeroImages} from "../../assets/HeroImages";
 import {HeroImageSize} from "../../globalConstants";
+import { postImage } from '../../api/heroApi';
+import { AssetImage } from '../../assets/AssetImage';
 
 interface IHeroImage extends IEditable {
     hero: Hero;
@@ -14,31 +12,18 @@ interface IHeroImage extends IEditable {
 
 const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
     const [drag, setDrag] = useState<boolean>(false);
-    const [file, setPng] = useState<Blob>(null);
+    // const [file, setPng] = useState<Blob>(null);
     const [filePath, setPngPath] = useState<string>(null);
 
     useEffect(() => {
-        if (hero != null) {
-            getImage(hero.id).then(data => {
-                setPng(data);
-            }).catch(error => {
-            });
+        if (hero?.image) {
+            setPngPath(new AssetImage(hero.image).path);
         }
     }, [hero]);
 
-    useEffect(() => {
-        if (file != null)
-            displayFromBlob(file);
-    }, [file]);
-
-    function displayFromBlob(blob: Blob) {
-        setPngPath(window.URL.createObjectURL(blob));
-    }
-
     function changeImage(pngFile: Blob) {
-        setPng(pngFile);
         setPngPath(URL.createObjectURL(pngFile));
-        postImage(pngFile, hero.id).then(downloadHeroImages);
+        postImage(pngFile, hero.id).then();
     }
 
     function dragInHandler(event) {
@@ -56,7 +41,7 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
         let files = [...event.dataTransfer.files];
         if (files?.length > 0) {
             let suffix = ".png";
-            let png = files.find(f => f.name.match(suffix + "$") == suffix);
+            let png = files.find(f => f.name.match(suffix + "$") === suffix);
             if (png != null) {
                 changeImage(png);
             }
@@ -97,7 +82,8 @@ const HeroImage: React.FC<IHeroImage> = ({hero, editMode}) => {
                                 display: 'flex',
                                 border: '2px solid tomato',
                                 borderRadius: 3
-                            }}/>
+                            }}
+                            alt='down to earth'/>
                         {editMode ? <div>Перетащите .png</div> : <></>}
                     </div>
                 </>

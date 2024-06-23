@@ -20,7 +20,7 @@ const Settings = () => {
                     control={
                         <Switch
                             onChange={handleChange}
-                            checked={theme == 'dark'}/>
+                            checked={theme === 'dark'}/>
                     }
                     label={`${theme} theme`}/>
             </FormGroup>

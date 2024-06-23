@@ -1,5 +1,5 @@
-﻿import {IHeroFilterAction, HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
-import {Tag} from "../../models/Tag";
+﻿import { Tag } from "../../models/Tag";
+import {IHeroFilterAction, HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
 
 export const updateHeroNameFilter = (name: string) => {
     return {type: HeroFilterOptions.NAME, payload: name};

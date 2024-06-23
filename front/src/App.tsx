@@ -1,15 +1,14 @@
 import './styles/App.scss';
-import React, {useContext, useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";
 import Navbar from "./components/navbar/navbar";
-import {downloadAllAssets} from "./assets/AssetManager";
 import {ACCESS_TOKEN_KEY, IRootState} from "./store/store";
 import {login, logout} from "./store/actionCreators/user";
 import jwt from 'jwt-decode';
 import {useDispatch, useSelector} from "react-redux";
 import "./App.scss";
-import {createTheme, CssBaseline, Paper, ThemeOptions, ThemeProvider} from "@mui/material";
+import {createTheme, CssBaseline, ThemeOptions, ThemeProvider} from "@mui/material";
 import {setPaletteFromLocalStorage} from "./store/actionCreators/palette";
 
 export const App: React.FC = () => {
@@ -31,12 +30,12 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         dispatch(setPaletteFromLocalStorage());
-        downloadAllAssets().then(_ => initAuthData());
+        initAuthData();
     }, []);
 
     function initAuthData() {
         let accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-        if (accessToken == null) {
+        if (accessToken === null) {
             dispatch(logout());
         } else {
             let user = jwt<any>(accessToken);

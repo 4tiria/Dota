@@ -14,10 +14,10 @@ interface IFilterPanel extends ICallBack<HeroFilterModel> {
 }
 
 export function noFilterApplied(heroFilterModel: HeroFilterModel): boolean {
-    return heroFilterModel.tags.length == 0
-        && heroFilterModel.name.length == 0
-        && heroFilterModel.attackType == "All"
-        && heroFilterModel.mainAttribute == "All";
+    return heroFilterModel.tags.length === 0
+        && heroFilterModel.name.length === 0
+        && heroFilterModel.attackType === "All"
+        && heroFilterModel.mainAttribute === "All";
 }
 
 const FilterPanel: React.FC<IFilterPanel> = ({callBackFunction}) => {

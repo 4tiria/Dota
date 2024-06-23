@@ -27,7 +27,7 @@ const HeroList = () => {
                 hasNoFilters={hasNoFilters}
                 key={h.id}/>)
         );
-        if (hasNoFilters && user.accessLevel == "Admin") {
+        if (hasNoFilters && user.accessLevel === "Admin") {
             result.push(<HeroInList
                 hero={null}
                 callBackFunction={deleteHeroFromList}
@@ -43,7 +43,7 @@ const HeroList = () => {
         let result: JSX.Element[][] = [];
         let rowNumber = -1;
         for (let i = 0; i < elements.length; i++) {
-            if (i % columns == 0) {
+            if (i % columns === 0) {
                 result.push([]);
                 rowNumber++;
             }

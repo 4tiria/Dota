@@ -2,18 +2,17 @@
 import {Hero} from "../../models/Hero";
 import "./HeroList.scss"
 import "../../styles/App.scss";
-import {redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {ToCamelCase} from "../../helpers/stringHelper";
-import {Button} from "@mui/material";
 import {IoAdd, IoCloseOutline} from "react-icons/io5";
 import {addEmptyHero} from "../../api/heroApi";
 import {ICallBack} from "../interfaces/ICallBack";
 import {GiBroadsword, GiPocketBow} from "react-icons/gi";
 import {attributes} from "../../styles/attributes";
-import {heroImages} from "../../assets/HeroImages";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {IRootState} from "../../store/store";
 import {User} from "../../models/dto/User";
+import { AssetImage } from '../../assets/AssetImage';
 
 interface IHeroInList extends ICallBack<Hero> {
     hero: Hero;
@@ -43,11 +42,8 @@ const HeroInList: React.FC<IHeroInList> = (
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (hero) {
-            let blobWithPath = heroImages.get(hero.id);
-            if (blobWithPath)
-                setHeroPngPath(blobWithPath.path);
-        }
+        const imageAsset = new AssetImage(hero.image);
+        setHeroPngPath(imageAsset.path);
     }, []);
 
     function addOrRedirectToHero() {
@@ -73,7 +69,7 @@ const HeroInList: React.FC<IHeroInList> = (
     }
 
     function renderAttackType() {
-        return (<div className="attack-type">{hero?.attackType == "Melee"
+        return (<div className="attack-type">{hero?.attackType === "Melee"
             ? <GiBroadsword/>
             : <GiPocketBow/>
         }</div>);
@@ -84,7 +80,7 @@ const HeroInList: React.FC<IHeroInList> = (
             <div
                 className="main-attribute"
                 style={{
-                    'color': attributes.find(a => a.name == hero?.mainAttribute).color
+                    'color': attributes.find(a => a.name === hero?.mainAttribute).color
                 }}
             >{hero.mainAttribute}</div>
         );
@@ -94,7 +90,7 @@ const HeroInList: React.FC<IHeroInList> = (
         return (
             <div className="d-flex justify-content-between tag">
                 <div>{hero.tags?.map(tag =>
-                    <span className="badge bg-secondary mx-1" key={tag?.name}>{tag.name}</span>
+                    <span className="badge bg-secondary mx-1" key={tag}>{tag}</span>
                 )}</div>
             </div>
         );
@@ -128,7 +124,7 @@ const HeroInList: React.FC<IHeroInList> = (
                         {renderTags()}
                     </div>
                     <div>
-                        {user.accessLevel == "Admin" && (
+                        {user.accessLevel === "Admin" && (
                             <IoCloseOutline
                                 className={
                                     crossIsHovered
@@ -152,12 +148,12 @@ const HeroInList: React.FC<IHeroInList> = (
                 hasNoFilters
                     ? "hero hero-empty hero-invisible"
                     : "hero hero-invisible"
-                : (isHovering !== (themeMode == 'dark')
+                : (isHovering !== (themeMode === 'dark')
                     ? "hero hero-selected"
                     : "hero hero-default")}
                  onClick={addOrRedirectToHero}
                  style={{
-                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode == 'dark'))
+                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode === 'dark'))
                          ? `linear-gradient(90deg, ${dark}, rgba(0,0,0,0.2))`
                          : `linear-gradient(90deg, ${light}, 50%, rgba(0,0,0,0.2) 70%)`
                      }`,

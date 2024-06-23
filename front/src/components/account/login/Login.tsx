@@ -27,7 +27,7 @@ const Login = () => {
             dispatch(login(data.account.id, data.account.accessLevel));
             navigate(`../heroes`);
         }).catch(error => {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
                 setMessage("Wrong email or password");
             } else {
                 setMessage("Server error");
@@ -37,7 +37,7 @@ const Login = () => {
 
     return (
         <div className="login-container" onKeyDown={event => {
-            if (event.key == "Enter") {
+            if (event.key === "Enter") {
                 signIn();
             }
         }}>

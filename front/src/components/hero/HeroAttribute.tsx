@@ -42,7 +42,7 @@ const HeroAttribute: React.FC<IHeroAttribute> = ({editMode, callBackFunction, he
 
     function renderAttribute() {
         return (
-            colors.find(c => c.value == hero?.mainAttribute)?.label
+            colors.find(c => c.value === hero?.mainAttribute)?.label
         )
     }
 

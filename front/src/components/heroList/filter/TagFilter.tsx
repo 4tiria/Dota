@@ -1,37 +1,29 @@
 ﻿import React, {useEffect, useState} from 'react';
-import {Tag} from "../../../models/Tag";
-import {getTags} from "../../../api/heroApi";
 import "./FilterStyles.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {updateHeroTagsFilter} from "../../../store/actionCreators/heroFilter";
 import {IRootState} from "../../../store/store";
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
+import { Tag } from '../../../models/Tag';
+import { getTagFromString } from '../../../helpers/enumHelper';
 
-class TagElements {
-    tag: Tag;
-    element: JSX.Element;
-}
 
 let allTags: { value: string, label: JSX.Element }[] = [];
 
 const TagFilter = () => {
-    const heroTagFilter = useSelector<IRootState, string[]>(state => state.heroFilter.tags.map(x => x.name));
+    const heroTagFilter = useSelector<IRootState, Tag[]>(state => state.heroFilter.tags);
     const dispatch = useDispatch();
 
-    const [value, setValue] = useState<string[]>([]);
+    const [tags, setTags] = useState<Tag[]>([]);
 
     useEffect(() => {
-        getTags().then(data => allTags = data.map(t => {
-            return {value: t.name, label: <div key={t.name}>{t.name}</div>}
-        }));
+        setTags(Object.values(Tag).filter(value => typeof value === 'number') as Tag[]);
     }, []);
 
     useEffect(() => {
-        dispatch(updateHeroTagsFilter(value.map(x => {
-            return {name: x}
-        })));
-    }, [value]);
+        dispatch(updateHeroTagsFilter(tags));
+    }, [tags]);
 
     return (
         allTags.length > 0
@@ -45,11 +37,9 @@ const TagFilter = () => {
                         className="tags"
                         multiple={true}
                         renderValue={(selected) => selected.join(", ")}
-                        value={allTags.filter(x => heroTagFilter.includes(x.value)).map(x => x.value)}
+                        value={allTags.filter(x => heroTagFilter.includes(getTagFromString(x.value))).map(x => x.value)}
                         label="Tags"
-                        onChange={event => {
-                            setValue(event.target.value as string[]);
-                        }}
+                        onChange={event => setTags([...event.target.value].map(getTagFromString))}
                     >
                         {allTags.map(x =>
                             <MenuItem

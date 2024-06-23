@@ -23,7 +23,7 @@ const Items = () => {
         event: React.MouseEvent<HTMLElement>,
         newPage: Page
     ) => {
-        if (newPage == null)
+        if (newPage === null)
             return;
         
         setPage(newPage);
