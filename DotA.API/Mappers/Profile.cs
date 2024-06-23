@@ -10,7 +10,7 @@ public class AppMappingProfile : Profile
 {
     public AppMappingProfile()
     {
-        //CreateMap<Hero, HeroJs>().ReverseMap();
+        CreateMap<Hero, HeroJs>().ReverseMap();
         CreateMap<HeroInMatch, HeroInMatchJs>().ReverseMap();
         
         _ = CreateMap<Match, MatchJs>()
