@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using DataAccess.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using NoSql.Models;
 
 namespace DotA.API.Models.FilterModels
 {

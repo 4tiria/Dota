@@ -6,7 +6,6 @@ import {
     heroListPath,
     heroPath,
 } from "./apiPaths";
-import {Tag} from "../models/Tag";
 import {HeroFilterModel} from "../models/filterModels/heroFilter";
 
 import {api} from "./http";

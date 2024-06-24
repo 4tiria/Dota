@@ -34,7 +34,7 @@ const MatchInList: React.FC<IMatchInList> = ({match}) => {
                 className="d-flex">
                 {match.heroes.filter(hm => hm.side.toLowerCase() === side.toLowerCase()).map(hm => {
                     return (
-                        <div key={hm.heroId}>
+                        <div key={hm.hero.id}>
                             <HeroSmallImage
                                 hero={hm.hero}
                                 isRadiant={hm.side.toLowerCase() === 'radiant'}/>

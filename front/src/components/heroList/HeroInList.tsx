@@ -42,8 +42,12 @@ const HeroInList: React.FC<IHeroInList> = (
     let navigate = useNavigate();
 
     useEffect(() => {
-        const imageAsset = new AssetImage(hero.image);
-        setHeroPngPath(imageAsset.path);
+        if(hero) {
+            const imageAsset = new AssetImage(hero.image);
+            setHeroPngPath(imageAsset.path);
+        } else {
+            
+        }
     }, []);
 
     function addOrRedirectToHero() {

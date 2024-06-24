@@ -1,9 +1,6 @@
-using DataAccess;
 using DotA.API.Models;
-using DataAccess.Seeds;
 using DotA.API.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using NoSql;
@@ -51,14 +48,6 @@ public class Startup
         services.AddTransient<IMatchRepository, MatchRepository>();
         services.AddTransient<INewsRepository, NewsRepository>();     
 
-        services.AddDbContext<ApiContext>(options =>
-        {
-            options.EnableSensitiveDataLogging();
-            options.UseMySQL(
-                Configuration["Data:ConnectionString"]);
-        });
-
-        services.AddTransient<ISeed, HeroSeed>();
         services.AddTransient<ISeed, NewsSeed>();
     }
 

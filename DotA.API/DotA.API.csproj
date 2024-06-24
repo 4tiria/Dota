@@ -28,7 +28,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
       <ProjectReference Include="..\Dota.Common\Dota.Common.csproj" />
       <ProjectReference Include="..\NoSql\NoSql.csproj" />
     </ItemGroup>
