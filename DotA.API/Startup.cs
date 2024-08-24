@@ -9,6 +9,7 @@ using NoSql.Seeds;
 using CoreModule.Heroes.Repository;
 using CoreModule.Matches.Repository;
 using NoSql.Repositories.NewsRepository;
+using DotA.API.RabbitMQ;
 
 namespace DotA.API;
 
@@ -30,7 +31,7 @@ public class Startup
                 .Converters
                 .Add(new StringEnumConverter())
             );
-        
+
         services.AddControllers().AddNewtonsoftJson(x =>
             x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -43,12 +44,13 @@ public class Startup
 
         services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDB"));
 
-        services.AddSingleton<MongoDbContext>();
-        services.AddTransient<IHeroRepository, HeroRepository>();
-        services.AddTransient<IMatchRepository, MatchRepository>();
-        services.AddTransient<INewsRepository, NewsRepository>();     
-
-        services.AddTransient<ISeed, NewsSeed>();
+        services
+            .AddSingleton<MongoDbContext>()
+            .AddSingleton<IRabbitMQProducerService, RabbitMQProducerService>()
+            .AddTransient<IHeroRepository, HeroRepository>()
+            .AddTransient<IMatchRepository, MatchRepository>()
+            .AddTransient<INewsRepository, NewsRepository>()
+            .AddTransient<ISeed, NewsSeed>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
@@ -75,7 +77,7 @@ public class Startup
         foreach (var seed in seeds)
         {
             seed.SeedData();
-        }        
+        }
     }
 
     private void AddAuthentication(IServiceCollection services)
@@ -97,8 +99,8 @@ public class Startup
             IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
             ValidateIssuerSigningKey = true,
         };
-        
-        var validationForRefreshTokenParameters =  new TokenValidationParameters()
+
+        var validationForRefreshTokenParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
             ValidIssuer = authOptions.Issuer,
@@ -111,8 +113,8 @@ public class Startup
             IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
             ValidateIssuerSigningKey = true,
         };
-        
-        
+
+
         services.AddSingleton(validationForRefreshTokenParameters);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

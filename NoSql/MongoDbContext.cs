@@ -3,10 +3,11 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using NoSql.Models;
 using MongoDB.Driver.GridFS;
+using Microsoft.EntityFrameworkCore;
 
 namespace NoSql;
 
-public class MongoDbContext
+public class MongoDbContext : DbContext
 {
     private readonly IMongoDatabase _database;
 

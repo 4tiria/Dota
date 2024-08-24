@@ -1,0 +1,6 @@
+@Dota.Statistics_HostAddress = http://localhost:5023
+
+GET {{Dota.Statistics_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

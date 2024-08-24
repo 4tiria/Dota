@@ -32,7 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreModule", "HeroService\C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{05810EE0-DCD9-4D24-8D40-B5839EBFD6AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySqlToMongoMigrator", "PostgreToMongoMigrator\MySqlToMongoMigrator.csproj", "{0F380575-C86C-4A78-B627-A50195396459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MySqlToMongoMigrator", "PostgreToMongoMigrator\MySqlToMongoMigrator.csproj", "{0F380575-C86C-4A78-B627-A50195396459}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dota.Statistics", "Dota.Statistics\Dota.Statistics.csproj", "{45EE9702-81AB-4EBB-931D-1DFDDF39FED7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,6 +74,10 @@ Global
 		{0F380575-C86C-4A78-B627-A50195396459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F380575-C86C-4A78-B627-A50195396459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F380575-C86C-4A78-B627-A50195396459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45EE9702-81AB-4EBB-931D-1DFDDF39FED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45EE9702-81AB-4EBB-931D-1DFDDF39FED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45EE9702-81AB-4EBB-931D-1DFDDF39FED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45EE9702-81AB-4EBB-931D-1DFDDF39FED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

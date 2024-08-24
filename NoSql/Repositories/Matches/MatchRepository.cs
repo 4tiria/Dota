@@ -23,7 +23,20 @@ public class MatchRepository(MongoDbContext context) : IMatchRepository
 
     public async Task CreateMatchAsync(Match match)
     {
-        await _matches.InsertOneAsync(match);
+        using (var transaction = context.Database.BeginTransaction())
+        {
+            try
+            {
+                await _matches.InsertOneAsync(match);
+                transaction.Commit();
+            } 
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+            }
+            
+        }
+        
     }
 
     public async Task UpdateMatchAsync(Match updatedMatch)
