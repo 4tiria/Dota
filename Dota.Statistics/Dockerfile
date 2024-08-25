@@ -1,27 +1,26 @@
-#See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
+# Используем официальный образ .NET SDK для сборки
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
-#Depending on the operating system of the host machines(s) that will build or run the containers, the image specified in the FROM statement may need to be changed.
-#For more information, please see https://aka.ms/containercompat
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0-windowsservercore-ltsc2019 AS base
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2019 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["./Dota.Statistics.csproj", "."]
-RUN dotnet restore "./Dota.Statistics.csproj"
-COPY . .
-WORKDIR "/src/Dota.Statistics"
-RUN dotnet build "./Dota.Statistics.csproj" -c %BUILD_CONFIGURATION% -o /app/build
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Dota.Statistics.csproj" -c %BUILD_CONFIGURATION% -o /app/publish /p:UseAppHost=false
+COPY . ./
+RUN dotnet build -c Release -o /app/build
 
-FROM base AS final
+RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+
+# Проверяем содержимое папки публикации
+RUN ls -l /app/publish
+
+# Используем официальный образ ASP.NET Core для запуска приложения
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+
+EXPOSE 80
+
+COPY --from=build /app/publish .
+
 ENTRYPOINT ["dotnet", "Dota.Statistics.dll"]
