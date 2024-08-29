@@ -1,5 +1,4 @@
-﻿using MongoDB.Bson;
-using NoSql.Models;
+﻿using NoSql.Models;
 
 namespace CoreModule.Heroes.Repository;
 

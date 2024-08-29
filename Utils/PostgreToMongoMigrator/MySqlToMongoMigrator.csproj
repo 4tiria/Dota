@@ -5,6 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <BaseOutputPath>Utils</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\NoSql\NoSql.csproj" />
+    <ProjectReference Include="..\..\Common\Dota.Common\Dota.Common.csproj" />
+    <ProjectReference Include="..\..\Domain\NoSql\NoSql.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 
 WORKDIR /app
 
-COPY Dota.Common/ Dota.Common/
-COPY NoSql/ NoSql/
+COPY Common/Dota.Common/ Common/Dota.Common/
+COPY Domain/NoSql/ Domain/NoSql/
 COPY DotA.API/ DotA.API/
 
 RUN dotnet restore DotA.API/DotA.API.csproj

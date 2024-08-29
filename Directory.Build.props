@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <BaseIntermediateOutputPath>$(BaseOutputPath)obj\</BaseIntermediateOutputPath>
+	<HideBinAndObjFolders>true</HideBinAndObjFolders>
+  </PropertyGroup>
+</Project>

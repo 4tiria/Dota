@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using NoSql;
 using NoSql.Models;
 
-namespace PostgreToMongoMigrator;
+namespace MySqlToMongoMigrator;
 
 public class HeroTableHandler(MongoDbContext mongoDbContext, ApiContext postgreContext)
 {

@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 
 WORKDIR /app
 
-COPY Dota.Common/ Dota.Common/
-COPY NoSql/ NoSql/
+COPY Common/Dota.Common/ Dota.Common/
+COPY Domain/NoSql/ NoSql/
 
 # RUN dotnet restore ./Dota.Common/Dota.Common.csproj
 # RUN dotnet restore ./NoSql/NoSql.csproj
