@@ -4,8 +4,9 @@ using MongoDB.Driver;
 using NoSql.Models;
 using MongoDB.Driver.GridFS;
 using Microsoft.EntityFrameworkCore;
+using NoSql;
 
-namespace NoSql;
+namespace Domain.NoSql;
 
 public class MongoDbContext : DbContext
 {

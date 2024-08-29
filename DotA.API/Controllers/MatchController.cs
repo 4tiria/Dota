@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Domain.NoSql;
 using DotA.API.Helpers;
 using DotA.API.Models.EntitiesJs;
 using DotA.API.Models.FilterModels;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using NoSql;
 using NoSql.Models;
 
 namespace DotA.API.Controllers;

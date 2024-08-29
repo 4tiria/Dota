@@ -1,6 +1,6 @@
 ﻿using DataAccess;
+using Domain.NoSql;
 using MongoDB.Driver;
-using NoSql;
 using NoSql.Models;
 
 namespace MySqlToMongoMigrator;

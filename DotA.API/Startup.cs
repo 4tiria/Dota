@@ -10,6 +10,7 @@ using CoreModule.Heroes.Repository;
 using CoreModule.Matches.Repository;
 using NoSql.Repositories.NewsRepository;
 using DotA.API.RabbitMQ;
+using Domain.NoSql;
 
 namespace DotA.API;
 

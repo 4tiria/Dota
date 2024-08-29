@@ -9,7 +9,7 @@ namespace DataAccess.Seeds
     public class HeroSeed : ISeed
     {
         private readonly ApiContext _context;
-        private readonly Random _random = new Random(42);
+        private readonly Random _random = new(42);
 
         public HeroSeed(ApiContext context)
         {

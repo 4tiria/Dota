@@ -3,3 +3,4 @@ front/node_modules/
 **/obj/
 .vs
 data/
+**/Debug/

@@ -1,32 +1,36 @@
-﻿using DataAccess;
+﻿using Domain.NoSql.Auth;
+using Domain.NoSql.Auth.Models;
+using Domain.NoSql.Auth.Models.Entities;
 using MongoDB.Driver;
-using NoSql;
-using NoSql.Models;
 
 namespace MySqlToMongoMigrator;
 
-public class AccountTableHandler(MongoDbContext mongoDbContext, ApiContext postgreContext)
+public class AccountTableHandler(MongoDbContext mongoDbContext, AuthContext mySqlContext)
 {
     public void Execute()
     {
-        mongoDbContext..DeleteMany(hero => true);
+        mongoDbContext.Accounts.DeleteMany(hero => true);
 
-        var heroes = postgreContext.Heroes.AsEnumerable().ToList();
-        foreach (var hero in heroes)
+        var accounts = mySqlContext.Accounts.AsEnumerable().ToList();
+        foreach (var account in accounts)
         {
-            if (mongoDbContext.Heroes.Find(x => x.Id == hero.Id) != null)
+            if (mongoDbContext.Accounts.Find(x => x.Id == account.Id) != null)
             {
-                mongoDbContext.Heroes.DeleteOne(h => h.Id == hero.Id);
+                mongoDbContext.Accounts.DeleteOne(h => h.Id == account.Id);
             }
 
-            mongoDbContext.Heroes.InsertOne(new Hero()
+            mongoDbContext.Accounts.InsertOne(new Account()
             {
-                Id = hero.Id,
-                AttackType = hero.AttackType,
-                MainAttribute = hero.MainAttribute,
-                Name = hero.Name,
-                Tags = hero.Tags.Select(x => x.Name).ToList(),
-                Image = hero.Image.Bytes
+                Id = account.Id,
+                AccessLevel = account.AccessLevel,
+                //TODO: GridFS
+                Avatar = account.Avatar,
+                ConfirmationExpiration = account.ConfirmationExpiration,
+                ConfirmationLink = account.ConfirmationLink,
+                Email = account.Email,
+                IsConfirmed = account.IsConfirmed,
+                Password = account.Password,
+                UserName = account.UserName,
             });
         }
     }

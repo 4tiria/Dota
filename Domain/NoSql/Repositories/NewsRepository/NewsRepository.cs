@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Domain.NoSql;
+using MongoDB.Driver;
 using NoSql.Models;
 
 namespace NoSql.Repositories.NewsRepository;

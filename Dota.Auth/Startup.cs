@@ -1,3 +1,4 @@
+using Domain.NoSql.Auth.Models;
 using Dota.Auth.Models;
 using Dota.Auth.Services;
 using Microsoft.AspNetCore.Builder;
