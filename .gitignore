@@ -2,3 +2,4 @@ front/node_modules/
 **/bin/
 **/obj/
 .vs
+data/
