@@ -21,21 +21,22 @@ public class MatchRepository(MongoDbContext context) : IMatchRepository
         return await _matches.Find(match => match.Id == id).FirstOrDefaultAsync();
     }
 
+    //TODO:
     public async Task CreateMatchAsync(Match match)
     {
-        using (var transaction = context.Database.BeginTransaction())
-        {
-            try
-            {
-                await _matches.InsertOneAsync(match);
-                transaction.Commit();
-            } 
-            catch (Exception ex)
-            {
-                transaction.Rollback();
-            }
+        //using (var transaction = context.Database.BeginTransaction())
+        //{
+        //    try
+        //    {
+        //        await _matches.InsertOneAsync(match);
+        //        transaction.Commit();
+        //    } 
+        //    catch (Exception ex)
+        //    {
+        //        transaction.Rollback();
+        //    }
             
-        }
+        //}
         
     }
 

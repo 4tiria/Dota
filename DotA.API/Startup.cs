@@ -5,12 +5,12 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using NoSql;
 using Dota.Common;
-using NoSql.Seeds;
 using CoreModule.Heroes.Repository;
 using CoreModule.Matches.Repository;
-using NoSql.Repositories.NewsRepository;
 using DotA.API.RabbitMQ;
 using Domain.NoSql;
+using Domain.NoSql.Seeds;
+using Domain.NoSql.Repositories.NewsRepository;
 
 namespace DotA.API;
 
@@ -22,14 +22,16 @@ public class Startup(IConfiguration configuration)
     {
         services.AddAutoMapper(typeof(AppMappingProfile));
         AddAuthentication(services);
-        services.AddMvc()
+        services
+            .AddMvc()
             .AddNewtonsoftJson(opts => opts.SerializerSettings
                 .Converters
                 .Add(new StringEnumConverter())
             );
 
-        services.AddControllers().AddNewtonsoftJson(x =>
-            x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+        services
+            .AddControllers()
+            .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
@@ -41,7 +43,7 @@ public class Startup(IConfiguration configuration)
         services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
 
         services
-            .AddSingleton<MongoDbContext>()
+            .AddScoped<MongoDbContext>()
             .AddSingleton<IRabbitMQProducerService, RabbitMQProducerService>()
             .AddTransient<IHeroRepository, HeroRepository>()
             .AddTransient<IMatchRepository, MatchRepository>()
@@ -54,9 +56,9 @@ public class Startup(IConfiguration configuration)
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseCors("CorsPolicy");
         }
 
+        app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
         app.UseRouting();
 

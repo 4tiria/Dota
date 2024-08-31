@@ -1,11 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.NoSql.Auth.Models.Entities;
 
 public class RefreshToken
 {
-    [Key]
+    [BsonId]
+    public Guid Id { get; set; }
+
     public string Token { get; set; }
 
     [Obsolete("Планирую избавиться от хранения jti для простоты")]

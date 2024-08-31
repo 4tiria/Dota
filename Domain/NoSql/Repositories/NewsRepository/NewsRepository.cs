@@ -1,8 +1,7 @@
-﻿using Domain.NoSql;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using NoSql.Models;
 
-namespace NoSql.Repositories.NewsRepository;
+namespace Domain.NoSql.Repositories.NewsRepository;
 
 public class NewsRepository(MongoDbContext context) : INewsRepository
 {

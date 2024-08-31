@@ -2,19 +2,18 @@ using Domain.NoSql.Auth.Models;
 using Dota.Auth.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
+using Domain.NoSql.Auth;
 
 namespace Dota.Auth;
 
 public class Startup(IConfiguration configuration)
 {
-    public IConfiguration Configuration { get; } = configuration;
+    private readonly IConfiguration _configuration = configuration;
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -36,25 +35,23 @@ public class Startup(IConfiguration configuration)
                 .AllowAnyHeader()
                 .AllowCredentials()));
 
-        services.AddDbContext<AuthContext>(options =>
-        {
-            options.EnableSensitiveDataLogging();
-            options.UseMySQL(
-                Configuration["Data:ConnectionString"]);
-        });
+        services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
 
-        services.AddTransient<Seed>();
-        services.AddSingleton(Configuration);
+        services
+            .AddTransient<MongoDbSettings>()
+            .AddTransient<MongoDbContext>();
+
+        services.AddSingleton(_configuration);
     }
     
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Seed seed)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseCors("CorsPolicy");
-        }
 
+        }
+        app.UseCors("CorsPolicy");
         app.UseStaticFiles();
         app.UseHttpsRedirection();
         app.UseRouting();
@@ -62,13 +59,11 @@ public class Startup(IConfiguration configuration)
         app.UseAuthentication();
         app.UseAuthorization();
         SetupEndpoints(app);
-
-        seed.Create();
     }
     
     private void AddAuthentication(IServiceCollection services)
     {
-        var authOptionsConfiguration = Configuration.GetSection("Auth");
+        var authOptionsConfiguration = _configuration.GetSection("Auth");
         var authOptions = authOptionsConfiguration.Get<AuthOptions>();
         services.Configure<AuthOptions>(authOptionsConfiguration);
 

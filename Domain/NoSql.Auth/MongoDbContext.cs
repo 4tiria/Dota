@@ -5,7 +5,7 @@ using Domain.NoSql.Auth.Models.Entities;
 
 namespace Domain.NoSql.Auth;
 
-public class MongoDbContext(IOptions<MongoDbSettings> mongoDBSettings) : DbContext
+public class MongoDbContext(IOptions<MongoDbSettings> mongoDBSettings)
 {
     private readonly IMongoDatabase _database = new MongoClient(mongoDBSettings.Value.ConnectionURI)
         .GetDatabase(mongoDBSettings.Value.DatabaseName);

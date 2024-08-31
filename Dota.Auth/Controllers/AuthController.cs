@@ -119,7 +119,6 @@ namespace Dota.Auth.Controllers
             newAccount.ConfirmationLink = callbackUrl;
             _context.Accounts.InsertOne(newAccount);
 
-            _context.SaveChanges();
             return Login(new LoginRequest()
             {
                 Email = registrationRequest.Email,
@@ -138,7 +137,6 @@ namespace Dota.Auth.Controllers
             if (Request.Cookies.TryGetValue(Cookie.REFRESH_TOKEN, out _))
                 Response.Cookies.Delete(Cookie.REFRESH_TOKEN);
 
-            _context.SaveChanges();
             return Ok();
         }
 
@@ -172,15 +170,10 @@ namespace Dota.Auth.Controllers
                 return null;
             }
 
-            var expiryDateUnix =
-                long.Parse(validatedJwt.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
+            var expiryDateUnix = long.Parse(validatedJwt.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
-            var storedRefreshToken = _context.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken);
-
-            if (storedRefreshToken == null)
-            {
-                throw new NotImplementedException("this refreshToken does not exist");
-            }
+            var storedRefreshToken = _context.RefreshTokens.Find(x => x.Token == refreshToken).SingleOrDefault() 
+                ?? throw new NotImplementedException("this refreshToken does not exist");
 
             if (DateTime.UtcNow > storedRefreshToken.ExpireDate)
             {
@@ -189,16 +182,18 @@ namespace Dota.Auth.Controllers
 
             var jti = validatedJwt.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            var account = _context.Accounts.Find(storedRefreshToken.AccountId);
+            var account = _context.Accounts.Find(x => x.Id == storedRefreshToken.AccountId).SingleOrDefault();
+
             var newAccessToken = Generate.Jwt(account, _authOptions.Value);
             var newAccessTokenString = new JwtSecurityTokenHandler().WriteToken(newAccessToken);
 
             //storedRefreshToken.AccessTokenId =
             //    newAccessToken.Claims.Single(x => x.Type == JwtRegisteredClaimNames.Jti).Value;
 
-            storedRefreshToken.Used = true;
-            _context.RefreshTokens.Update(storedRefreshToken);
-            _context.SaveChanges();
+            _context.RefreshTokens.FindOneAndUpdate(
+                refreshToken => refreshToken.Token == storedRefreshToken.Token, 
+                Builders<RefreshToken>.Update
+                    .Set(refreshToken => refreshToken.Used, true));
 
             return newAccessTokenString;
         }
@@ -219,9 +214,11 @@ namespace Dota.Auth.Controllers
 
         private Account AuthenticateUser(string email, string password)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) return null;
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password)) 
+                return null;
+
             var passwordHashCode = password.PasswordToStringHashCode();
-            return _context.Accounts.FirstOrDefault(x => x.Email == email && x.Password == passwordHashCode);
+            return _context.Accounts.Find(x => x.Email == email && x.Password == passwordHashCode).FirstOrDefault();
         }
 
         private string CreateAndSaveRefreshToken_Obsolete(JwtSecurityToken jwt, Guid accountId)
@@ -255,9 +252,8 @@ namespace Dota.Auth.Controllers
                 CreationDate = DateTime.Now,
                 ExpireDate = expirationDate,
             };
-            _context.RefreshTokens.Add(refreshToken);
-            _context.SaveChanges();
 
+            _context.RefreshTokens.InsertOne(refreshToken);
 
             return refreshJwtString;
         }
@@ -289,7 +285,6 @@ namespace Dota.Auth.Controllers
 
             var refreshJwtString = new JwtSecurityTokenHandler().WriteToken(refreshJwt);
 
-            // Сохранение токена в базе данных (если нужно)
             var refreshToken = new RefreshToken
             {
                 Token = refreshJwtString,
@@ -298,8 +293,7 @@ namespace Dota.Auth.Controllers
                 ExpireDate = expirationDate,
             };
 
-            _context.RefreshTokens.Add(refreshToken);
-            _context.SaveChanges();
+            _context.RefreshTokens.InsertOne(refreshToken);
 
             return refreshJwtString;
         }

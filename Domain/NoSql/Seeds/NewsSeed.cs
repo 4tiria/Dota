@@ -1,8 +1,8 @@
-﻿using Dota.Common;
+﻿using Domain.NoSql.Repositories.NewsRepository;
+using Dota.Common;
 using NoSql.Models;
-using NoSql.Repositories.NewsRepository;
 
-namespace NoSql.Seeds;
+namespace Domain.NoSql.Seeds;
 
 public class NewsSeed(INewsRepository newsRepository) : ISeed
 {

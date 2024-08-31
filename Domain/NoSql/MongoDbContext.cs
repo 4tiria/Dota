@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using NoSql.Models;
 using MongoDB.Driver.GridFS;
-using Microsoft.EntityFrameworkCore;
 using NoSql;
 
 namespace Domain.NoSql;
 
-public class MongoDbContext : DbContext
+public class MongoDbContext
 {
     private readonly IMongoDatabase _database;
 

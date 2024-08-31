@@ -1,6 +1,6 @@
 ﻿using NoSql.Models;
 
-namespace NoSql.Repositories.NewsRepository;
+namespace Domain.NoSql.Repositories.NewsRepository;
 
 public interface INewsRepository
 {
