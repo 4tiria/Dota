@@ -15,7 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Dota.Common\Dota.Common.csproj" />
     <ProjectReference Include="..\..\Domain\DataAccess\DataAccess.csproj" />
-    <ProjectReference Include="..\..\Domain\NoSql-Auth\NoSql.Auth.csproj" />
+    <ProjectReference Include="..\..\Domain\NoSql.Auth\NoSql.Auth.csproj" />
     <ProjectReference Include="..\..\Domain\NoSql\NoSql.csproj" />
   </ItemGroup>
 

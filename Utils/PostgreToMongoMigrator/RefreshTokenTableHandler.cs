@@ -1,6 +1,6 @@
-﻿using Domain.NoSql.Auth;
+﻿
+using Domain.NoSql.Auth;
 using Domain.NoSql.Auth.Models;
-using Domain.NoSql.Auth.Models.Entities;
 using MongoDB.Driver;
 
 namespace MySqlToMongoMigrator;
@@ -19,11 +19,10 @@ public class RefreshTokenTableHandler(MongoDbContext mongoDbContext, AuthContext
                 mongoDbContext.RefreshTokens.DeleteOne(h => h.Token == refreshToken.Token);
             }
 
-            mongoDbContext.RefreshTokens.InsertOne(new RefreshToken()
+            mongoDbContext.RefreshTokens.InsertOne(new()
             {
                 Token = refreshToken.Token,
                 AccessTokenId = refreshToken.AccessTokenId,
-                //Account = refreshToken.Account,
                 AccountId = refreshToken.AccountId,
                 CreationDate = refreshToken.CreationDate,
                 ExpireDate = refreshToken.ExpireDate,

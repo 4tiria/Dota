@@ -1,5 +1,5 @@
 ﻿using System;
-using Dota.Auth.Models.Enums;
+using Domain.NoSql.Auth.Models.Enums;
 
 namespace Dota.Auth.Models.DTO.Responses
 {

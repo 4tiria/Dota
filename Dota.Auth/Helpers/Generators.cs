@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Dota.Auth.Models;
-using Dota.Auth.Models.Entities;
-using Dota.Auth.Models.Enums;
+using Domain.NoSql.Auth.Models;
+using Domain.NoSql.Auth.Models.Entities;
+using Domain.NoSql.Auth.Models.Enums;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Dota.Auth.Helpers
@@ -24,13 +24,13 @@ namespace Dota.Auth.Helpers
         {
             var securityKey = authParams.GetSymmetricSecurityKey();
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var id = Generate.TokenId();
+            var id = TokenId();
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Jti, id),
-                new Claim(JwtRegisteredClaimNames.Email, account.Email),
-                new Claim("role", Enum.GetName(typeof(AccessLevel), account.AccessLevel) ?? string.Empty)
+                new(JwtRegisteredClaimNames.Jti, id),
+                new(JwtRegisteredClaimNames.Email, account.Email),
+                new("role", Enum.GetName(typeof(AccessLevel), account.AccessLevel) ?? string.Empty)
             };
 
             var jwt = new JwtSecurityToken(

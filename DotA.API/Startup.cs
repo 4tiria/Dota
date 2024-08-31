@@ -14,14 +14,9 @@ using Domain.NoSql;
 
 namespace DotA.API;
 
-public class Startup
+public class Startup(IConfiguration configuration)
 {
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
+    private readonly IConfiguration _configuration = configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
@@ -43,7 +38,7 @@ public class Startup
                 .AllowAnyHeader()
                 .AllowCredentials()));
 
-        services.Configure<MongoDbSettings>(Configuration.GetSection("MongoDB"));
+        services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
 
         services
             .AddSingleton<MongoDbContext>()
@@ -83,7 +78,7 @@ public class Startup
 
     private void AddAuthentication(IServiceCollection services)
     {
-        var authOptionsConfiguration = Configuration.GetSection("Auth");
+        var authOptionsConfiguration = _configuration.GetSection("Auth");
         var authOptions = authOptionsConfiguration.Get<AuthOptions>();
         services.Configure<AuthOptions>(authOptionsConfiguration);
 

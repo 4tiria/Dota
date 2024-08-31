@@ -8,6 +8,7 @@ public class RefreshToken
     [Key]
     public string Token { get; set; }
 
+    [Obsolete("Планирую избавиться от хранения jti для простоты")]
     public string AccessTokenId { get; set; }
 
     public DateTime CreationDate { get; set; }

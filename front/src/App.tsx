@@ -33,12 +33,12 @@ export const App: React.FC = () => {
         initAuthData();
     }, []);
 
-    function initAuthData() {
-        let accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+    const initAuthData = (): void => {
+        const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
         if (accessToken === null) {
             dispatch(logout());
         } else {
-            let user = jwt<any>(accessToken);
+            const user = jwt<any>(accessToken);
             dispatch(login(null, user && user.role ? user.role : null));
         }
     }

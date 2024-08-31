@@ -1,4 +1,4 @@
-﻿using Domain.NoSql.Auth.Models.Entities;
+using Domain.NoSql.Auth.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domain.NoSql.Auth.Models;

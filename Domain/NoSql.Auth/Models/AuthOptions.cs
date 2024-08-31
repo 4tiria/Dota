@@ -11,7 +11,7 @@ public class AuthOptions
 
     public int AccessTokenLifeTimeInMinutes { get; set; }
 
-    public int RefreshTokenLifeTimeInDays { get; set; }
+    public int RefreshTokenLifeTimeInMonths { get; set; }
 
     public SymmetricSecurityKey GetSymmetricSecurityKey()
     {

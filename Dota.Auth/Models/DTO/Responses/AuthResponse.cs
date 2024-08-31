@@ -1,6 +1,4 @@
-﻿using System;
-using Dota.Auth.Models.Entities;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace Dota.Auth.Models.DTO.Responses
 {
