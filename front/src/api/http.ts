@@ -10,7 +10,7 @@ import {AuthResponse} from "../models/dto/responses/AuthResponse";
 
 
 export const baseApiUrl = "http://localhost:5000/api";
-export const baseAuthUrl = "http://localhost:34072/auth";
+export const baseAuthUrl = "http://localhost:5001/auth";
 
 export const api = axios.create({
     withCredentials: true,
