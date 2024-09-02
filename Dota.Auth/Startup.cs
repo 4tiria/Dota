@@ -1,5 +1,4 @@
 using Domain.NoSql.Auth.Models;
-using Dota.Auth.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
 using Domain.NoSql.Auth;
+using Dota.Auth.Email;
+using Dota.Auth.Auth;
 
 namespace Dota.Auth;
 
@@ -81,8 +82,10 @@ public class Startup(IConfiguration configuration)
             ValidateIssuerSigningKey = true,
         };
 
-        services.AddTransient<IEmailService, EmailService>();
-        services.AddSingleton(validationForRefreshTokenParameters);
+        services
+            .AddTransient<IAuthService, AuthService>()
+            .AddTransient<IEmailService, EmailService>()
+            .AddSingleton(validationForRefreshTokenParameters);
     }
     
     private void SetupEndpoints(IApplicationBuilder app)
