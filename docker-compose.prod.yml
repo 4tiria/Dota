@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  dota-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dota-api
+    container_name: dota-api      
+    ports:
+      - "80:5000"
+    environment:
+      - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
+      - MongoDB__DatabaseName=dota
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - mongodb
+
+  dota-auth:
+    build:
+      context: .
+      dockerfile: Dockerfile.dota-auth
+    container_name: dota-auth
+    ports:
+      - "80:5001"
+    environment:
+      - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
+      - MongoDB__DatabaseName=dota-auth
+      - ASPNETCORE_ENVIRONMENT=Production
+    depends_on:
+      - mongodb
+
+  frontend:
+      build:
+        context: ./front
+        dockerfile: Dockerfile 
+      container_name: front
+      volumes:
+        - ./front:/app
+      ports:
+        - "3000:3000"
+volumes:
+  mongo-data:

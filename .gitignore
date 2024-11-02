@@ -4,3 +4,4 @@ front/node_modules/
 .vs
 data/
 **/Debug/
+.idea
