@@ -1,4 +1,4 @@
-﻿namespace DotA.API.RabbitMQ;
+﻿namespace Dota.API.RabbitMQ;
 
 public interface IRabbitMQProducerService
 {

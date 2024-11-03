@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.EntitiesJs
+namespace Dota.API.Models.EntitiesJs
 {
 
     public class MatchJs

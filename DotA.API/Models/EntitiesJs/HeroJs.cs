@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DotA.API.Models.EntitiesJs;
+namespace Dota.API.Models.EntitiesJs;
 
 public class HeroJs
 {

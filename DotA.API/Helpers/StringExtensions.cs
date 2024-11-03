@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DotA.API.Models.DTO;
+using Dota.API.Models.DTO;
 
-namespace DotA.API.Helpers
+namespace Dota.API.Helpers
 {
     public static class StringExtensions
     {

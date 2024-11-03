@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DotA.API.Helpers
+namespace Dota.API.Helpers
 {
     public static class PasswordExtensions
     {

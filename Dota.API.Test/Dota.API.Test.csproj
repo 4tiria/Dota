@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\DotA.API\DotA.API.csproj" />
+      <ProjectReference Include="..\Dota.API\Dota.API.csproj" />
     </ItemGroup>
 
     <ItemGroup>

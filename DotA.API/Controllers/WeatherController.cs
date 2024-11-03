@@ -1,7 +1,7 @@
-﻿using DotA.API.RabbitMQ;
+﻿using Dota.API.RabbitMQ;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotA.API.Controllers;
+namespace Dota.API.Controllers;
 
 [ApiController, Route("api/weather")]
 public class WeatherController(IRabbitMQProducerService rabbitMQProducerService) : Controller

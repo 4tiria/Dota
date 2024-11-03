@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using System.Text;
 
-namespace DotA.API.RabbitMQ;
+namespace Dota.API.RabbitMQ;
 
 public class RabbitMQProducerService : IRabbitMQProducerService
 {

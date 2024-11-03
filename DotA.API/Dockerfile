@@ -4,16 +4,14 @@ WORKDIR /app
 
 COPY Common/Dota.Common/ Common/Dota.Common/
 COPY Domain/NoSql/ Domain/NoSql/
-COPY DotA.API/ DotA.API/
+COPY Dota.API/ Dota.API/
 
-RUN dotnet restore DotA.API/DotA.API.csproj
-
-RUN dotnet build DotA.API/DotA.API.csproj -c Release -o /app/build
+RUN dotnet restore Dota.API/Dota.API.csproj
+RUN dotnet build Dota.API/Dota.API.csproj -c Release -o /app/build
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 
 WORKDIR /app
-
 COPY --from=build /app/build .
 
-ENTRYPOINT ["dotnet", "DotA.API.dll"]
+ENTRYPOINT ["dotnet", "Dota.API.dll"]

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using DotA.API.Helpers;
+using Dota.API.Helpers;
 using NUnit.Framework;
 
 namespace Dota.API.Test

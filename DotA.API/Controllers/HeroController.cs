@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Domain.NoSql;
-using DotA.API.Helpers;
-using DotA.API.Models.DTO;
-using DotA.API.Models.EntitiesJs;
-using DotA.API.Models.FilterModels;
+using Dota.API.Helpers;
+using Dota.API.Models.DTO;
+using Dota.API.Models.EntitiesJs;
+using Dota.API.Models.FilterModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using NoSql.Models;
 
-namespace DotA.API.Controllers
+namespace Dota.API.Controllers
 {
     [ApiController, Route("api/hero")]
     public class HeroController : Controller

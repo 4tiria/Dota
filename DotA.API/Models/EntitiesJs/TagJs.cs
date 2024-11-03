@@ -1,4 +1,4 @@
-﻿namespace DotA.API.Models.EntitiesJs;
+﻿namespace Dota.API.Models.EntitiesJs;
 
 public enum TagJs
 {

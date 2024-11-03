@@ -1,4 +1,4 @@
-﻿namespace DotA.API.Helpers
+﻿namespace Dota.API.Helpers
 {
     public static class Cookie
     {

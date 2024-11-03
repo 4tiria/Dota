@@ -1,4 +1,4 @@
-namespace DotA.API
+namespace Dota.API
 {
     public class Program
     {

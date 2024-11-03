@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using DotA.API.Models.EntitiesJs;
+using Dota.API.Models.EntitiesJs;
 using Newtonsoft.Json;
 
-namespace DotA.API.Models.FilterModels
+namespace Dota.API.Models.FilterModels
 {
     public class HeroFilterModel
     {

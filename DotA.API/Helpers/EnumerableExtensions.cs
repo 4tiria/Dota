@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DotA.API.Helpers
+namespace Dota.API.Helpers
 {
     public static class EnumerableExtensions
     {

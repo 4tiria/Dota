@@ -1,5 +1,5 @@
-using DotA.API.Models;
-using DotA.API.Mappers;
+using Dota.API.Models;
+using Dota.API.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
@@ -7,12 +7,12 @@ using NoSql;
 using Dota.Common;
 using CoreModule.Heroes.Repository;
 using CoreModule.Matches.Repository;
-using DotA.API.RabbitMQ;
+using Dota.API.RabbitMQ;
 using Domain.NoSql;
 using Domain.NoSql.Seeds;
 using Domain.NoSql.Repositories.NewsRepository;
 
-namespace DotA.API;
+namespace Dota.API;
 
 public class Startup(IConfiguration configuration)
 {

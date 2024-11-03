@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Http;
 
-namespace DotA.API.Helpers
+namespace Dota.API.Helpers
 {
     public static class FileExtensions
     {

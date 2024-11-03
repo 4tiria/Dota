@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NoSql.Models;
 
-namespace DotA.API.Models.FilterModels
+namespace Dota.API.Models.FilterModels
 {
     public class MatchFilterModel
     {

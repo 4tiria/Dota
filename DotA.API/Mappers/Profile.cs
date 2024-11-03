@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using DotA.API.Helpers;
-using DotA.API.Models.EntitiesJs;
+using Dota.API.Helpers;
+using Dota.API.Models.EntitiesJs;
 using MongoDB.Bson;
 using NoSql.Models;
 
-namespace DotA.API.Mappers;
+namespace Dota.API.Mappers;
 
 public class AppMappingProfile : Profile
 {
