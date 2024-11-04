@@ -18,4 +18,6 @@ public class Hero
     public byte[] Image { get; set; }
 
     public List<string> Tags { get; set; } = [];
+    
+    public float Winrate { get; set; }
 }

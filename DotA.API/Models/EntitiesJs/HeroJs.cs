@@ -21,4 +21,7 @@ public class HeroJs
 
     [JsonProperty("tags")]
     public List<TagJs> Tags { get; set; } = [];
+    
+    [JsonProperty("winrate")]
+    public float Winrate { get; set; }
 }

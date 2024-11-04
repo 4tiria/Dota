@@ -1,14 +1,23 @@
-namespace Dota.API
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+using Domain.NoSql.Migrator;
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+namespace Dota.API;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var build = CreateHostBuilder(args).Build();
+
+        if (args.Contains("--migrate"))
+        {
+            var migrator = build.Services.GetRequiredService<IMigratorService>();
+            migrator.Execute();
+        }
+        
+        build.Run();
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
 }

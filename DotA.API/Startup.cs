@@ -9,6 +9,7 @@ using CoreModule.Heroes.Repository;
 using CoreModule.Matches.Repository;
 using Dota.API.RabbitMQ;
 using Domain.NoSql;
+using Domain.NoSql.Migration;
 using Domain.NoSql.Seeds;
 using Domain.NoSql.Repositories.NewsRepository;
 
@@ -43,12 +44,8 @@ public class Startup(IConfiguration configuration)
         services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
 
         services
-            .AddScoped<MongoDbContext>()
-            .AddSingleton<IRabbitMQProducerService, RabbitMQProducerService>()
-            .AddTransient<IHeroRepository, HeroRepository>()
-            .AddTransient<IMatchRepository, MatchRepository>()
-            .AddTransient<INewsRepository, NewsRepository>()
-            .AddTransient<ISeed, NewsSeed>();
+            .AddNoSql(_configuration)
+            .AddSingleton<IRabbitMQProducerService, RabbitMQProducerService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)

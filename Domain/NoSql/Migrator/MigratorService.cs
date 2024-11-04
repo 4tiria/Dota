@@ -1,0 +1,58 @@
+using Domain.NoSql.Migration;
+using Domain.NoSql.Repositories.Migrations;
+using Microsoft.Extensions.Logging;
+using MongoDB.Driver;
+
+namespace Domain.NoSql.Migrator;
+
+public class MigratorService(
+    ILogger<MigratorService> logger, 
+    IEnumerable<IMigration> migrations,
+    IMongoClient client,
+    MongoDbContext context,
+    IMigrationRepository migrationRepository) : IMigratorService
+{
+    public void Execute()
+    {
+        var lastMigration = migrationRepository.GetCurrentDbVersion();
+        
+        var migrationList = migrations.Where(migration => migration.Version > lastMigration).ToList();
+
+        if (migrationList.Count == 0)
+        {
+            logger.LogInformation("No migrations to be applied");
+            return;
+        }
+        
+        logger.LogInformation("Executing migrator service, applying {count} migrations", migrationList.Count);
+        foreach (var migration in migrationList)
+        {
+            logger.LogInformation("Executing migration {version}/{count}: {name}", 
+                migration.Version, migrationList.Count + migration.Version, migration.GetType().Name);
+
+            if (!RunTransaction(session => { migration.Upgrade(context, session); }))
+            {
+                break;
+            }
+        }
+    }
+    
+    private bool RunTransaction(Action<IClientSessionHandle> operation)
+    {
+        using var session = client.StartSession();
+        session.StartTransaction();
+
+        try
+        {
+            operation(session);
+            session.CommitTransaction();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            session.AbortTransaction();
+            logger.LogError("Transaction aborted due to error: {error}", ex.Message);
+            return false;
+        }
+    }
+}

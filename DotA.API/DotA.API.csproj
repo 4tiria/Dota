@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <BaseOutputPath></BaseOutputPath>
+        <UserSecretsId>daa510e5-12f5-4b24-83dd-b75c65b77785</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
