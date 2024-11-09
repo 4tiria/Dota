@@ -309,10 +309,7 @@
       },
       "Dota.Common/1.0.0": {
         "runtime": {
-          "Dota.Common.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "Dota.Common.dll": {}
         }
       }
     }
