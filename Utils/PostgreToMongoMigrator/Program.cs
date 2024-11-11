@@ -1,5 +1,4 @@
-﻿using DataAccess;
-using Domain.NoSql.Auth.Models;
+﻿using Domain.NoSql.Auth.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MySqlToMongoMigrator;

@@ -10,10 +10,10 @@ public class MongoDbContext
 {
     private readonly IMongoDatabase _database;
 
-    public MongoDbContext(IOptions<MongoDbSettings> mongoDBSettings)
+    public MongoDbContext(IOptions<MongoDbSettings> mongoDbSettings)
     {
-        var client = new MongoClient(mongoDBSettings.Value.ConnectionURI);
-        _database = client.GetDatabase(mongoDBSettings.Value.DatabaseName);
+        var client = new MongoClient(mongoDbSettings.Value.ConnectionURI);
+        _database = client.GetDatabase(mongoDbSettings.Value.DatabaseName);
         GridFS = new GridFSBucket(_database);
     }
 

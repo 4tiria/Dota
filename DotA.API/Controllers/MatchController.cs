@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Domain.NoSql;
+using Domain.NoSql.Helpers;
 using Dota.API.Helpers;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
@@ -91,74 +92,9 @@ public class MatchController(MongoDbContext context, IMapper mapper) : Controlle
     [Authorize(Roles = "Admin")]
     public IActionResult AddRandomMatches(int count)
     {
-        for (var i = 0; i < count; i++)
-        {
-            var randomDuration = _random.Next(1000 * 60 * 15, 1000 * 60 * 60);
-            var randomDateStart = DateTime.Now.AddHours(_random.NextDouble() * 8 - 4);
-            var randomDateEnd = randomDateStart.AddMilliseconds(randomDuration);
-            var radiantScore = _random.Next(1, 40);
-            var direScore = _random.Next(1, 40);
-            var winner = (_random.NextDouble() * radiantScore / direScore) > 0.5 ? "Radiant" : "Dire";
-            var match = new Match()
-            {
-                Start = randomDateStart,
-                End = randomDateEnd,
-                Heroes = GenerateHeroesInMatch(radiantScore, direScore),
-                Score = $"{radiantScore}-{direScore}",
-                WinnerSide = winner,
-            };
-
-            _context.Matches.InsertOne(match);
-        }
-
+        var matches = MockMatchGenerator.CreateMatches(_context, count);
+        _context.Matches.InsertMany(matches);
+        
         return Ok();
-    }
-
-    private List<HeroInMatch> GenerateHeroesInMatch(int radiantScore, int direScore)
-    {
-        var heroPull = _context.Heroes
-            .Aggregate<Hero>(new[] 
-            { 
-                new BsonDocument
-                {
-                    { "$sample", new BsonDocument { { "size", 10 } } }
-                }
-            })
-            .ToList();
-
-        var radiant = heroPull.Sample(5).Shuffle();
-        var dire = heroPull.Except(radiant).ToList().Shuffle();
-
-        var radiantKills = radiantScore.SplitNumber(radiant.Count, 0);
-        var radiantDeaths = direScore.SplitNumber(dire.Count, 0);
-        var direKills = direScore.SplitNumber(dire.Count, 0);
-        var direDeaths = radiantScore.SplitNumber(radiant.Count, 0);
-
-        var radiantTeam = GenerateHeroStatistics("radiant", radiant, radiantKills, radiantDeaths, radiantScore);
-        var direTeam = GenerateHeroStatistics("dire", dire, direKills, direDeaths, direScore);
-
-        return [.. radiantTeam, .. direTeam];
-    }
-
-    private List<HeroInMatch> GenerateHeroStatistics(string side, List<Hero> heroes, List<int> kills, List<int> deaths, int score)
-    {
-        var result = new List<HeroInMatch>();
-        for (var i = 0; i < heroes.Count; i++)
-        {
-            var currentHero = new HeroInMatch()
-            {
-                Hero = heroes[i],
-                Kills = kills[i],
-                Deaths = deaths[i],
-                Assists = _random.Next(score / 2, score),
-                Gold = (int)((_random.NextDouble() * 10000 + 5000) * Math.Sqrt(kills[i] / (double)score)),
-                XP = (int)((_random.NextDouble() * 8000 + 7000) * Math.Sqrt(kills[i] / (double)score)),
-                Side = side,
-            };
-
-            result.Add(currentHero);
-        }
-
-        return result;
     }
 }
