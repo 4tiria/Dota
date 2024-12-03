@@ -2,5 +2,6 @@ namespace Domain.NoSql.Repositories.Migrations;
 
 public interface IMigrationRepository
 {
-    public int GetCurrentDbVersion();
+    int GetCurrentDbVersion();
+    void Add(int version, string description = null);
 }

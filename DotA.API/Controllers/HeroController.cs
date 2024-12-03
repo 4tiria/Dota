@@ -86,8 +86,8 @@ namespace Dota.API.Controllers
         }
 
 
-        [HttpGet("{id:int}")]
-        public IActionResult GetHeroById(int id)
+        [HttpGet("{id:Guid}")]
+        public IActionResult GetHeroById(Guid id)
         {
             var hero = _context.Heroes
                 .Find(h => h.Id == id);
@@ -116,9 +116,9 @@ namespace Dota.API.Controllers
             return Ok();
         }
 
-        [HttpPatch("{id:int}/image")]
+        [HttpPatch("{id:Guid}/image")]
         [Authorize(Roles = "Admin")]
-        public IActionResult AddOrChangeHeroImage(int id)
+        public IActionResult AddOrChangeHeroImage(Guid id)
         {
             var files = Request.Form.Files;
             if (!files.Any())

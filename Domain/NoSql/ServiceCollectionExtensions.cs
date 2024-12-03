@@ -22,7 +22,8 @@ public static class ServiceCollectionExtensions
             .AddTransient<MongoDbContext>()
             .AddSingleton<IMongoClient>(sp => new MongoClient(configuration.GetSection("MongoDB")["ConnectionURI"]))
             .AddTransient<IMigration, _001_Seed>()
-            .AddTransient<IMigration, _002_AddWinrate>()
+            .AddTransient<IMigration, _002_AddHeroes>()
+            .AddTransient<IMigration, _003_AddWinrate>()
             
             .AddTransient<IMigrationRepository, MigrationRepository>()
             .AddTransient<IMigratorService, MigratorService>()

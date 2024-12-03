@@ -15,4 +15,15 @@ public class MigrationRepository(MongoDbContext context) : IMigrationRepository
 
         return lastMigration?.Result?.Version ?? 0;
     }
+
+    public void Add(int version, string description = null)
+    {
+        _migrations.InsertOne(new global::NoSql.Models.Migration
+        {
+            Id = version, 
+            Version = version, 
+            Description = description, 
+            AppliedOn = DateTime.UtcNow
+        });
+    }
 }

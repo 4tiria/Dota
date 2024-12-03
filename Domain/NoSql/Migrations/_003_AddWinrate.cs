@@ -3,11 +3,11 @@ using NoSql.Models;
 
 namespace Domain.NoSql.Migration;
 
-public class _002_AddWinrate : IMigration
+public class _003_AddWinrate : IMigration
 {
     private Random _random = new Random();
     
-    public int Version => 2;
+    public int Version => 3;
     
     public void Upgrade(MongoDbContext database, IClientSessionHandle session)
     {

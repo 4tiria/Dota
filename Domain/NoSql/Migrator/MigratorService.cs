@@ -23,21 +23,24 @@ public class MigratorService(
             logger.LogInformation("No migrations to be applied");
             return;
         }
+
+        if (lastMigration == 0)
+        {
+            client.DropDatabase("dota");
+        }
         
         logger.LogInformation("Executing migrator service, applying {count} migrations", migrationList.Count);
         foreach (var migration in migrationList)
         {
             logger.LogInformation("Executing migration {version}/{count}: {name}", 
-                migration.Version, migrationList.Count + migration.Version, migration.GetType().Name);
+                migration.Version + lastMigration, migrationList.Count + lastMigration, migration.GetType().Name);
 
-            if (!RunTransaction(session => { migration.Upgrade(context, session); }))
-            {
-                break;
-            }
+            RunTransaction(session => { migration.Upgrade(context, session); });
+            migrationRepository.Add(migration.Version);
         }
     }
     
-    private bool RunTransaction(Action<IClientSessionHandle> operation)
+    private void RunTransaction(Action<IClientSessionHandle> operation)
     {
         using var session = client.StartSession();
         session.StartTransaction();
@@ -46,13 +49,12 @@ public class MigratorService(
         {
             operation(session);
             session.CommitTransaction();
-            return true;
         }
         catch (Exception ex)
         {
             session.AbortTransaction();
             logger.LogError("Transaction aborted due to error: {error}", ex.Message);
-            return false;
+            throw;
         }
     }
 }
