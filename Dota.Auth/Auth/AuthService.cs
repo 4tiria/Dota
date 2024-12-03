@@ -1,4 +1,4 @@
-﻿using Domain.NoSql.Auth.Models.Entities;
+﻿using Domain.Mongo.Auth.Models.Entities;
 using Dota.Auth.Helpers;
 using Dota.Auth.Models.DTO.Requests;
 using Dota.Auth.Models.DTO.Responses;
@@ -8,8 +8,8 @@ using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Collections.Generic;
-using Domain.NoSql.Auth;
-using Domain.NoSql.Auth.Models;
+using Domain.Mongo.Auth;
+using Domain.Mongo.Auth.Models;
 using Microsoft.Extensions.Options;
 using Dota.Auth.Email;
 using Microsoft.Extensions.Configuration;

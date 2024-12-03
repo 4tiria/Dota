@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Domain.NoSql.Auth.Models.Entities;
 using MongoDB.Driver;
-using Domain.NoSql.Auth;
+using Domain.Mongo.Auth.Models.Entities;
+using Domain.Mongo.Auth;
 
 namespace Dota.Auth.Email;
 

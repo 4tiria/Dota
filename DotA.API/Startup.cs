@@ -3,15 +3,12 @@ using Dota.API.Mappers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
-using NoSql;
 using Dota.Common;
-using CoreModule.Heroes.Repository;
-using CoreModule.Matches.Repository;
 using Dota.API.RabbitMQ;
-using Domain.NoSql;
-using Domain.NoSql.Migration;
-using Domain.NoSql.Seeds;
-using Domain.NoSql.Repositories.NewsRepository;
+using Domain.Mongo.API;
+using Domain.Mongo.API.Migration;
+using Domain.Mongo.API.Seeds;
+using Domain.Mongo.API.Repositories.NewsRepository;
 
 namespace Dota.API;
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using Domain.Mongo.API.Models;
 using Dota.API.Helpers;
 using Dota.API.Models.EntitiesJs;
 using MongoDB.Bson;
-using NoSql.Models;
 
 namespace Dota.API.Mappers;
 

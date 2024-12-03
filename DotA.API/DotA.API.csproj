@@ -30,7 +30,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Common\Dota.Common\Dota.Common.csproj" />
-      <ProjectReference Include="..\Domain\NoSql\NoSql.csproj" />
+      <ProjectReference Include="..\Domain\Mongo.API\Mongo.API.csproj" />
     </ItemGroup>
 
 </Project>

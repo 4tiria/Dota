@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using NoSql.Models;
+﻿using Domain.Mongo.API.Models;
+using Newtonsoft.Json;
 
 namespace Dota.API.Models.FilterModels
 {

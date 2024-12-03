@@ -1,4 +1,4 @@
-﻿using Domain.NoSql.Auth.Models.Entities;
+﻿using Domain.Mongo.Auth.Models.Entities;
 using Dota.Auth.Models.DTO.Requests;
 using Dota.Auth.Models.DTO.Responses;
 using Microsoft.AspNetCore.Mvc;

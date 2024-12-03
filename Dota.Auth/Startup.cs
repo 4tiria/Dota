@@ -1,4 +1,4 @@
-using Domain.NoSql.Auth.Models;
+using Domain.Mongo.Auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Converters;
-using Domain.NoSql.Auth;
+using Domain.Mongo.Auth;
 using Dota.Auth.Email;
 using Dota.Auth.Auth;
 

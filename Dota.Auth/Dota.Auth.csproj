@@ -30,7 +30,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Domain\NoSql.Auth\NoSql.Auth.csproj" />
+      <ProjectReference Include="..\Domain\Mongo.Auth\Mongo.Auth.csproj" />
     </ItemGroup>
 
 </Project>

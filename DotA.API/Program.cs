@@ -1,4 +1,4 @@
-using Domain.NoSql.Migrator;
+using Domain.Mongo.API.Migrator;
 
 namespace Dota.API;
 

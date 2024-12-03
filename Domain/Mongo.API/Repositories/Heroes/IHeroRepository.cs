@@ -1,0 +1,14 @@
+﻿using Domain.Mongo.API.Models;
+using MongoDB.Bson;
+
+namespace Domain.Mongo.API.Heroes.Repository;
+
+public interface IHeroRepository
+{
+    Task CreateHeroAsync(Hero hero);
+    Task DeleteHeroAsync(ObjectId id);
+    Task<Hero> GetHeroByIdAsync(ObjectId id);
+    Task<List<Hero>> GetHeroesAsync();
+    Task UpdateHeroAsync(Hero updatedHero);
+    void DeleteAll();
+}

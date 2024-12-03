@@ -1,4 +1,4 @@
-﻿using DataAccess.Enums;
+﻿using Domain.Mongo.API.Enums;
 using Newtonsoft.Json;
 
 namespace Dota.API.Models.EntitiesJs;

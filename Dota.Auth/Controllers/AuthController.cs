@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
-using Domain.NoSql.Auth;
-using Domain.NoSql.Auth.Models;
+using Domain.Mongo.Auth;
+using Domain.Mongo.Auth.Models;
 using Dota.Auth.Models.DTO.Requests;
 using Dota.Auth.Models.DTO.Responses;
 using Microsoft.AspNetCore.Authorization;

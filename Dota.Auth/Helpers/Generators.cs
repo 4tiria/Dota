@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Domain.NoSql.Auth.Models;
-using Domain.NoSql.Auth.Models.Entities;
-using Domain.NoSql.Auth.Models.Enums;
+using Domain.Mongo.Auth.Models;
+using Domain.Mongo.Auth.Models.Entities;
+using Domain.Mongo.Auth.Models.Enums;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Dota.Auth.Helpers

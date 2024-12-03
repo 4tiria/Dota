@@ -22,9 +22,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dota.Statistics", "Dota.Sta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dota.Common", "Common\Dota.Common\Dota.Common.csproj", "{4557BBF4-2194-4544-982A-E9BD65F9DFD0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoSql", "Domain\NoSql\NoSql.csproj", "{1FCE6158-2EFC-47C8-8C2D-766B1F373105}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mongo.API", "Domain\Mongo.API\Mongo.API.csproj", "{1FCE6158-2EFC-47C8-8C2D-766B1F373105}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NoSql.Auth", "Domain\NoSql.Auth\NoSql.Auth.csproj", "{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mongo.Auth", "Domain\Mongo.Auth\Mongo.Auth.csproj", "{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mongo.Statistics", "Domain\Mongo.Statistics\Mongo.Statistics.csproj", "{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{4557BBF4-2194-4544-982A-E9BD65F9DFD0} = {822F68E1-4806-462B-AF06-DC128E0DE30B}
 		{1FCE6158-2EFC-47C8-8C2D-766B1F373105} = {D8555011-9CC5-4EAF-881E-003EDD165C5F}
 		{DCFA334B-1B3B-4E83-A210-D6DA3EA3D73E} = {D8555011-9CC5-4EAF-881E-003EDD165C5F}
+		{0BFB77B1-0E9B-489D-ADB5-0F2280DEB449} = {D8555011-9CC5-4EAF-881E-003EDD165C5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DBBA2370-81FD-44E0-B7D1-59FEFD9742B1}

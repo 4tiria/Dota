@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using Domain.NoSql;
+using Domain.Mongo.API;
+using Domain.Mongo.API.Models;
 using Dota.API.Helpers;
 using Dota.API.Models.DTO;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using MongoDB.Driver;
-using NoSql.Models;
 
 namespace Dota.API.Controllers
 {
@@ -86,11 +87,11 @@ namespace Dota.API.Controllers
         }
 
 
-        [HttpGet("{id:Guid}")]
-        public IActionResult GetHeroById(Guid id)
+        [HttpGet("{id}")]
+        public IActionResult GetHeroById(string id)
         {
             var hero = _context.Heroes
-                .Find(h => h.Id == id);
+                .Find(h => h.Id == ObjectId.Parse(id));
 
             if (hero is null)
                 return NotFound();
@@ -103,7 +104,7 @@ namespace Dota.API.Controllers
         public IActionResult Update([FromBody] HeroJs heroJs)
         {
             var heroInContext = _context.Heroes
-                .Find(hero => hero.Id == heroJs.Id).Single();
+                .Find(hero => hero.Id == ObjectId.Parse(heroJs.Id)).Single();
 
             if (heroInContext is null)
                 return NotFound();
@@ -116,16 +117,16 @@ namespace Dota.API.Controllers
             return Ok();
         }
 
-        [HttpPatch("{id:Guid}/image")]
+        [HttpPatch("{id}/image")]
         [Authorize(Roles = "Admin")]
-        public IActionResult AddOrChangeHeroImage(Guid id)
+        public IActionResult AddOrChangeHeroImage(string id)
         {
             var files = Request.Form.Files;
             if (!files.Any())
                 return BadRequest();
 
             var bytes = files[0].ToByteArray();
-            _context.Heroes.UpdateOne(h => h.Id == id, Builders<Hero>.Update.Set(h => h.Image, bytes));
+            _context.Heroes.UpdateOne(h => h.Id == ObjectId.Parse(id), Builders<Hero>.Update.Set(h => h.Image, bytes));
 
             return Ok();
         }
@@ -140,24 +141,6 @@ namespace Dota.API.Controllers
 
             _context.Heroes.InsertOne(hero);
             return Ok(_mapper.Map<HeroJs>(hero));
-        }
-
-        [HttpPost("delete")]
-        [Authorize(Roles = "Admin")]
-        public IActionResult Delete([FromBody] HeroJs heroJs)
-        {
-            var heroInContext = _context.Heroes.DeleteOne(hero => hero.Id == heroJs.Id);
-            return Ok();
-        }
-
-        private (List<string> ToDelete, List<string> ToAdd) GetListsToModifyHeroTag(List<string> before,
-            List<string> after)
-        {
-            var setBefore = new HashSet<string>(before);
-            var setAfter = new HashSet<string>(after);
-            var toDelete = setBefore.Except(setAfter).ToList();
-            var toAdd = setAfter.Except(setBefore).ToList();
-            return (toDelete, toAdd);
         }
     }
 }

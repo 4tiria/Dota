@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System;
-using Domain.NoSql.Auth.Models.Entities;
+using Domain.Mongo.Auth.Models.Entities;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Dota.Auth.Email;

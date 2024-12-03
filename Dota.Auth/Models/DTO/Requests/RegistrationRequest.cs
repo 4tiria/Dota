@@ -1,4 +1,4 @@
-﻿using Domain.NoSql.Auth.Models.Enums;
+﻿using Domain.Mongo.Auth.Models.Enums;
 using Newtonsoft.Json;
 
 namespace Dota.Auth.Models.DTO.Requests

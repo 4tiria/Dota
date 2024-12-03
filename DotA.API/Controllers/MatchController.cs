@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
-using Domain.NoSql;
-using Domain.NoSql.Helpers;
-using Dota.API.Helpers;
+using Domain.Mongo.API;
+using Domain.Mongo.API.Helpers;
+using Domain.Mongo.API.Models;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using NoSql.Models;
 
 namespace Dota.API.Controllers;
 
@@ -89,7 +87,7 @@ public class MatchController(MongoDbContext context, IMapper mapper) : Controlle
     }
 
     [HttpPost("addRandom/{count:int}")]
-    [Authorize(Roles = "Admin")]
+
     public IActionResult AddRandomMatches(int count)
     {
         var matches = MockMatchGenerator.CreateMatches(_context, count);

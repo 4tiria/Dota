@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using MongoDB.Bson;
+using Newtonsoft.Json;
 
 namespace Dota.API.Models.EntitiesJs;
 
 public class HeroJs
 {
     [JsonProperty("id")]
-    public Guid Id { get; set; }
+    public string Id { get; set; }
 
     [JsonProperty("name")]
     public string Name { get; set; }
@@ -15,9 +16,6 @@ public class HeroJs
 
     [JsonProperty("mainAttribute")]
     public string MainAttribute { get; set; }
-
-    [JsonProperty("image")]
-    public byte[] Image { get; set; }
 
     [JsonProperty("tags")]
     public List<TagJs> Tags { get; set; } = [];
