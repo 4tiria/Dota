@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6959b35c-5d04-4f13-a266-7683b43c291d</UserSecretsId>
+    <RootNamespace>Dota.Statistics</RootNamespace>
     <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
@@ -18,6 +19,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\Mongo.API\Mongo.API.csproj" />
     <ProjectReference Include="..\Domain\Mongo.Statistics\Mongo.Statistics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="HeroStatistic\Winrate\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

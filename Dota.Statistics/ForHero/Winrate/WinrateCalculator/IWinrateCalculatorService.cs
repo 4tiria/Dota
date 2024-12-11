@@ -1,4 +1,4 @@
-namespace Dota.Statistics.Services.BackgroundWorkers;
+namespace Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
 public interface IWinrateCalculatorService
 {

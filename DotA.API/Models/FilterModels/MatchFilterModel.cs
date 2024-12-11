@@ -18,10 +18,10 @@ namespace Dota.API.Models.FilterModels
         public long? MaxStartedMillisecondsBefore { get; set; }
 
         [JsonProperty("selfTeam")]
-        public List<Hero> SelfTeam { get; set; } = new List<Hero>();
+        public List<Domain.Mongo.API.Models.Hero> SelfTeam { get; set; } = [];
         
         [JsonProperty("otherTeam")]
-        public List<Hero> OtherTeam { get; set; } = new List<Hero>();
+        public List<Domain.Mongo.API.Models.Hero> OtherTeam { get; set; } = [];
         
         [JsonProperty("skip")]
         public int? Skip { get; set; }

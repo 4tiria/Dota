@@ -9,6 +9,8 @@ using Domain.Mongo.API;
 using Domain.Mongo.API.Migration;
 using Domain.Mongo.API.Seeds;
 using Domain.Mongo.API.Repositories.NewsRepository;
+using Dota.API.Hero.RabbitMQ.Consumers;
+using Dota.API.Hero.RabbitMQ.Producers;
 
 namespace Dota.API;
 
@@ -42,7 +44,8 @@ public class Startup(IConfiguration configuration)
 
         services
             .AddNoSql(_configuration)
-            .AddSingleton<IRabbitMQProducerService, RabbitMQProducerService>();
+            .AddSingleton<IHeroProducerService, HeroProducerService>()
+            .AddSingleton<IHeroConsumerService, HeroConsumerService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
@@ -81,7 +84,7 @@ public class Startup(IConfiguration configuration)
         var controllerValidationParameters = new TokenValidationParameters()
         {
             ValidateIssuer = true,
-            ValidIssuer = authOptions.Issuer,
+            ValidIssuer = authOptions!.Issuer,
 
             ValidateAudience = true,
             ValidAudience = authOptions.Audience,

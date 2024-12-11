@@ -1,13 +1,9 @@
-using Dota.Statistics.RabbitMQ;
-using Dota.Statistics.RabbitMQConsumerService;
-using Dota.Statistics.Services.BackgroundWorkers;
+using Dota.Statistics.ForHero.Winrate.RabbitMQ.Consumers;
+using Dota.Statistics.ForHero.Winrate.RabbitMQ.Producers;
+using Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// builder.WebHost.UseKestrel(options =>
-// {
-//     options.ListenAnyIP(80); 
-// });
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -18,7 +14,8 @@ builder.Services.Configure<Domain.Mongo.API.MongoDbSettings>(builder.Configurati
 builder.Services
     .AddTransient<Domain.Mongo.API.MongoDbContext>()
     .AddTransient<Domain.Mongo.Statistics.MongoDbContext>()
-    .AddSingleton<IRabbitMQConsumerService, RabbitMQConsumerService>()
+    .AddSingleton<IHeroStatisticProducerService, HeroStatisticProducerService>()
+    .AddSingleton<IHeroStatisticConsumerService, HeroStatisticConsumerService>()
     .AddSingleton<IWinrateCalculatorService, WinrateCalculatorService>();
 
 builder.Services.AddHostedService<WinrateCalculatorBackgroundService>();

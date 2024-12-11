@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <BaseOutputPath></BaseOutputPath>
+        <RootNamespace>Dota.API</RootNamespace>
         <UserSecretsId>daa510e5-12f5-4b24-83dd-b75c65b77785</UserSecretsId>
     </PropertyGroup>
 
@@ -31,6 +31,10 @@
     <ItemGroup>
       <ProjectReference Include="..\Common\Dota.Common\Dota.Common.csproj" />
       <ProjectReference Include="..\Domain\Mongo.API\Mongo.API.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Hero\Services\" />
     </ItemGroup>
 
 </Project>

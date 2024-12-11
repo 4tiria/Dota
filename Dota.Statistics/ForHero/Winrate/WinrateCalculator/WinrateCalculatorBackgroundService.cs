@@ -1,8 +1,7 @@
-namespace Dota.Statistics.Services.BackgroundWorkers;
+namespace Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
 public class WinrateCalculatorBackgroundService(ILogger<WinrateCalculatorBackgroundService> logger, IWinrateCalculatorService calculatorService) : BackgroundService
 {
-    private readonly ILogger<WinrateCalculatorBackgroundService> _logger = logger;
     private readonly TimeSpan _interval = TimeSpan.FromMinutes(10);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -11,22 +10,19 @@ public class WinrateCalculatorBackgroundService(ILogger<WinrateCalculatorBackgro
         {
             try
             {
-                _logger.LogInformation("Recalculating heroes winrate {time}", DateTimeOffset.UtcNow);
-
-                // Можно вызвать метод, например:
+                logger.LogInformation("Recalculating heroes winrate {time}", DateTimeOffset.UtcNow);
+                
                 await calculatorService.Calculate();
                 
                 await Task.Delay(_interval, stoppingToken);
             }
             catch (OperationCanceledException)
             {
-                // Прерывание задачи
                 break;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-                // Логируй ошибку и продолжай цикл
+                logger.LogError("Ошибка: {message}", ex.Message);
             }
         }
     }
