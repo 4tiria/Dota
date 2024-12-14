@@ -1,4 +1,4 @@
-﻿namespace Dota.API.Hero.RabbitMQ.Consumers;
+﻿namespace Dota.API.Hero.RabbitMq.Consumers;
 
 public interface IHeroConsumerService
 {

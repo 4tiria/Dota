@@ -26,7 +26,7 @@ public class HeroStatisticProducerService : IHeroStatisticProducerService
         var connection = factory.CreateConnection();
         _channel = connection.CreateModel();
 
-        _channel.QueueDeclare(queue: QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
         _consumer = new EventingBasicConsumer(_channel);
     }
 

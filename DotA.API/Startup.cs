@@ -9,8 +9,9 @@ using Domain.Mongo.API;
 using Domain.Mongo.API.Migration;
 using Domain.Mongo.API.Seeds;
 using Domain.Mongo.API.Repositories.NewsRepository;
-using Dota.API.Hero.RabbitMQ.Consumers;
-using Dota.API.Hero.RabbitMQ.Producers;
+using Dota.API.Hero.RabbitMq.Consumers;
+using Dota.API.Hero.RabbitMq.Producers;
+using Dota.API.Statistics.RabbitMq.Producers;
 
 namespace Dota.API;
 
@@ -45,7 +46,10 @@ public class Startup(IConfiguration configuration)
         services
             .AddNoSql(_configuration)
             .AddSingleton<IHeroProducerService, HeroProducerService>()
-            .AddSingleton<IHeroConsumerService, HeroConsumerService>();
+            .AddSingleton<IHeroConsumerService, HeroConsumerService>()
+            .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
+
+        services.AddHostedService<ConsumerBackgroundService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
@@ -108,8 +112,7 @@ public class Startup(IConfiguration configuration)
             IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
             ValidateIssuerSigningKey = true,
         };
-
-
+        
         services.AddSingleton(validationForRefreshTokenParameters);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

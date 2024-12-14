@@ -1,6 +1,6 @@
 namespace Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
-public interface IWinrateCalculatorService
+public interface IHeroWinrateCalculatorService
 {
     Task Calculate();
 }

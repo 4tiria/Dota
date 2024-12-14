@@ -1,6 +1,7 @@
 using Dota.Statistics.ForHero.Winrate.RabbitMQ.Consumers;
 using Dota.Statistics.ForHero.Winrate.RabbitMQ.Producers;
 using Dota.Statistics.ForHero.Winrate.WinrateCalculator;
+using Dota.Statistics.ForMatches.RabbitMq.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +17,13 @@ builder.Services
     .AddTransient<Domain.Mongo.Statistics.MongoDbContext>()
     .AddSingleton<IHeroStatisticProducerService, HeroStatisticProducerService>()
     .AddSingleton<IHeroStatisticConsumerService, HeroStatisticConsumerService>()
-    .AddSingleton<IWinrateCalculatorService, WinrateCalculatorService>();
+    .AddSingleton<IHeroStatisticConsumerService, HeroWinrateStatisticConsumerService>()
+    .AddSingleton<IHeroWinrateCalculatorService, HeroWinrateCalculatorService>()
+    .AddSingleton<IMatchStatisticConsumerService, MatchStatisticConsumerService>();
 
-builder.Services.AddHostedService<WinrateCalculatorBackgroundService>();
+builder.Services.AddHostedService<HeroWinrateCalculatorBackgroundService>();
+builder.Services.AddHostedService<HeroWinrateConsumerBackgroundService>();
+builder.Services.AddHostedService<MatchConsumerBackgroundService>();
 
 var app = builder.Build();
 

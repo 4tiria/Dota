@@ -1,7 +1,6 @@
 ﻿namespace Dota.Statistics.ForHero.Winrate.RabbitMQ.Consumers;
 
-public interface IHeroStatisticConsumerService
+public interface IMatchStatisticConsumerService
 {
-    string Description { get; }
     void Consume();
 }

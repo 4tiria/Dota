@@ -21,9 +21,4 @@
     <ProjectReference Include="..\Domain\Mongo.Statistics\Mongo.Statistics.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HeroStatistic\Winrate\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

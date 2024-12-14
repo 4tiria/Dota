@@ -2,7 +2,7 @@
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Dota.API.Hero.RabbitMQ.Consumers;
+namespace Dota.API.Hero.RabbitMq.Consumers;
 
 public class HeroConsumerService : IHeroConsumerService
 {
@@ -25,9 +25,8 @@ public class HeroConsumerService : IHeroConsumerService
         var connection = factory.CreateConnection();
         _channel = connection.CreateModel();
 
-        _channel.QueueDeclare(queue: QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
         _consumer = new EventingBasicConsumer(_channel);
-        Consume();
     }
 
     public void Consume()

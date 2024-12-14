@@ -3,7 +3,7 @@ using Dota.API.RabbitMQ;
 using MongoDB.Bson;
 using RabbitMQ.Client;
 
-namespace Dota.API.Hero.RabbitMQ.Producers;
+namespace Dota.API.Hero.RabbitMq.Producers;
 
 public class HeroProducerService : IHeroProducerService
 {
@@ -22,7 +22,7 @@ public class HeroProducerService : IHeroProducerService
         var connection = factory.CreateConnection();
         _channel = connection.CreateModel();
 
-        _channel.QueueDeclare(queue: QueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
     }
 
     public void Produce(ObjectId heroId)

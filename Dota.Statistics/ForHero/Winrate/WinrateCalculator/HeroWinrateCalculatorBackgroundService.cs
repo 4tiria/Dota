@@ -1,6 +1,6 @@
 namespace Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
-public class WinrateCalculatorBackgroundService(ILogger<WinrateCalculatorBackgroundService> logger, IWinrateCalculatorService calculatorService) : BackgroundService
+public class HeroWinrateCalculatorBackgroundService(ILogger<HeroWinrateCalculatorBackgroundService> logger, IHeroWinrateCalculatorService calculatorService) : BackgroundService
 {
     private readonly TimeSpan _interval = TimeSpan.FromMinutes(10);
 
@@ -12,7 +12,8 @@ public class WinrateCalculatorBackgroundService(ILogger<WinrateCalculatorBackgro
             {
                 logger.LogInformation("Recalculating heroes winrate {time}", DateTimeOffset.UtcNow);
                 
-                await calculatorService.Calculate();
+                // TODO: return it back (remove comments)
+                // await calculatorService.Calculate();
                 
                 await Task.Delay(_interval, stoppingToken);
             }

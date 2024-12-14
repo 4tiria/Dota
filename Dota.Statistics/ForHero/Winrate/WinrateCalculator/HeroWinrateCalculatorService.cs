@@ -4,13 +4,13 @@ using MongoDB.Driver;
 
 namespace Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 
-public class WinrateCalculatorService(
+public class HeroWinrateCalculatorService(
     Domain.Mongo.API.MongoDbContext contextApi, 
-    Domain.Mongo.Statistics.MongoDbContext contextStatistics) : IWinrateCalculatorService
+    Domain.Mongo.Statistics.MongoDbContext contextStatistics) : IHeroWinrateCalculatorService
 {
     public async Task Calculate()
     {
-        var heroResult = await contextApi.Heroes.FindAsync(FilterDefinition<Domain.Mongo.API.Models.Hero>.Empty);
+        var heroResult = await contextApi.Heroes.FindAsync(FilterDefinition<Hero>.Empty);
         var matchResult = await contextApi.Matches.FindAsync(FilterDefinition<Match>.Empty);
         var heroes = heroResult.ToList();
         var matches = await matchResult.ToListAsync();

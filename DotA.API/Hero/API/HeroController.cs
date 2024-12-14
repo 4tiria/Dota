@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Mongo.API;
 using Dota.API.Helpers;
-using Dota.API.Hero.RabbitMQ.Consumers;
+using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Models.DTO;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
