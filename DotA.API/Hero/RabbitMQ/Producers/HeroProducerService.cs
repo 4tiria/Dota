@@ -10,25 +10,16 @@ public class HeroProducerService : IHeroProducerService
     private const string QueueName = "request-hero-statistics";
     private readonly IModel _channel;
 
-    public HeroProducerService()
+    public HeroProducerService(IModel channel)
     {
-        var factory = new ConnectionFactory()
-        {
-            HostName = "localhost",
-            UserName = "guest",
-            Password = "guest"
-        };
-
-        var connection = factory.CreateConnection();
-        _channel = connection.CreateModel();
-
-        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        _channel = channel;
+        _channel.QueueDeclare(QueueName, true, false, false, null);
     }
 
     public void Produce(ObjectId heroId)
     {
         var body = Encoding.UTF8.GetBytes(heroId.ToString());
-            
-        _channel.BasicPublish(exchange: "", routingKey: QueueName, basicProperties: null, body: body);
+
+        _channel.BasicPublish("", QueueName, null, body);
     }
 }

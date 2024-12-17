@@ -1,35 +1,24 @@
-using System.Text;
 using RabbitMQ.Client;
 
 namespace Dota.API.Statistics.RabbitMq.Producers;
 
 public class StatisticsProducerService : IStatisticsProducerService
 {
-    //TODO: доставать _channel из DI
     private const string ExchangeName = "update-statistics-topic";
-
     private const string RoutingKey = "statistics.update";
     private readonly IModel _channel;
 
-    public StatisticsProducerService()
+    public StatisticsProducerService(IModel channel)
     {
-        var factory = new ConnectionFactory()
-        {
-            HostName = "localhost",
-            UserName = "guest",
-            Password = "guest"
-        };
-
-        var connection = factory.CreateConnection();
-        _channel = connection.CreateModel();
+        _channel = channel;
         var properties = _channel.CreateBasicProperties();
         properties.Persistent = true;
-        
-        _channel.ExchangeDeclare(exchange: ExchangeName, type: "topic", durable: true, autoDelete: false, arguments: null);
+
+        _channel.ExchangeDeclare(ExchangeName, "topic", true, false, null);
     }
-    
+
     public void Produce()
     {
-        _channel.BasicPublish(exchange: ExchangeName, routingKey: RoutingKey, basicProperties: null);
+        _channel.BasicPublish(ExchangeName, RoutingKey, basicProperties: null);
     }
 }

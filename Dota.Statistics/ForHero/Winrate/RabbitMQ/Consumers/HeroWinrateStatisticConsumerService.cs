@@ -11,34 +11,25 @@ namespace Dota.Statistics.ForHero.Winrate.RabbitMQ.Consumers;
 public class HeroWinrateStatisticConsumerService : IHeroStatisticConsumerService
 {
     private const string QueueName = "request-hero-statistics";
-
-    private readonly ILogger _logger;
-    private readonly IConnection _connection;
     private readonly IModel _channel;
     private readonly EventingBasicConsumer _consumer;
-    private readonly IHeroStatisticProducerService _heroStatisticProducer;
 
     private readonly MongoDbContext _context;
+    private readonly IHeroStatisticProducerService _heroStatisticProducer;
+
+    private readonly ILogger _logger;
 
     public HeroWinrateStatisticConsumerService(
-        ILogger<HeroWinrateStatisticConsumerService> logger, 
-        MongoDbContext context, 
-        IHeroStatisticProducerService heroStatisticProducer)
+        ILogger<HeroWinrateStatisticConsumerService> logger,
+        MongoDbContext context,
+        IHeroStatisticProducerService heroStatisticProducer, IModel channel)
     {
         _logger = logger;
         _context = context;
         _heroStatisticProducer = heroStatisticProducer;
-        var factory = new ConnectionFactory()
-        {
-            HostName = "localhost",
-            UserName = "guest",
-            Password = "guest"
-        };
+        _channel = channel;
 
-        _connection = factory.CreateConnection();
-        _channel = _connection.CreateModel();
-
-        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        _channel.QueueDeclare(QueueName, true, false, false, null);
         _consumer = new EventingBasicConsumer(_channel);
     }
 
@@ -50,13 +41,13 @@ public class HeroWinrateStatisticConsumerService : IHeroStatisticConsumerService
         {
             var body = ea.Body.ToArray();
             var heroId = ObjectId.Parse(Encoding.UTF8.GetString(body));
-            
+
             var heroStatistic = _context.HeroStatistics
                 .Find(heroStatistic => heroStatistic.HeroId == heroId)
-                .FirstOrDefault() ?? throw new Exception($"Hero Id {heroId} not found");            
-            
+                .FirstOrDefault() ?? throw new Exception($"Hero Id {heroId} not found");
+
             _heroStatisticProducer.ProduceGetStatisticsResponse(heroStatistic);
         };
-        _channel.BasicConsume(QueueName, autoAck: true, consumer: _consumer);
+        _channel.BasicConsume(QueueName, true, _consumer);
     }
 }

@@ -1,17 +1,16 @@
-using Dota.API.Models;
-using Dota.API.Mappers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Converters;
-using Dota.Common;
-using Dota.API.RabbitMQ;
 using Domain.Mongo.API;
-using Domain.Mongo.API.Migration;
-using Domain.Mongo.API.Seeds;
-using Domain.Mongo.API.Repositories.NewsRepository;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.Producers;
+using Dota.API.Mappers;
+using Dota.API.Models;
+using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.Producers;
+using Dota.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using RabbitMQ.Client;
 
 namespace Dota.API;
 
@@ -32,7 +31,7 @@ public class Startup(IConfiguration configuration)
 
         services
             .AddControllers()
-            .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
@@ -49,15 +48,24 @@ public class Startup(IConfiguration configuration)
             .AddSingleton<IHeroConsumerService, HeroConsumerService>()
             .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
 
+        services
+            .AddSingleton<IConnectionFactory>(serviceProvider =>
+                new ConnectionFactory
+                {
+                    HostName = "localhost",
+                    UserName = "guest",
+                    Password = "guest"
+                })
+            .AddSingleton<IConnection>(serviceProvider =>
+                serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
+            .AddSingleton<IModel>(serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
+
         services.AddHostedService<ConsumerBackgroundService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
     {
-        if (env.IsDevelopment())
-        {
-            app.UseDeveloperExceptionPage();
-        }
+        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
         app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
@@ -69,14 +77,11 @@ public class Startup(IConfiguration configuration)
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "api/{controller}/{action}/{id?}");
+                "default",
+                "api/{controller}/{action}/{id?}");
         });
 
-        foreach (var seed in seeds)
-        {
-            seed.SeedData();
-        }
+        foreach (var seed in seeds) seed.SeedData();
     }
 
     private void AddAuthentication(IServiceCollection services)
@@ -85,7 +90,7 @@ public class Startup(IConfiguration configuration)
         var authOptions = authOptionsConfiguration.Get<AuthOptions>();
         services.Configure<AuthOptions>(authOptionsConfiguration);
 
-        var controllerValidationParameters = new TokenValidationParameters()
+        var controllerValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidIssuer = authOptions!.Issuer,
@@ -96,10 +101,10 @@ public class Startup(IConfiguration configuration)
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true,
+            ValidateIssuerSigningKey = true
         };
 
-        var validationForRefreshTokenParameters = new TokenValidationParameters()
+        var validationForRefreshTokenParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidIssuer = authOptions.Issuer,
@@ -110,9 +115,9 @@ public class Startup(IConfiguration configuration)
             ValidateLifetime = false,
 
             IssuerSigningKey = authOptions.GetSymmetricSecurityKey(),
-            ValidateIssuerSigningKey = true,
+            ValidateIssuerSigningKey = true
         };
-        
+
         services.AddSingleton(validationForRefreshTokenParameters);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

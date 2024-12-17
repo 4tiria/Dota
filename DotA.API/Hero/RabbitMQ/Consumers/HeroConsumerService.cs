@@ -7,25 +7,17 @@ namespace Dota.API.Hero.RabbitMq.Consumers;
 public class HeroConsumerService : IHeroConsumerService
 {
     private const string QueueName = "response-hero-statistics";
-
-    private readonly ILogger _logger;
     private readonly IModel _channel;
     private readonly EventingBasicConsumer _consumer;
 
-    public HeroConsumerService(ILogger<HeroConsumerService> logger)
+    private readonly ILogger _logger;
+
+    public HeroConsumerService(ILogger<HeroConsumerService> logger, IModel channel)
     {
         _logger = logger;
-        var factory = new ConnectionFactory()
-        {
-            HostName = "localhost",
-            UserName = "guest",
-            Password = "guest"
-        };
+        _channel = channel;
 
-        var connection = factory.CreateConnection();
-        _channel = connection.CreateModel();
-
-        _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+        _channel.QueueDeclare(QueueName, true, false, false, null);
         _consumer = new EventingBasicConsumer(_channel);
     }
 
@@ -37,6 +29,6 @@ public class HeroConsumerService : IHeroConsumerService
             var message = Encoding.UTF8.GetString(body);
             _logger.LogInformation("Consumed message: {message}", message);
         };
-        _channel.BasicConsume(QueueName, autoAck: true, consumer: _consumer);
+        _channel.BasicConsume(QueueName, true, _consumer);
     }
 }
