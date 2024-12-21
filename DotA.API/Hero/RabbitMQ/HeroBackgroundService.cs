@@ -15,10 +15,10 @@ public class HeroBackgroundService(
         heroConsumerService.Consume();
         logger.LogInformation("Listening for RabbitMQ messages on Dota.API");
 
-        heroDlxService.Configure("hero-dlx", "hero-dead", "dlx.hero");
+        heroDlxService.Consume();
         logger.LogInformation("DLX for Hero messages configured on Dota.API");
 
-        statisticsDlxService.Configure("statistics-dlx", "statistics-dead", "dlx.statistics");
+        statisticsDlxService.Consume();
         logger.LogInformation("DLX for Statistics messages configured on Dota.API");
 
         return Task.CompletedTask;
