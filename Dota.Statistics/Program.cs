@@ -5,6 +5,8 @@ using Dota.Statistics.ForHero.Winrate.WinrateCalculator;
 using Dota.Statistics.ForMatches.RabbitMq.Consumers;
 using RabbitMQ.Client;
 
+#region services
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -33,12 +35,15 @@ builder.Services
     .AddSingleton<IHeroWinrateCalculatorService, HeroWinrateCalculatorService>()
     .AddSingleton<IMatchStatisticConsumerService, MatchStatisticConsumerService>();
 
-
 builder.Services.AddHostedService<HeroWinrateCalculatorBackgroundService>();
 builder.Services.AddHostedService<HeroWinrateConsumerBackgroundService>();
 builder.Services.AddHostedService<MatchConsumerBackgroundService>();
 
+#endregion
+
 var app = builder.Build();
+
+#region app
 
 if (app.Environment.IsDevelopment())
 {
@@ -53,3 +58,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+#endregion

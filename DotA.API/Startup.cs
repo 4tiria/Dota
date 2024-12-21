@@ -1,9 +1,12 @@
 using Domain.Mongo.API;
+using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
+using Dota.API.Hero.RabbitMq.DLX;
 using Dota.API.Hero.RabbitMq.Producers;
 using Dota.API.Mappers;
 using Dota.API.Models;
 using Dota.API.RabbitMQ;
+using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,6 +49,8 @@ public class Startup(IConfiguration configuration)
             .AddNoSql(_configuration)
             .AddSingleton<IHeroProducerService, HeroProducerService>()
             .AddSingleton<IHeroConsumerService, HeroConsumerService>()
+            .AddSingleton<IHeroDlxService, HeroDlxService>()
+            .AddSingleton<IStatisticsDlxService, StatisticsDlxService>()
             .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
 
         services
@@ -60,7 +65,7 @@ public class Startup(IConfiguration configuration)
                 serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
             .AddSingleton<IModel>(serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
 
-        services.AddHostedService<ConsumerBackgroundService>();
+        services.AddHostedService<HeroBackgroundService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
