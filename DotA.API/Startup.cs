@@ -14,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 
 namespace Dota.API;
 
@@ -53,17 +54,30 @@ public class Startup(IConfiguration configuration)
             .AddSingleton<IStatisticsDlxService, StatisticsDlxService>()
             .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
 
-        services
-            .AddSingleton<IConnectionFactory>(serviceProvider =>
-                new ConnectionFactory
+        var rabbitMQSettings = configuration.GetSection("RabbitMQ");
+        try
+        {
+            services
+                .AddSingleton<IConnectionFactory>(serviceProvider =>
                 {
-                    HostName = "localhost",
-                    UserName = "guest",
-                    Password = "guest"
+                    return new ConnectionFactory
+                    {
+                        HostName = rabbitMQSettings["HostName"],
+                        UserName = rabbitMQSettings["UserName"],
+                        Password = rabbitMQSettings["Password"]
+                    };
                 })
-            .AddSingleton<IConnection>(serviceProvider =>
-                serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
-            .AddSingleton<IModel>(serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
+                .AddSingleton<IConnection>(serviceProvider =>
+                    serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
+                .AddSingleton<IModel>(
+                    serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
+        }
+        catch (BrokerUnreachableException e)
+        {
+            Console.WriteLine(rabbitMQSettings["HostName"]);
+            throw;
+        }
+
 
         services.AddHostedService<HeroBackgroundService>();
     }

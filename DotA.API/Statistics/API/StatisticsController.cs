@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dota.API.Statistics.API;
 
-[ApiController, Route("api/statistics")]
+[ApiController]
+[Route("api/[controller]")]
 public class StatisticsController(IStatisticsProducerService statisticsProducerService)
 {
     [HttpPatch("update")]

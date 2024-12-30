@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
 COPY Common/Dota.Common/ Common/Dota.Common/
-COPY Domain/NoSql.Auth/ Domain/NoSql.Auth/
+COPY Domain/Mongo.Auth/ Domain/Mongo.Auth/
 COPY Dota.Auth/ Dota.Auth/
 
 RUN dotnet restore Dota.Auth/Dota.Auth.csproj

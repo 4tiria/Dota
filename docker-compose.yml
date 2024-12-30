@@ -9,7 +9,17 @@ services:
     volumes:
       - mongo-data:/data/db
 
-  dota-api:
+  rabbitmq:
+      image: rabbitmq:management
+      container_name: rabbitmq
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      environment:
+        - RABBITMQ_DEFAULT_USER=guest
+        - RABBITMQ_DEFAULT_PASS=guest
+
+  api:
     build:
       context: .
       dockerfile: Dota.API/Dockerfile
@@ -21,8 +31,9 @@ services:
       - MongoDB__DatabaseName=dota
     depends_on:
       - mongodb
+      - rabbitmq
 
-  dota-auth:
+  auth:
     build:
       context: .
       dockerfile: Dota.Auth/Dockerfile

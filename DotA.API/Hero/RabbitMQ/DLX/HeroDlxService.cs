@@ -55,5 +55,11 @@ public class HeroDlxService : IHeroDlxService
                 }
             }
         };
+
+        _channel.BasicConsume(
+            DlxQueue,
+            false,
+            _consumer
+        );
     }
 }

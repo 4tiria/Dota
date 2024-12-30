@@ -12,15 +12,22 @@ public class HeroBackgroundService(
 {
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        heroConsumerService.Consume();
-        logger.LogInformation("Listening for RabbitMQ messages on Dota.API");
+        try
+        {
+            heroConsumerService.Consume();
+            logger.LogInformation("Listening for RabbitMQ messages on Dota.API");
 
-        heroDlxService.Consume();
-        logger.LogInformation("DLX for Hero messages configured on Dota.API");
+            heroDlxService.Consume();
+            logger.LogInformation("DLX for Hero messages configured on Dota.API");
 
-        statisticsDlxService.Consume();
-        logger.LogInformation("DLX for Statistics messages configured on Dota.API");
-
+            statisticsDlxService.Consume();
+            logger.LogInformation("DLX for Statistics messages configured on Dota.API");
+        }
+        catch (Exception e)
+        {
+            logger.LogCritical(e.Message);
+        }
+        
         return Task.CompletedTask;
     }
 }

@@ -22,6 +22,10 @@ public class StatisticsDlxService : IStatisticsDlxService
         properties.Persistent = true;
 
         _consumer = new EventingBasicConsumer(_channel);
+
+        _channel.ExchangeDeclare(ExchangeName, "topic", true, false, null);
+        _channel.QueueDeclare(DlxQueue, true, false, false);
+        _channel.QueueBind(DlxQueue, ExchangeName, RoutingKey);
     }
 
     public void Consume()
@@ -57,12 +61,5 @@ public class StatisticsDlxService : IStatisticsDlxService
             false,
             _consumer
         );
-    }
-
-    public void Configure()
-    {
-        _channel.ExchangeDeclare(ExchangeName, "topic", true, false, null);
-        _channel.QueueDeclare(DlxQueue, true, false, false);
-        _channel.QueueBind(DlxQueue, ExchangeName, RoutingKey);
     }
 }

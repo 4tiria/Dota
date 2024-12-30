@@ -13,11 +13,13 @@ public class Program
             var migrator = build.Services.GetRequiredService<IMigratorService>();
             migrator.Execute();
         }
-        
+
         build.Run();
     }
 
-    public static IHostBuilder CreateHostBuilder(string[] args) =>
-        Host.CreateDefaultBuilder(args)
+    public static IHostBuilder CreateHostBuilder(string[] args)
+    {
+        return Host.CreateDefaultBuilder(args)
             .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
+    }
 }
