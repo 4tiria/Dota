@@ -35,6 +35,7 @@ builder.Services
     .AddSingleton<IHeroWinrateCalculatorService, HeroWinrateCalculatorService>()
     .AddSingleton<IMatchStatisticConsumerService, MatchStatisticConsumerService>();
 
+throw new Exception("asfdaofjisgijofgsiojfsdgiojdfgjidfgioijo");
 builder.Services.AddHostedService<HeroWinrateCalculatorBackgroundService>();
 builder.Services.AddHostedService<HeroWinrateConsumerBackgroundService>();
 builder.Services.AddHostedService<MatchConsumerBackgroundService>();

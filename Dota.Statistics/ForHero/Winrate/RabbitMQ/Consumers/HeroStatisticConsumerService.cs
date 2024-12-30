@@ -27,7 +27,6 @@ public class HeroStatisticConsumerService : IHeroStatisticConsumerService
         _context = context;
         _heroWinrateCalculatorService = heroWinrateCalculatorService;
         _channel = channel;
-
         channel.ExchangeDeclare(ExchangeName, "topic", true, false, null);
         channel.QueueDeclare(QueueName, true, false, false, null);
         channel.QueueBind(QueueName, ExchangeName, RoutingKey);
