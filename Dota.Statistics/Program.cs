@@ -16,17 +16,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBStatistics"));
 builder.Services.Configure<Domain.Mongo.API.MongoDbSettings>(builder.Configuration.GetSection("MongoDBApi"));
 
+var rabbitMQSettings = builder.Configuration.GetSection("RabbitMQ");
 builder.Services
     .AddSingleton<IConnectionFactory>(serviceProvider =>
-        new ConnectionFactory
+    {
+        return new ConnectionFactory
         {
-            HostName = "localhost",
-            UserName = "guest",
-            Password = "guest"
-        })
+            HostName = rabbitMQSettings["HostName"],
+            UserName = rabbitMQSettings["UserName"],
+            Password = rabbitMQSettings["Password"]
+        };
+    })
     .AddSingleton<IConnection>(serviceProvider =>
         serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
-    .AddSingleton<IModel>(serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel())
+    .AddSingleton<IModel>(
+        serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel())
     .AddTransient<Domain.Mongo.API.MongoDbContext>()
     .AddTransient<MongoDbContext>()
     .AddSingleton<IHeroStatisticProducerService, HeroStatisticProducerService>()
@@ -35,7 +39,6 @@ builder.Services
     .AddSingleton<IHeroWinrateCalculatorService, HeroWinrateCalculatorService>()
     .AddSingleton<IMatchStatisticConsumerService, MatchStatisticConsumerService>();
 
-throw new Exception("asfdaofjisgijofgsiojfsdgiojdfgjidfgioijo");
 builder.Services.AddHostedService<HeroWinrateCalculatorBackgroundService>();
 builder.Services.AddHostedService<HeroWinrateConsumerBackgroundService>();
 builder.Services.AddHostedService<MatchConsumerBackgroundService>();

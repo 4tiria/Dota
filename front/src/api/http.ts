@@ -1,16 +1,16 @@
 ﻿import axios from "axios";
-import {ACCESS_TOKEN_KEY} from "../store/store";
-import {AuthResponse} from "../models/dto/responses/AuthResponse";
+import { AuthResponse } from "../models/dto/responses/AuthResponse";
+import { ACCESS_TOKEN_KEY } from "../store/store";
 
 //todo: 1. Interceptors - на сервере или на клиенте? -------------------------- ГОТОВО
 //todo: 2. Refresh Token - сделать тоже jwt, это важно ------------------------ ГОТОВО 
 //todo: 3. Cookie для Refresh Token, причем httpOnly -------------------------- ГОТОВО 
-//todo: 4. Почта и подтверждение
+//todo: 4. Почта и подтверждение  --------------------------------------------- ГОТОВО 
 //todo: 5. Вынести аутентификацию и авторизацию в отдельный проект
 
 
-export const baseApiUrl = "http://localhost:5000/api";
-export const baseAuthUrl = "http://localhost:5001/auth";
+export const baseApiUrl = "http://api:5000/api";
+export const baseAuthUrl = "http://auth:5001/auth";
 
 export const api = axios.create({
     withCredentials: true,

@@ -14,7 +14,6 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
 
 namespace Dota.API;
 
@@ -55,29 +54,20 @@ public class Startup(IConfiguration configuration)
             .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
 
         var rabbitMQSettings = configuration.GetSection("RabbitMQ");
-        try
-        {
-            services
-                .AddSingleton<IConnectionFactory>(serviceProvider =>
+        services
+            .AddSingleton<IConnectionFactory>(serviceProvider =>
+            {
+                return new ConnectionFactory
                 {
-                    return new ConnectionFactory
-                    {
-                        HostName = rabbitMQSettings["HostName"],
-                        UserName = rabbitMQSettings["UserName"],
-                        Password = rabbitMQSettings["Password"]
-                    };
-                })
-                .AddSingleton<IConnection>(serviceProvider =>
-                    serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
-                .AddSingleton<IModel>(
-                    serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
-        }
-        catch (BrokerUnreachableException e)
-        {
-            Console.WriteLine(rabbitMQSettings["HostName"]);
-            throw;
-        }
-
+                    HostName = rabbitMQSettings["HostName"],
+                    UserName = rabbitMQSettings["UserName"],
+                    Password = rabbitMQSettings["Password"]
+                };
+            })
+            .AddSingleton<IConnection>(serviceProvider =>
+                serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
+            .AddSingleton<IModel>(
+                serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
 
         services.AddHostedService<HeroBackgroundService>();
     }
