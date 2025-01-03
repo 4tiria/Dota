@@ -5,3 +5,4 @@ front/node_modules/
 data/
 **/Debug/
 .idea
+Common/Dota.Common/Common/Debug

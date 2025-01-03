@@ -4,20 +4,50 @@ services:
   mongodb:
     image: mongo:latest
     container_name: mongodb
+    networks:
+      - default
     ports:
       - "27017:27017"
     volumes:
       - mongo-data:/data/db
+      - ./mongo-keyfile:/data/configdb/keyfile
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+      - ./mongod.conf:/etc/mongod.conf
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: admin
+    entrypoint:
+      - bash
+      - -c
+      - |
+          chmod 400 -R /data/configdb/keyfile
+          chown 999:999 -R /data/configdb/keyfile
+          exec docker-entrypoint.sh $$@
+    command: "mongod --config /etc/mongod.conf --bind_ip_all --replSet rsdota --keyFile /data/configdb/keyfile"
+    healthcheck:
+      test: test $$(mongosh -u admin -p admin --authenticationDatabase admin --port 27017 --quiet --eval "try {rs.initiate({_id:'rsdota',members:[{_id:0,host:\"mongo:27017\"}]})} catch(e) {rs.status().ok}") -eq 1
+      interval: 10s
+      start_period: 2s
 
   rabbitmq:
-      image: rabbitmq:management
-      container_name: rabbitmq
-      ports:
-        - "5672:5672"
-        - "15672:15672"
-      environment:
-        - RABBITMQ_DEFAULT_USER=guest
-        - RABBITMQ_DEFAULT_PASS=guest
+    image: rabbitmq:management
+    container_name: rabbitmq
+    networks:
+      - default
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: >
+        rabbitmqctl await_startup && rabbitmq-diagnostics -q check_port_listener 5672 || exit 1
+      interval: 10s
+      timeout: 10s
+      start_period: 7s
+      retries: 3
 
   api:
     build:
@@ -26,13 +56,18 @@ services:
     container_name: api      
     ports:
       - "5000:8080"
+    networks:
+      - default
     environment:
-      - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
+      - MongoDB__ConnectionURI=mongodb://admin:admin@mongodb:27017,mongodb:27018,mongodb:27019/dota?replicaSet=rsdota&authSource=admin
       - MongoDB__DatabaseName=dota
     depends_on:
-      - mongodb
-      - rabbitmq
-      - statistics
+      mongodb:
+        condition: service_started
+      statistics:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   auth:
     build:
@@ -41,6 +76,8 @@ services:
     container_name: auth
     ports:
       - "5001:8080"
+    networks:
+      - default
     environment:
       - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
       - MongoDB__DatabaseName=dota-auth
@@ -54,21 +91,32 @@ services:
     container_name: statistics      
     ports:
       - "5002:8080"
+    networks:
+      - default
     environment:
       - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
       - MongoDB__DatabaseName=dota-statistics
     depends_on:
-      - mongodb
-      - rabbitmq
+      mongodb:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
   front:
-      build:
-        context: ./front
-        dockerfile: Dockerfile 
-      container_name: front
-      ports:
-        - "3000:3000"
-      environment:
-        - NODE_ENV=production
+    build:
+      context: ./front
+      dockerfile: Dockerfile 
+    container_name: front
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+    environment:
+      - NODE_ENV=production
+
 volumes:
   mongo-data:
+
+networks:
+  default:
+    name: dota_network
