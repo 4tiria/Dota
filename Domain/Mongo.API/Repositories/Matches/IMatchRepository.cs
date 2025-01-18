@@ -1,7 +1,7 @@
 ﻿using Domain.Mongo.API.Models;
 using MongoDB.Bson;
 
-namespace Domain.Mongo.API.Matches.Repository;
+namespace Domain.Mongo.API;
 
 public interface IMatchRepository
 {

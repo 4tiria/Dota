@@ -1,21 +1,19 @@
-﻿using System.Collections.Generic;
-using Dota.API.Models.EntitiesJs;
+﻿using Dota.API.Models.EntitiesJs;
 using Newtonsoft.Json;
 
-namespace Dota.API.Models.FilterModels
+namespace Dota.API.Models.FilterModels;
+
+public class HeroFilterModel
 {
-    public class HeroFilterModel
-    {
-        [JsonProperty("name")]
-        public string Name { get; set; }
-        
-        [JsonProperty("mainAttribute")]
-        public string MainAttribute { get; set; }
-        
-        [JsonProperty("attackType")]
-        public string AttackType { get; set; }
-        
-        [JsonProperty("tags")]
-        public List<TagJs> Tags { get; set; }
-    }
+    [JsonProperty("name")]
+    public string Name { get; set; }
+
+    [JsonProperty("mainAttribute")]
+    public string MainAttribute { get; set; }
+
+    [JsonProperty("attackType")]
+    public string AttackType { get; set; }
+
+    [JsonProperty("roles")]
+    public List<HeroRoleJs> Roles { get; set; }
 }

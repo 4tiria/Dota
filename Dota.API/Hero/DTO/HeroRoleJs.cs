@@ -1,6 +1,6 @@
 ﻿namespace Dota.API.Models.EntitiesJs;
 
-public enum TagJs
+public enum HeroRoleJs
 {
     Strength = 0,
     Agility = 1,
@@ -12,5 +12,5 @@ public enum TagJs
     Escape = 7,
     Durable = 8,
     Disabler = 9,
-    Initiator = 10,
+    Initiator = 10
 }

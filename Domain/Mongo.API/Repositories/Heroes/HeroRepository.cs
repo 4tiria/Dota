@@ -1,6 +1,6 @@
 ﻿using Domain.Mongo.API;
 using Domain.Mongo.API.Models;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.GridFS;
 
@@ -8,9 +8,9 @@ namespace Domain.Mongo.API.Heroes.Repository;
 
 public class HeroRepository(MongoDbContext context) : IHeroRepository
 {
+    private readonly GridFSBucket _gridFS = context.GridFS;
     private readonly IMongoCollection<Hero> _heroes = context.Heroes;
     private readonly IMongoCollection<Match> _matches = context.Matches;
-    private readonly GridFSBucket _gridFS = context.GridFS;
 
     public async Task<List<Hero>> GetHeroesAsync()
     {
@@ -30,19 +30,18 @@ public class HeroRepository(MongoDbContext context) : IHeroRepository
     public async Task UpdateHeroAsync(Hero updatedHero)
     {
         var existingHero = await GetHeroByIdAsync(updatedHero.Id);
-        if (existingHero != null)
-        {
-            await _heroes.ReplaceOneAsync(hero => hero.Id == updatedHero.Id, updatedHero);
-        }
+        if (existingHero != null) await _heroes.ReplaceOneAsync(hero => hero.Id == updatedHero.Id, updatedHero);
     }
 
     public async Task DeleteHeroAsync(ObjectId id)
     {
         var hero = await GetHeroByIdAsync(id);
-        if (hero != null)
-        {
-            await _heroes.DeleteOneAsync(h => h.Id == id);
-        }
+        if (hero != null) await _heroes.DeleteOneAsync(h => h.Id == id);
+    }
+
+    public void DeleteAll()
+    {
+        _heroes.DeleteMany(hero => true);
     }
 
     //public async Task CreateHeroAsync(Hero hero, byte[] imageData, string fileName)
@@ -96,10 +95,5 @@ public class HeroRepository(MongoDbContext context) : IHeroRepository
     public async Task DeleteImageAsync(ObjectId id)
     {
         await _gridFS.DeleteAsync(id);
-    }
-
-    public void DeleteAll()
-    {
-        _heroes.DeleteMany(hero => true);
     }
 }

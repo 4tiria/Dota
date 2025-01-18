@@ -6,7 +6,7 @@ using MongoDB.Driver;
 namespace Domain.Mongo.API.Migrator;
 
 public class MigratorService(
-    ILogger<MigratorService> logger, 
+    ILogger<MigratorService> logger,
     IEnumerable<IMigration> migrations,
     IMongoClient client,
     MongoDbContext context,
@@ -15,7 +15,7 @@ public class MigratorService(
     public void Execute()
     {
         var lastMigration = migrationRepository.GetCurrentDbVersion();
-        
+
         var migrationList = migrations.Where(migration => migration.Version > lastMigration).ToList();
 
         if (migrationList.Count == 0)
@@ -24,22 +24,19 @@ public class MigratorService(
             return;
         }
 
-        if (lastMigration == 0)
-        {
-            client.DropDatabase("dota");
-        }
-        
+        if (lastMigration == 0) client.DropDatabase("dota");
+
         logger.LogInformation("Executing migrator service, applying {count} migrations", migrationList.Count);
         foreach (var migration in migrationList)
         {
-            logger.LogInformation("Executing migration {version}/{count}: {name}", 
-                migration.Version + lastMigration, migrationList.Count + lastMigration, migration.GetType().Name);
+            logger.LogInformation("Executing migration {version}/{count}: {name}",
+                migration.Version, migrationList.Count + lastMigration, migration.GetType().Name);
 
             RunTransaction(session => { migration.Upgrade(context, session); });
             migrationRepository.Add(migration.Version);
         }
     }
-    
+
     private void RunTransaction(Action<IClientSessionHandle> operation)
     {
         using var session = client.StartSession();

@@ -1,7 +1,6 @@
 ﻿using Domain.Mongo.API.Models;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-
 using MongoDB.Driver.GridFS;
 
 namespace Domain.Mongo.API;
@@ -21,5 +20,5 @@ public class MongoDbContext
     public IMongoCollection<News> News => _database.GetCollection<News>("News");
     public IMongoCollection<Hero> Heroes => _database.GetCollection<Hero>("Heroes");
     public IMongoCollection<Match> Matches => _database.GetCollection<Match>("Matches");
-    public IMongoCollection<global::Domain.Mongo.API.Models.Migration> Migrations => _database.GetCollection<global::Domain.Mongo.API.Models.Migration>("Migrations");
+    public IMongoCollection<Models.Migration> Migrations => _database.GetCollection<Models.Migration>("Migrations");
 }

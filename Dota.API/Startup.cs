@@ -1,4 +1,5 @@
 using Domain.Mongo.API;
+using Domain.Mongo.API.Mappers;
 using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.DLX;
@@ -23,7 +24,11 @@ public class Startup(IConfiguration configuration)
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(AppMappingProfile));
+        services
+            .AddAutoMapper(
+                typeof(AppMappingProfile), 
+                typeof(SeedHeroProfile));
+
         AddAuthentication(services);
         services
             .AddMvc()
