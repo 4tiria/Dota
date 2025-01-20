@@ -1,4 +1,4 @@
-import { Tag } from "../models/Tag";
+import { Role } from "../models/Role";
 
 function createEnumFromStringFunction<T>(enumObj: T) {
     return (tagName: string): T[keyof T] | undefined => {
@@ -6,8 +6,8 @@ function createEnumFromStringFunction<T>(enumObj: T) {
     };
 }
 
-export const getTagFromString = createEnumFromStringFunction(Tag);
+export const getTagFromString = createEnumFromStringFunction(Role);
 
-export const getAllTags = (): Tag[] => {
-    return Object.values(Tag).filter(value => typeof value === 'number') as Tag[]
+export const getAllTags = (): Role[] => {
+    return Object.values(Role).filter(value => typeof value === 'number') as Role[]
 }

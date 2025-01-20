@@ -1,27 +1,27 @@
-﻿import React, {useEffect, useState} from 'react';
-import {Hero} from "../../models/Hero";
-import {useNavigate, useParams} from "react-router-dom";
-import {deleteHero, getById, getByName, updateHero} from "../../api/heroApi";
-import "./HeroInfo.scss";
+﻿import { Box, Paper } from "@mui/material";
+import React, { useEffect, useState } from 'react';
 import "react-bootstrap";
-import "../../styles/App.scss"
-import HeroName from "./HeroName";
-import HeroAttribute from "./HeroAttribute";
-import HeroTags from "./HeroTags";
-import HeroAttackType from "./HeroAttackType";
 import Modal from 'react-bootstrap/Modal';
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { deleteHero, getById, getByName, updateHero } from "../../api/heroApi";
+import { HeroImageSize } from "../../globalConstants";
+import { User } from "../../models/dto/User";
+import { Hero } from "../../models/Hero";
+import { IRootState } from "../../store/store";
+import "../../styles/App.scss";
+import HeroAttackType from "./HeroAttackType";
+import HeroAttribute from "./HeroAttribute";
 import HeroImage from "./HeroImage";
-import {HeroImageSize} from "../../globalConstants";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store/store";
-import {User} from "../../models/dto/User";
-import {Box, Paper} from "@mui/material";
+import "./HeroInfo.scss";
+import HeroName from "./HeroName";
+import HeroTags from "./HeroTags";
 
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Tag } from '../../models/Tag';
+import { Role } from '../../models/Role';
 
 export const HeroInfo = () => {
     const params = useParams();
@@ -33,7 +33,7 @@ export const HeroInfo = () => {
     const [heroName, setHeroName] = useState('');
     const [heroAttackType, setHeroAttackType] = useState('');
     const [heroAttribute, setHeroAttribute] = useState('');
-    const [tags, setHeroTags] = useState<Tag[]>([]);
+    const [tags, setHeroTags] = useState<Role[]>([]);
 
     const user = useSelector<IRootState, User>(state => state.user);
 
@@ -57,7 +57,7 @@ export const HeroInfo = () => {
     function startEdit() {
         setEditMode(true);
         setHeroName(hero.name);
-        setHeroTags(hero.tags);
+        setHeroTags(hero.roles);
         setHeroAttribute(hero.mainAttribute);
         setHeroAttackType(hero.attackType);
     }

@@ -15,5 +15,5 @@ public class HeroFilterModel
     public string AttackType { get; set; }
 
     [JsonProperty("roles")]
-    public List<HeroRoleJs> Roles { get; set; }
+    public List<string> Roles { get; set; }
 }

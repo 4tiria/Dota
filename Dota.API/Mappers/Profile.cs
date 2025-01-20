@@ -2,7 +2,6 @@
 using Domain.Mongo.API.Models;
 using Dota.API.Helpers;
 using Dota.API.Models.EntitiesJs;
-using MongoDB.Bson;
 
 namespace Dota.API.Mappers;
 
@@ -10,33 +9,24 @@ public class AppMappingProfile : Profile
 {
     public AppMappingProfile()
     {
-        CreateMap<Domain.Mongo.API.Hero, HeroJs>();
+        CreateMap<Domain.Mongo.API.Hero, HeroJs>()
+            .ForMember(hero => hero.Name, dest => dest.MapFrom(src => src.LocalizedName));
+
         CreateMap<HeroInMatch, HeroInMatchJs>();
 
-        _ = CreateMap<Match, MatchJs>()
-            .ForMember(x => x.Id,
+        CreateMap<Match, MatchJs>()
+            .ForMember(matchJs => matchJs.Id,
                 dest => dest.MapFrom(
                     src => src.Id.ToString()))
-            .ForMember(x => x.Start,
+            .ForMember(matchJs => matchJs.Start,
                 dest => dest.MapFrom(
                     src => src.Start.ToLong()))
-            .ForMember(x => x.End,
+            .ForMember(matchJs => matchJs.End,
                 dest => dest.MapFrom(
                     src => src.End.ToLong()))
-            .ForMember(x => x.DaysAgo,
+            .ForMember(matchJs => matchJs.DaysAgo,
                 dest => dest.MapFrom(
                     src => GetDaysAgo(src.Start)));
-
-        _ = CreateMap<MatchJs, Match>()
-            .ForMember(x => x.Id,
-                dest => dest.MapFrom(
-                    src => new ObjectId(src.Id)))
-            .ForMember(x => x.Start,
-                dest => dest.MapFrom(
-                    src => src.Start.ToDateTime()))
-            .ForMember(x => x.End,
-                dest => dest.MapFrom(
-                    src => src.End.ToDateTime()));
     }
 
     private int GetDaysAgo(DateTime dateTime)

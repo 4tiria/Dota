@@ -5,7 +5,6 @@ using Dota.API.Models.DTO;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
 using Dota.API.RabbitMQ;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -26,39 +25,35 @@ public class HeroController(
         return Ok(apiContext.Heroes.Find(hero => true).ToEnumerable().Select(mapper.Map<HeroJs>));
     }
 
-    [HttpGet("list/{roleName}")]
-    public IActionResult GetHeroesByTag(string roleName)
-    {
-        roleName = roleName.ToLower();
-        return Ok(apiContext.Heroes
-            .Find(hero => hero.Roles.Any(t => t == roleName))
-            .ToList()
-            .Select(mapper.Map<HeroRoleJs>)
-        );
-    }
-
     [HttpPost("list/filter")]
     public IActionResult GetFilteredHeroes([FromBody] HeroFilterModel filterOptions)
     {
-        var result = apiContext.Heroes.Find(hero => true).ToEnumerable();
+        var result = mapper.Map<List<HeroJs>>(apiContext.Heroes.Find(hero => true)).AsEnumerable();
 
-        if (filterOptions.AttackType != "All") result = result.Where(x => x.AttackType == filterOptions.AttackType);
+        if (filterOptions.AttackType != "All")
+        {
+            result = result.Where(hero => hero.AttackType == filterOptions.AttackType);
+        }
 
         if (filterOptions.MainAttribute != "All")
+        {
             result = result.Where(x => x.MainAttribute == filterOptions.MainAttribute);
+        }
 
         if (filterOptions.Roles.Any())
+        {
             result = result
                 .ToList()
                 .Where(x => x.Roles
                     .ToHashSet()
-                    .IsSupersetOf(filterOptions.Roles.Select(Enum.GetName)));
+                    .IsSupersetOf(filterOptions.Roles));
+        }
 
         if (filterOptions.Name.Length > 0)
         {
             var lowerNameFilter = filterOptions.Name.ToLower().TrimStart().TrimEnd();
             result = result.Where(hero =>
-                hero.LocalizedName.StartsWith(lowerNameFilter, StringComparison.CurrentCultureIgnoreCase));
+                hero.Name.StartsWith(lowerNameFilter, StringComparison.CurrentCultureIgnoreCase));
         }
 
         return Ok(result.ToList().Select(mapper.Map<HeroJs>));
@@ -71,11 +66,12 @@ public class HeroController(
             .Find(h => h.LocalizedName == camelCaseNameJs.FromCamelCase());
 
         if (hero is null)
+        {
             return NotFound();
+        }
 
         return Ok(mapper.Map<HeroJs>(hero));
     }
-
 
     [HttpGet("{id}")]
     public IActionResult GetHeroById(string id)
@@ -84,27 +80,11 @@ public class HeroController(
             .Find(h => h.Id == ObjectId.Parse(id));
 
         if (hero is null)
+        {
             return NotFound();
+        }
 
         return Ok(mapper.Map<HeroJs>(hero));
-    }
-
-    [HttpPatch]
-    [Authorize(Roles = "Admin")]
-    public IActionResult Update([FromBody] HeroJs heroJs)
-    {
-        var heroInContext = apiContext.Heroes
-            .Find(hero => hero.Id == ObjectId.Parse(heroJs.Id)).Single();
-
-        if (heroInContext is null)
-            return NotFound();
-
-        heroInContext.LocalizedName = heroJs.Name;
-        heroInContext.MainAttribute = heroJs.MainAttribute;
-        heroInContext.AttackType = heroJs.AttackType;
-        heroInContext.Roles = heroJs.Roles.Select(Enum.GetName).ToList();
-
-        return Ok();
     }
 
     [HttpGet("getWinrate")]

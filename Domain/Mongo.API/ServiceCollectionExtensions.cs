@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<IMigration, _001_Seed>()
             .AddTransient<IMigration, _002_AddHeroes>()
             .AddTransient<IMigration, _003_AddMockMatches>()
+            .AddTransient<IMigration, _004_SetHeroIconLinks>()
             .AddTransient<IMigrationRepository, MigrationRepository>()
             .AddTransient<IMigratorService, MigratorService>()
             .AddTransient<IHeroRepository, HeroRepository>()

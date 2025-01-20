@@ -12,6 +12,7 @@ using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson.Serialization.Conventions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RabbitMQ.Client;
@@ -50,6 +51,12 @@ public class Startup(IConfiguration configuration)
 
         services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
 
+        var conventionPack = new ConventionPack
+        {
+            new EnumRepresentationConvention(MongoDB.Bson.BsonType.String)
+        };
+        ConventionRegistry.Register("EnumAsString", conventionPack, type => type.IsEnum);
+        
         services
             .AddNoSql(_configuration)
             .AddSingleton<IHeroProducerService, HeroProducerService>()

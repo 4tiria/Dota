@@ -1,4 +1,6 @@
-﻿using MongoDB.Bson;
+﻿using Domain.Mongo.API.Converters;
+using Domain.Mongo.API.Models;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Domain.Mongo.API;
@@ -11,9 +13,12 @@ public class Hero
     public string LocalizedName { get; set; }
 
     public string UnderscoreName { get; set; }
-    public string AttackType { get; set; }
 
-    public string MainAttribute { get; set; }
+    [BsonSerializer(typeof(EnumToStringSerializer<AttackType>))]
+    public AttackType AttackType { get; set; }
+
+    [BsonSerializer(typeof(EnumToStringSerializer<MainAttribute>))]
+    public MainAttribute MainAttribute { get; set; }
 
     public string ImageLink { get; set; }
 

@@ -34,10 +34,10 @@
 
     <Target Name="CopyAssets" AfterTargets="Build">
         <ItemGroup>
-            <Assets Include="..\assets\**\*"/>
+            <assets Include="..\assets\**\*"/>
         </ItemGroup>
         <Message Text="Copying 'assets' into '$(OutputPath)assets'" Importance="high"/>
-        <Copy SourceFiles="@(Assets)" DestinationFolder="$(OutputPath)assets\%(RecursiveDir)"/>
+        <Copy SourceFiles="@(assets)" DestinationFolder="$(OutputPath)assets\%(RecursiveDir)"/>
     </Target>
 
     <ItemGroup>

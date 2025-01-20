@@ -1,5 +1,5 @@
-﻿import { Tag } from "../../models/Tag";
-import {IHeroFilterAction, HeroFilterOptions} from "../reducers/heroFilterOptionsReducer";
+﻿import { Role } from "../../models/Role";
+import { HeroFilterOptions, IHeroFilterAction } from "../reducers/heroFilterOptionsReducer";
 
 export const updateHeroNameFilter = (name: string) => {
     return {type: HeroFilterOptions.NAME, payload: name};
@@ -13,7 +13,7 @@ export const updateHeroMainAttributeFilter = (attribute: string): IHeroFilterAct
     return {type: HeroFilterOptions.ATTRIBUTE, payload: attribute};
 };
 
-export const updateHeroTagsFilter = (tags: Tag[]) : IHeroFilterAction => {
+export const updateHeroTagsFilter = (tags: Role[]) : IHeroFilterAction => {
     return {type: HeroFilterOptions.TAGS, payload: tags};
 };
 

@@ -1,18 +1,18 @@
-﻿import React, {useEffect, useState} from 'react';
-import {Hero} from "../../models/Hero";
-import "./HeroList.scss"
-import "../../styles/App.scss";
-import {useNavigate} from "react-router-dom";
-import {ToCamelCase} from "../../helpers/stringHelper";
-import {IoAdd, IoCloseOutline} from "react-icons/io5";
-import {addEmptyHero} from "../../api/heroApi";
-import {ICallBack} from "../interfaces/ICallBack";
-import {GiBroadsword, GiPocketBow} from "react-icons/gi";
-import {attributes} from "../../styles/attributes";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store/store";
-import {User} from "../../models/dto/User";
+﻿import React, { useEffect, useState } from 'react';
+import { GiBroadsword, GiPocketBow } from "react-icons/gi";
+import { IoAdd, IoCloseOutline } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addEmptyHero } from "../../api/heroApi";
 import { AssetImage } from '../../assets/AssetImage';
+import { ToCamelCase } from "../../helpers/stringHelper";
+import { User } from "../../models/dto/User";
+import { Hero } from "../../models/Hero";
+import { IRootState } from "../../store/store";
+import "../../styles/App.scss";
+import { attributes } from "../../styles/attributes";
+import { ICallBack } from "../interfaces/ICallBack";
+import "./HeroList.scss";
 
 interface IHeroInList extends ICallBack<Hero> {
     hero: Hero;
@@ -93,7 +93,7 @@ const HeroInList: React.FC<IHeroInList> = (
     function renderTags() {
         return (
             <div className="d-flex justify-content-between tag">
-                <div>{hero.tags?.map(tag =>
+                <div>{hero.roles?.map(tag =>
                     <span className="badge bg-secondary mx-1" key={tag}>{tag}</span>
                 )}</div>
             </div>

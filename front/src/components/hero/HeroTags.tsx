@@ -1,30 +1,30 @@
-﻿import React, {useEffect, useState} from 'react';
-import {IEditable} from "../interfaces/IEditable";
-import {ICallBack} from "../interfaces/ICallBack";
-import {Hero} from "../../models/Hero";
-import { Tag } from '../../models/Tag';
+﻿import React, { useEffect, useState } from 'react';
+import { Hero } from "../../models/Hero";
+import { Role } from '../../models/Role';
+import { ICallBack } from "../interfaces/ICallBack";
+import { IEditable } from "../interfaces/IEditable";
 
-interface IHeroTags extends IEditable, ICallBack<Tag[]> {
+interface IHeroTags extends IEditable, ICallBack<Role[]> {
     hero: Hero;
 }
 
 class TagSelection {
-    tag: Tag;
+    tag: Role;
     isSelected: boolean;
 }
 
 const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
-    const [tags, setHeroTags] = useState<Tag[]>(hero.tags);
-    const [tagPull, setTagPull] = useState<Tag[]>([]);
+    const [tags, setHeroTags] = useState<Role[]>(hero.roles);
+    const [tagPull, setTagPull] = useState<Role[]>([]);
     const [allTags, setAllTags] = useState<TagSelection[]>();
 
     useEffect(() => {
-        const tags = Object.values(Tag).filter(value => typeof value === 'number') as Tag[];
+        const tags = Object.values(Role).filter(value => typeof value === 'number') as Role[];
         setAllTags(tags.map(t => {
-            return {tag: t, isSelected: hero.tags.includes(t)};
+            return {tag: t, isSelected: hero.roles.includes(t)};
         }));
 
-        setTagPull(tags.filter(t => !hero.tags.includes(t)));
+        setTagPull(tags.filter(t => !hero.roles.includes(t)));
     }, []);
 
     function changeTag(ts: TagSelection) {
@@ -36,24 +36,24 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
         ts.isSelected = !ts.isSelected;
     }
 
-    function addTag(tag: Tag) {
-        setTagPull(previousState => previousState.filter(t => t !== tag).sort((a, b) => Tag[a].localeCompare(Tag[b])))
+    function addTag(tag: Role) {
+        setTagPull(previousState => previousState.filter(t => t !== tag).sort((a, b) => Role[a].localeCompare(Role[b])))
         setHeroTags(previousState => {
-                let newTagArray = [...previousState, tag].sort((a, b) => Tag[a].localeCompare(Tag[b]));
+                let newTagArray = [...previousState, tag].sort((a, b) => Role[a].localeCompare(Role[b]));
                 callBackFunction(newTagArray);
                 return newTagArray;
             }
         );
     }
 
-    function removeTag(tag: Tag) {
+    function removeTag(tag: Role) {
         setHeroTags(previousState => {
-                let newTagArray = previousState.filter(t => t !== tag).sort((a, b) => Tag[a].localeCompare(Tag[b]));
+                let newTagArray = previousState.filter(t => t !== tag).sort((a, b) => Role[a].localeCompare(Role[b]));
                 callBackFunction(newTagArray);
                 return newTagArray;
             }
         );
-        setTagPull(previousState => [...previousState, tag].sort((a, b) => Tag[a].localeCompare(Tag[b])));
+        setTagPull(previousState => [...previousState, tag].sort((a, b) => Role[a].localeCompare(Role[b])));
     }
 
     function renderTwoPulls() {
@@ -83,7 +83,7 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
         }
 
         return (<div className="hero-tags">
-            {hero?.tags.map(tag => {
+            {hero?.roles.map(tag => {
                 return <div
                     className="btn btn-sm hero-tag hero-tag-own" key={tag}>{tag}</div>
             })}</div>)
@@ -110,7 +110,7 @@ const HeroTags: React.FC<IHeroTags> = ({hero, editMode, callBackFunction}) => {
 
         return (
             <div className="hero-tags">
-                {hero?.tags.map(tag => {
+                {hero?.roles.map(tag => {
                     return <div
                         className="btn btn-sm hero-tag hero-tag-own" key={tag}>{tag}</div>
                 })}</div>

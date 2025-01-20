@@ -17,8 +17,7 @@ public class HeroJs
     public string MainAttribute { get; set; }
 
     [JsonProperty("roles")]
-    public List<HeroRoleJs> Roles { get; set; } = [];
+    public List<string> Roles { get; set; } = [];
 
-    [JsonProperty("winrate")]
-    public float Winrate { get; set; }
+    public string ImageLink { get; set; }
 }

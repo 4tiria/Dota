@@ -1,10 +1,10 @@
-﻿import {Tag} from "../Tag";
+﻿import { Role } from "../Role";
 
 export class HeroFilterModel{
     name: string;
     mainAttribute: string;
     attackType: string;
-    tags: Tag[];
+    tags: Role[];
     
     constructor() {
         this.name = '';
