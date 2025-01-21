@@ -1,6 +1,6 @@
-﻿import {HeroFilterModel} from "../../models/filterModels/heroFilter";
+﻿import { HeroFilterModel } from "../../models/filterModels/heroFilter";
 
-const initialState: HeroFilterModel = {name: '', attackType: 'All', mainAttribute: 'All', tags: []};
+const initialState: HeroFilterModel = {name: '', attackType: 'All', mainAttribute: 'All', roles: []};
 
 export enum HeroFilterOptions {
     NAME = "NAME",
@@ -25,7 +25,7 @@ export const heroFilterOptionsReducer = (state = initialState,
         case HeroFilterOptions.ATTRIBUTE:
             return {...state, mainAttribute: action.payload};
         case HeroFilterOptions.TAGS:
-            return {...state, tags: action.payload};
+            return {...state, roles: action.payload};
         default:
         case HeroFilterOptions.RESET:
             return {...initialState};

@@ -1,79 +1,34 @@
-﻿import React, { useEffect, useState } from 'react';
+﻿import React, { useState } from 'react';
 import { GiBroadsword, GiPocketBow } from "react-icons/gi";
-import { IoAdd, IoCloseOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { addEmptyHero } from "../../api/heroApi";
-import { AssetImage } from '../../assets/AssetImage';
 import { ToCamelCase } from "../../helpers/stringHelper";
-import { User } from "../../models/dto/User";
-import { Hero } from "../../models/Hero";
+import { AttackType, Hero } from "../../models/Hero";
 import { IRootState } from "../../store/store";
 import "../../styles/App.scss";
 import { attributes } from "../../styles/attributes";
-import { ICallBack } from "../interfaces/ICallBack";
 import "./HeroList.scss";
 
-interface IHeroInList extends ICallBack<Hero> {
+interface IHeroInList {
     hero: Hero;
-    isAddButton: boolean;
-    isEmpty: boolean;
-    hasNoFilters: boolean
 }
 
 const light = 'rgba(255,255,255,0.9)';
 const dark = 'rgba(0,0,0,0.8)';
 
-const HeroInList: React.FC<IHeroInList> = (
-    {
-        hero,
-        callBackFunction,
-        isAddButton = false,
-        isEmpty = false,
-        hasNoFilters = false
-    }) => {
-
-    const [heroPngPath, setHeroPngPath] = useState<string>(null);
+const HeroInList: React.FC<IHeroInList> = ({hero}) => {
     const [isHovering, setIsHovering] = useState(false);
-    const [crossIsHovered, setCrossIsHovered] = useState(false);
 
-    const user = useSelector<IRootState, User>(state => state.user);
     const themeMode = useSelector<IRootState, Palette>(state => state.palette);
     let navigate = useNavigate();
 
-    useEffect(() => {
-        if(hero) {
-            const imageAsset = new AssetImage(hero.image);
-            setHeroPngPath(imageAsset.path);
-        } else {
-            
-        }
-    }, []);
-
     function addOrRedirectToHero() {
-        if (isEmpty) {
-            return;
-        }
-
-        if (isAddButton) {
-            addEmptyHero().then(response => {
-                navigate(`../hero/${response.id}`);
-            });
-
-            return;
-        }
-
-        if (crossIsHovered) {
-            callBackFunction(hero);
-            return;
-        }
-
         let urlHeroName = ToCamelCase(hero?.name);
         navigate(`../hero/${urlHeroName}`);
     }
 
     function renderAttackType() {
-        return (<div className="attack-type">{hero?.attackType === "Melee"
+        return (<div className="attack-type">{hero?.attackType === AttackType.Melee
             ? <GiBroadsword/>
             : <GiPocketBow/>
         }</div>);
@@ -84,7 +39,7 @@ const HeroInList: React.FC<IHeroInList> = (
             <div
                 className="main-attribute"
                 style={{
-                    'color': attributes.find(a => a.name === hero?.mainAttribute).color
+                    'color': attributes.find(attribute => attribute.name === hero?.mainAttribute).color
                 }}
             >{hero.mainAttribute}</div>
         );
@@ -101,21 +56,6 @@ const HeroInList: React.FC<IHeroInList> = (
     }
 
     function renderHeroContainer() {
-        if (isEmpty) {
-            return (
-                <div className="empty">
-
-                </div>
-            )
-        }
-
-        if (isAddButton) {
-            return (
-                <div className="d-flex justify-content-center h-100 align-items-center text-center">
-                    <div className="plus"><IoAdd/></div>
-                </div>);
-        }
-
         return (
             <div>
                 <div className="d-flex justify-content-between w-100">
@@ -127,37 +67,18 @@ const HeroInList: React.FC<IHeroInList> = (
                         </div>
                         {renderTags()}
                     </div>
-                    <div>
-                        {user.accessLevel === "Admin" && (
-                            <IoCloseOutline
-                                className={
-                                    crossIsHovered
-                                        ? "cross-hovered"
-                                        : "cross-default"
-                                }
-                                onMouseOver={() => setCrossIsHovered(true)}
-                                onMouseOut={() => setCrossIsHovered(false)}
-                            />
-                        )}
-                    </div>
                 </div>
-
             </div>);
     }
 
     return (
         <div className="hero-container">
-            <div className={isEmpty
-                ?
-                hasNoFilters
-                    ? "hero hero-empty hero-invisible"
-                    : "hero hero-invisible"
-                : (isHovering !== (themeMode === 'dark')
+            <div className={(isHovering !== (themeMode === 'dark')
                     ? "hero hero-selected"
                     : "hero hero-default")}
                  onClick={addOrRedirectToHero}
                  style={{
-                     backgroundImage: `url(${heroPngPath}), ${(isHovering !== (themeMode === 'dark'))
+                     backgroundImage: `url(${hero.imageLink}), ${(isHovering !== (themeMode === 'dark'))
                          ? `linear-gradient(90deg, ${dark}, rgba(0,0,0,0.2))`
                          : `linear-gradient(90deg, ${light}, 50%, rgba(0,0,0,0.2) 70%)`
                      }`,

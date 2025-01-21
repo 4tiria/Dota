@@ -1,24 +1,23 @@
-﻿import React, {useEffect, useState} from 'react';
-import {attributes} from "../../../styles/attributes";
+﻿import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { MainAttribute } from "models/Hero";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from "react-redux";
+import { updateHeroMainAttributeFilter } from "../../../store/actionCreators/heroFilter";
+import { attributes } from "../../../styles/attributes";
 import "./FilterStyles.scss";
-import {updateHeroMainAttributeFilter} from "../../../store/actionCreators/heroFilter";
-import {useDispatch, useSelector} from "react-redux";
-import {IRootState} from "../../../store/store";
-import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 
-const options = attributes.map(a => {
-    return {value: a.name, label: <div style={{'color': a.color}}>{a.name}</div>}
+const options = attributes.map(attribute => {
+    return {value: attribute.name, label: <div style={{'color': attribute.color}}>{attribute.name}</div>}
 }).concat({value: 'All', label: <div>Any</div>});
 
 const AttributeFilter = () => {
-    const heroAttributeFilter = useSelector<IRootState, string>(state => state.heroFilter.mainAttribute);
     const dispatch = useDispatch();
 
-    const [value, setValue] = useState<string>('');
+    const [value, setValue] = useState<MainAttribute | "All">("All");
 
     useEffect(() => {
         dispatch(updateHeroMainAttributeFilter(value))
-    }, [value]);
+    }, [dispatch, value]);
 
     return (
         <Box className="box-margin">
@@ -31,7 +30,7 @@ const AttributeFilter = () => {
                     value={value}
                     label="Main Attribute"
                     onChange={event =>
-                        setValue(event.target.value as string)
+                        setValue(event.target.value as MainAttribute | "All")
                     }
                 >
                     {options.map(x =>

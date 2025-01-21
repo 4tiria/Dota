@@ -1,12 +1,12 @@
-﻿import React, {useState} from 'react';
+﻿import { MenuItem, Select } from "@mui/material";
+import React, { useState } from 'react';
+import { AttackType, Hero } from "../../models/Hero";
+import { attackTypes } from "../../styles/attackTypes";
+import { ICallBack } from "../interfaces/ICallBack";
+import { IEditable } from "../interfaces/IEditable";
 import "./HeroInfo.scss";
-import {ICallBack} from "../interfaces/ICallBack";
-import {IEditable} from "../interfaces/IEditable";
-import {Hero} from "../../models/Hero";
-import {attackTypes} from "../../styles/attackTypes";
-import {MenuItem, Select} from "@mui/material";
 
-interface IHeroAttackType extends IEditable, ICallBack<string> {
+interface IHeroAttackType extends IEditable, ICallBack<AttackType> {
     hero: Hero;
 }
 
@@ -22,7 +22,7 @@ const HeroAttackType: React.FC<IHeroAttackType> = ({editMode, callBackFunction, 
             <Select className="select-container"
                     value={heroAttackType}
                     onChange={e => {
-                        let value = e.target.value as string;
+                        let value = e.target.value as AttackType;
                         setHeroAttackType(value);
                         callBackFunction(value);
                     }}

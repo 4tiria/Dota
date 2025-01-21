@@ -1,21 +1,17 @@
-﻿import React, {useState} from 'react';
-import {IEditable} from "../interfaces/IEditable";
-import {ICallBack} from "../interfaces/ICallBack";
-import {Hero} from "../../models/Hero";
-import {attributes} from "../../styles/attributes";
-import {MenuItem, Select} from "@mui/material";
+﻿import { MenuItem, Select } from "@mui/material";
+import React, { useState } from 'react';
+import { Hero, MainAttribute } from "../../models/Hero";
+import { attributes } from "../../styles/attributes";
+import { ICallBack } from "../interfaces/ICallBack";
+import { IEditable } from "../interfaces/IEditable";
 
-interface IHeroAttribute extends IEditable, ICallBack<string> {
+interface IHeroAttribute extends IEditable, ICallBack<MainAttribute> {
     hero: Hero;
 }
 
-const colors = attributes.map(a => {
-    return {value: a.name, label: <div style={{'color': a.color}}>{a.name}</div>}
+const colors = attributes.map(attribute => {
+    return {value: attribute.name, label: <div style={{'color': attribute.color}}>{attribute.name}</div>}
 });
-
-function getMainAttributeStyle(attributeName: string) {
-    return {color: colors[attributeName]};
-}
 
 const HeroAttribute: React.FC<IHeroAttribute> = ({editMode, callBackFunction, hero}) => {
     const [heroAttribute, setHeroAttribute] = useState(hero?.mainAttribute);
@@ -25,7 +21,7 @@ const HeroAttribute: React.FC<IHeroAttribute> = ({editMode, callBackFunction, he
             <Select className="select-container"
                     value={heroAttribute}
                     onChange={event => {
-                        let value = event.target.value as string;
+                        let value = event.target.value as MainAttribute;
                         setHeroAttribute(value);
                         callBackFunction(value);
                     }}

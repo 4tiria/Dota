@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { deleteHero, getById, getByName, updateHero } from "../../api/heroApi";
 import { HeroImageSize } from "../../globalConstants";
 import { User } from "../../models/dto/User";
-import { Hero } from "../../models/Hero";
+import { AttackType, Hero, MainAttribute } from "../../models/Hero";
 import { IRootState } from "../../store/store";
 import "../../styles/App.scss";
 import HeroAttackType from "./HeroAttackType";
@@ -21,7 +21,6 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
-import { Role } from '../../models/Role';
 
 export const HeroInfo = () => {
     const params = useParams();
@@ -31,9 +30,9 @@ export const HeroInfo = () => {
     const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
 
     const [heroName, setHeroName] = useState('');
-    const [heroAttackType, setHeroAttackType] = useState('');
-    const [heroAttribute, setHeroAttribute] = useState('');
-    const [tags, setHeroTags] = useState<Role[]>([]);
+    const [heroAttackType, setHeroAttackType] = useState<AttackType>();
+    const [heroAttribute, setHeroAttribute] = useState<MainAttribute>();
+    const [tags, setHeroTags] = useState<string[]>([]);
 
     const user = useSelector<IRootState, User>(state => state.user);
 
@@ -113,10 +112,7 @@ export const HeroInfo = () => {
     }
 
     function renderHeroTags() {
-        return <HeroTags
-            hero={hero}
-            editMode={editMode}
-            callBackFunction={(tags) => setHeroTags(tags)}/>
+        return <HeroTags hero={hero} />
     }
 
     function renderHeroImage() {

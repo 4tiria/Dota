@@ -1,20 +1,20 @@
-﻿import React, {useEffect, useState} from 'react';
-import NameFilter from "./NameFilter";
-import AttributeFilter from "./AttributeFilter";
+﻿import React, { useEffect, useState } from 'react';
+import { IoCloseOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { HeroFilterModel } from "../../../models/filterModels/heroFilter";
+import { resetHeroFilters } from "../../../store/actionCreators/heroFilter";
+import { IRootState } from "../../../store/store";
+import { ICallBack } from "../../interfaces/ICallBack";
 import AttackTypeFilter from "./AttackTypeFilter";
+import AttributeFilter from "./AttributeFilter";
+import NameFilter from "./NameFilter";
 import TagFilter from "./TagFilter";
-import {HeroFilterModel} from "../../../models/filterModels/heroFilter";
-import {ICallBack} from "../../interfaces/ICallBack";
-import {IoCloseOutline} from "react-icons/io5";
-import {resetHeroFilters} from "../../../store/actionCreators/heroFilter";
-import {useDispatch, useSelector} from "react-redux";
-import {IRootState} from "../../../store/store";
 
 interface IFilterPanel extends ICallBack<HeroFilterModel> {
 }
 
 export function noFilterApplied(heroFilterModel: HeroFilterModel): boolean {
-    return heroFilterModel.tags.length === 0
+    return heroFilterModel.roles.length === 0
         && heroFilterModel.name.length === 0
         && heroFilterModel.attackType === "All"
         && heroFilterModel.mainAttribute === "All";

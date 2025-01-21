@@ -1,41 +1,22 @@
-﻿import React, {useState} from 'react';
-import {Hero} from "../../models/Hero";
+﻿import { Paper } from "@mui/material";
+import React, { useState } from 'react';
+import { generateUniqueID } from "web-vitals/dist/modules/lib/generateUniqueID";
+import { getFilteredList } from "../../api/heroApi";
+import { HeroFilterModel } from "../../models/filterModels/heroFilter";
+import { Hero } from "../../models/Hero";
+import FilterPanel from "./filter/FilterPanel";
 import HeroInList from "./HeroInList";
-import {generateUniqueID} from "web-vitals/dist/modules/lib/generateUniqueID";
-import {HeroFilterModel} from "../../models/filterModels/heroFilter";
-import {deleteHero, getAllHeroes, getFilteredList} from "../../api/heroApi";
-import FilterPanel, {noFilterApplied} from "./filter/FilterPanel";
-import {useSelector} from "react-redux";
-import {IRootState} from "../../store/store";
-import {User} from "../../models/dto/User";
-import {Container, Paper} from "@mui/material";
 
 const HeroList = () => {
     const [list, setList] = useState<Hero[]>([]);
-    const [hasNoFilters, setHasNoFilters] = useState<boolean>(false);
-    const [memorizedFilterModel, setMemorizedFilterModel] = useState<HeroFilterModel>(new HeroFilterModel());
-
-    const user = useSelector<IRootState, User>(state => state.user);
 
     function getListOfElements(heroes: Hero[]): JSX.Element[] {
         let result = heroes.map(h =>
             (<HeroInList
                 hero={h}
-                callBackFunction={deleteHeroFromList}
-                isAddButton={false}
-                isEmpty={false}
-                hasNoFilters={hasNoFilters}
-                key={h.id}/>)
+                key={h.id} />)
         );
-        if (hasNoFilters && user.accessLevel === "Admin") {
-            result.push(<HeroInList
-                hero={null}
-                callBackFunction={deleteHeroFromList}
-                isAddButton={true}
-                hasNoFilters={hasNoFilters}
-                isEmpty={false}/>);
-        }
-
+    
         return result;
     }
 
@@ -67,12 +48,6 @@ const HeroList = () => {
         }
     }
 
-    function deleteHeroFromList(hero: Hero) {
-        deleteHero(hero).then(() => {
-            applyFilters(memorizedFilterModel);
-        });
-    }
-
     function renderRow(columns: number, array: JSX.Element[]) {
         let difference = columns - array.length;
         if (difference > 0) {
@@ -80,10 +55,6 @@ const HeroList = () => {
                 array.push(
                     <HeroInList
                         hero={null}
-                        callBackFunction={deleteHeroFromList}
-                        isAddButton={false}
-                        isEmpty={true}
-                        hasNoFilters={hasNoFilters}
                         key={generateUniqueID()}/>
                 )
             }
@@ -103,14 +74,11 @@ const HeroList = () => {
         getFilteredList(filterOptions).then(response => {
             setList(response);
         });
-
-        setHasNoFilters(noFilterApplied(filterOptions));
     }
 
     return (
         <Paper sx={{paddingBottom: 20}} variant="elevation" square={true}>
             <FilterPanel callBackFunction={(heroFilterModel) => {
-                setMemorizedFilterModel(heroFilterModel);
                 applyFilters(heroFilterModel);
             }}/>
             <div className="d-flex justify-content-center">
