@@ -52,6 +52,7 @@ public class Startup(IConfiguration configuration)
             app.UseDeveloperExceptionPage();
 
         }
+
         app.UseCors("CorsPolicy");
         app.UseStaticFiles();
         app.UseHttpsRedirection();

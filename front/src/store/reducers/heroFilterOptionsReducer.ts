@@ -1,37 +1,42 @@
-﻿import { HeroFilterModel } from "../../models/filterModels/heroFilter";
+﻿import { HeroFilterModel } from '../../models/filterModels/heroFilter'
 
-const initialState: HeroFilterModel = {name: '', attackType: 'All', mainAttribute: 'All', roles: []};
+const initialState: HeroFilterModel = {
+    name: '',
+    attackType: 'All',
+    mainAttribute: 'All',
+    roles: [],
+}
 
 export enum HeroFilterOptions {
-    NAME = "NAME",
-    ATTACK_TYPE = "ATTACK_TYPE",
-    ATTRIBUTE = "ATTRIBUTE",
-    TAGS = "TAGS",
-    RESET = "RESET",
+    NAME = 'NAME',
+    ATTACK_TYPE = 'ATTACK_TYPE',
+    ATTRIBUTE = 'ATTRIBUTE',
+    TAGS = 'TAGS',
+    RESET = 'RESET',
 }
 
 export interface IHeroFilterAction {
-    type: HeroFilterOptions;
-    payload: any;
+    type: HeroFilterOptions
+    payload: any
 }
 
-export const heroFilterOptionsReducer = (state = initialState,
-                                         action: IHeroFilterAction): HeroFilterModel => {
+export const heroFilterOptionsReducer = (
+    state = initialState,
+    action: IHeroFilterAction
+): HeroFilterModel => {
     switch (action.type) {
         case HeroFilterOptions.NAME:
-            return {...state, name: action.payload};
+            return { ...state, name: action.payload }
         case HeroFilterOptions.ATTACK_TYPE:
-            return {...state, attackType: action.payload};
+            return { ...state, attackType: action.payload }
         case HeroFilterOptions.ATTRIBUTE:
-            return {...state, mainAttribute: action.payload};
+            return { ...state, mainAttribute: action.payload }
         case HeroFilterOptions.TAGS:
-            return {...state, roles: action.payload};
+            return { ...state, roles: action.payload }
         default:
         case HeroFilterOptions.RESET:
-            return {...initialState};
-
+            return { ...initialState }
     }
-  
 }
 
-export default heroFilterOptionsReducer;
+export default heroFilterOptionsReducer

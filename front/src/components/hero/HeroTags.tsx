@@ -1,18 +1,22 @@
-﻿import React from 'react';
-import { Hero } from "../../models/Hero";
+﻿import React from 'react'
+import { Hero } from '../../models/Hero'
 
 interface IHeroRoles {
-    hero: Hero;
+    hero: Hero
 }
 
-const HeroTags: React.FC<IHeroRoles> = ({hero}) => {
+const HeroTags: React.FC<IHeroRoles> = ({ hero }) => {
     return (
         <div className="hero-tags">
-            {hero?.roles.map(tag => {
-                return <div
-                    className="btn btn-sm hero-tag hero-tag-own" key={tag}>{tag}</div>
-            })}</div>
-    );
-};
+            {hero?.roles.map((tag) => {
+                return (
+                    <div className="btn btn-sm hero-tag hero-tag-own" key={tag}>
+                        {tag}
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
 
-export default HeroTags;
+export default HeroTags
