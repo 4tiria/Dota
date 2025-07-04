@@ -9,6 +9,12 @@ using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false)
+    .AddJsonFile($"appsettings.{env}.json", optional: true)
+    .AddEnvironmentVariables();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,19 +22,17 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDBStatistics"));
 builder.Services.Configure<Domain.Mongo.API.MongoDbSettings>(builder.Configuration.GetSection("MongoDBApi"));
 
-var rabbitMQSettings = builder.Configuration.GetSection("RabbitMQ");
+var rabbitMqSettings = builder.Configuration.GetSection("RabbitMQ");
 builder.Services
-    .AddSingleton<IConnectionFactory>(serviceProvider =>
+    .AddSingleton<IConnectionFactory>(_ => new ConnectionFactory
     {
-        return new ConnectionFactory
-        {
-            HostName = rabbitMQSettings["HostName"],
-            UserName = rabbitMQSettings["UserName"],
-            Password = rabbitMQSettings["Password"]
-        };
+        HostName = rabbitMqSettings["HostName"],
+        UserName = rabbitMqSettings["UserName"],
+        Password = rabbitMqSettings["Password"]
     })
     .AddSingleton<IConnection>(serviceProvider =>
         serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
+    
     .AddSingleton<IModel>(
         serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel())
     .AddTransient<Domain.Mongo.API.MongoDbContext>()
@@ -42,6 +46,7 @@ builder.Services
 builder.Services.AddHostedService<HeroWinrateCalculatorBackgroundService>();
 builder.Services.AddHostedService<HeroWinrateConsumerBackgroundService>();
 builder.Services.AddHostedService<MatchConsumerBackgroundService>();
+
 
 #endregion
 

@@ -22,8 +22,6 @@ namespace Dota.API;
 
 public class Startup(IConfiguration configuration)
 {
-    private readonly IConfiguration _configuration = configuration;
-
     public void ConfigureServices(IServiceCollection services)
     {
         services
@@ -53,7 +51,7 @@ public class Startup(IConfiguration configuration)
                 .AllowAnyHeader()
                 .AllowCredentials()));
 
-        services.Configure<MongoDbSettings>(_configuration.GetSection("MongoDB"));
+        services.Configure<MongoDbSettings>(configuration.GetSection("MongoDB"));
 
         var conventionPack = new ConventionPack
         {
@@ -62,23 +60,20 @@ public class Startup(IConfiguration configuration)
         ConventionRegistry.Register("EnumAsString", conventionPack, type => type.IsEnum);
         
         services
-            .AddNoSql(_configuration)
+            .AddNoSql(configuration)
             .AddSingleton<IHeroProducerService, HeroProducerService>()
             .AddSingleton<IHeroConsumerService, HeroConsumerService>()
             .AddSingleton<IHeroDlxService, HeroDlxService>()
             .AddSingleton<IStatisticsDlxService, StatisticsDlxService>()
             .AddSingleton<IStatisticsProducerService, StatisticsProducerService>();
 
-        var rabbitMQSettings = configuration.GetSection("RabbitMQ");
+        var rabbitMqSettings = configuration.GetSection("RabbitMQ");
         services
-            .AddSingleton<IConnectionFactory>(serviceProvider =>
+            .AddSingleton<IConnectionFactory>(_ => new ConnectionFactory
             {
-                return new ConnectionFactory
-                {
-                    HostName = rabbitMQSettings["HostName"],
-                    UserName = rabbitMQSettings["UserName"],
-                    Password = rabbitMQSettings["Password"]
-                };
+                HostName = rabbitMqSettings["HostName"],
+                UserName = rabbitMqSettings["UserName"],
+                Password = rabbitMqSettings["Password"]
             })
             .AddSingleton<IConnection>(serviceProvider =>
                 serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
@@ -95,7 +90,7 @@ public class Startup(IConfiguration configuration)
         app.UseStaticFiles(new StaticFileOptions
         {
             FileProvider = new PhysicalFileProvider(
-                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, _configuration["Assets:RelativePath"]!))),
+                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, configuration["Assets:RelativePath"]!))),
             RequestPath = "/assets"
         });
         
@@ -120,7 +115,7 @@ public class Startup(IConfiguration configuration)
 
     private void AddAuthentication(IServiceCollection services)
     {
-        var authOptionsConfiguration = _configuration.GetSection("Auth");
+        var authOptionsConfiguration = configuration.GetSection("Auth");
         var authOptions = authOptionsConfiguration.Get<AuthOptions>();
         services.Configure<AuthOptions>(authOptionsConfiguration);
 

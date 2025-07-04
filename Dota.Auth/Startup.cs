@@ -1,3 +1,4 @@
+using System;
 using Domain.Mongo.Auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,7 +51,6 @@ public class Startup(IConfiguration configuration)
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-
         }
 
         app.UseCors("CorsPolicy");

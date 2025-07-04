@@ -8,10 +8,8 @@ import { ACCESS_TOKEN_KEY } from '../store/store'
 //todo: 4. Почта и подтверждение  --------------------------------------------- ГОТОВО
 //todo: 5. Вынести аутентификацию и авторизацию в отдельный проект
 
-// export const baseApiUrl = 'http://api:5000/api'
-// export const baseAuthUrl = 'http://auth:5001/auth'
-export const baseApiUrl = 'http://localhost:5000/api'
-export const baseAuthUrl = 'http://localhost:5001/auth'
+export const baseApiUrl = process.env.REACT_APP_BASE_API_URL!
+export const baseAuthUrl = process.env.REACT_APP_BASE_AUTH_URL!
 
 export const api = axios.create({
     withCredentials: true,

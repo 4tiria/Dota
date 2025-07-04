@@ -7,6 +7,9 @@
         <RootNamespace>Dota.API</RootNamespace>
         <UserSecretsId>daa510e5-12f5-4b24-83dd-b75c65b77785</UserSecretsId>
     </PropertyGroup>
+    <PropertyGroup>
+        <EnvironmentName>Local</EnvironmentName>
+    </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1"/>
