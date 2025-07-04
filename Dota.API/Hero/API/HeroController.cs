@@ -28,7 +28,7 @@ public class HeroController(
     [HttpPost("list/filter")]
     public IActionResult GetFilteredHeroes([FromBody] HeroFilterModel filterOptions)
     {
-        var result = mapper.Map<List<HeroJs>>(apiContext.Heroes.Find(hero => true)).AsEnumerable();
+        var result = mapper.Map<List<HeroJs>>(apiContext.Heroes.Find(hero => true).ToList()).AsEnumerable();
 
         if (filterOptions.AttackType != "All")
         {

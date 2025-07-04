@@ -41,17 +41,17 @@ public class HeroDlxService : IHeroDlxService
                 var xDeath = ea.BasicProperties.Headers["x-death"] as List<object>;
                 foreach (var deathInfo in xDeath)
                 {
-                    var deathDict = deathInfo as IDictionary<string, object>;
+                    var deathDictionary = deathInfo as IDictionary<string, object>;
                     _logger.LogInformation("DLX Reason: {reason}",
-                        Encoding.UTF8.GetString((byte[])deathDict["reason"]));
+                        Encoding.UTF8.GetString((byte[])deathDictionary["reason"]));
 
                     _logger.LogInformation("Original Queue: {queue}",
-                        Encoding.UTF8.GetString((byte[])deathDict["queue"]));
+                        Encoding.UTF8.GetString((byte[])deathDictionary["queue"]));
 
                     _logger.LogInformation("Exchange: {exchange}",
-                        Encoding.UTF8.GetString((byte[])deathDict["exchange"]));
+                        Encoding.UTF8.GetString((byte[])deathDictionary["exchange"]));
 
-                    _logger.LogInformation("Time: {time}", deathDict["time"]);
+                    _logger.LogInformation("Time: {time}", deathDictionary["time"]);
                 }
             }
         };

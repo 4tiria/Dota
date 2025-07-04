@@ -1,21 +1,16 @@
 ﻿export class Hero {
-    id: string;
-    name: string;
-    attackType: AttackType;
-    mainAttribute: MainAttribute;
-    roles: string[];
-    imageLink: string;
+    id: string
+    name: string
+    attackType: AttackType
+    mainAttribute: MainAttribute
+    roles: string[]
+    imageLink: string
 }
 
-export enum AttackType {
-    Melee = 0,
-    Ranged = 1
-}
+export declare type AttackType = 'Melee' | 'Ranged'
 
-export enum MainAttribute
-{
-    Strength = 0,
-    Agility = 1,
-    Intelligence = 2,
-    Universal = 3
-}
+export declare type MainAttribute =
+    | 'Strength'
+    | 'Agility'
+    | 'Intelligence'
+    | 'Universal'

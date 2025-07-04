@@ -11,6 +11,7 @@ using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Bson.Serialization.Conventions;
 using Newtonsoft.Json;
@@ -41,7 +42,10 @@ public class Startup(IConfiguration configuration)
         services
             .AddControllers()
             .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-
+        
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
                 .SetIsOriginAllowed(_ => true)
@@ -88,13 +92,22 @@ public class Startup(IConfiguration configuration)
     {
         if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(
+                Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, _configuration["Assets:RelativePath"]!))),
+            RequestPath = "/assets"
+        });
+        
+        app.UseSwagger();
+        app.UseSwaggerUI();
         app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
         app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();
-
+        
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllerRoute(

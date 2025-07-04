@@ -25,6 +25,7 @@
         <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.2"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
         <PackageReference Include="RabbitMQ.Client" Version="6.8.1"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -39,9 +40,5 @@
         <Message Text="Copying 'assets' into '$(OutputPath)assets'" Importance="high"/>
         <Copy SourceFiles="@(assets)" DestinationFolder="$(OutputPath)assets\%(RecursiveDir)"/>
     </Target>
-
-    <ItemGroup>
-        <Folder Include="Hero\Services\"/>
-    </ItemGroup>
 
 </Project>
