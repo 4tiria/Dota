@@ -12,6 +12,12 @@ services:
       - mongo-data-1:/data/db
     networks:
       - mongo-net
+    healthcheck:
+      test: >
+        mongosh --quiet --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   mongo2:
     image: mongo:6
@@ -26,6 +32,12 @@ services:
       - mongo-data-2:/data/db
     networks:
       - mongo-net
+    healthcheck:
+      test: >
+        mongosh --quiet --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   mongo3:
     image: mongo:6
@@ -40,6 +52,12 @@ services:
       - mongo-data-3:/data/db
     networks:
       - mongo-net
+    healthcheck:
+      test: >
+        mongosh --quiet --eval "db.adminCommand('ping')" -u admin -p admin --authenticationDatabase admin || exit 1
+      interval: 5s
+      timeout: 10s
+      retries: 3
 
   mongo-init:
     image: mongo:6
@@ -54,14 +72,16 @@ services:
       sh -c "
         sleep 5 &&
         mongosh -u admin -p admin --authenticationDatabase admin --host mongo1 --eval '
-          rs.initiate({
-            _id: \"rsdota\",
-            members: [
-              { _id: 0, host: \"mongo1:27017\" },
-              { _id: 1, host: \"mongo2:27017\" },
-              { _id: 2, host: \"mongo3:27017\" }
-            ]
-          })
+          if (!rs.status().ok) {
+            rs.initiate({
+              _id: \"rsdota\",
+              members: [
+                { _id: 0, host: \"mongo1:27017\" },
+                { _id: 1, host: \"mongo2:27017\" },
+                { _id: 2, host: \"mongo3:27017\" }
+              ]
+            })
+          }
         '
       "
     restart: "on-failure"
@@ -164,7 +184,7 @@ services:
     environment:
       - NODE_ENV=production
     env_file:
-      - ./.env.docker
+      - ./front/.env.docker
 
 volumes:
   mongo-data-1:
