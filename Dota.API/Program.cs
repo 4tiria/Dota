@@ -23,7 +23,8 @@ public class Program
             .ConfigureAppConfiguration((context, config) =>
             {
                 var env = context.HostingEnvironment;
-                config.AddJsonFile("appsettings.json", optional: false)
+                config
+                    .AddJsonFile("appsettings.json", optional: false)
                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                     .AddEnvironmentVariables();
             })

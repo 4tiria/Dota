@@ -17,8 +17,6 @@ import { ACCESS_TOKEN_KEY, IRootState } from './store/store'
 import './styles/App.scss'
 
 export const App: React.FC = () => {
-    console.log(process.env)
-
     const dispatch = useDispatch()
     const themeMode = useSelector<IRootState, Palette>((state) => state.palette)
     const themeOptions: ThemeOptions = {

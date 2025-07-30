@@ -1,4 +1,5 @@
 using Dota.API.Helpers;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
@@ -12,13 +13,16 @@ public class _004_SetHeroIconLinks : IMigration
     private readonly Dictionary<string, string> _exclusions = new Dictionary<string, string>()
     {
         ["Anti-Mage"] = "Anti-Mage_icon.webp",
-        ["Nature's Prophet"] = "Nature%27s_Prophet_icon.webp",
     };
 
-    public _004_SetHeroIconLinks(ILogger<_004_SetHeroIconLinks> logger)
+    public _004_SetHeroIconLinks(ILogger<_004_SetHeroIconLinks> logger, IConfiguration configuration)
     {
-        _iconsPath = Path.Combine(AppContext.BaseDirectory, "assets", "icons");
+        _iconsPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, configuration["Assets:RelativePath"]!, "icons"));  
         _logger = logger;
+        _logger.LogInformation("AppContext.BaseDirectory = {Path}", AppContext.BaseDirectory);
+        _logger.LogInformation("_iconsPath = {Path}", _iconsPath);
+        _logger.LogInformation("assets = {Path}", Path.Combine("app", "../assets"));
+        _logger.LogInformation("assets = {Path}", Path.GetFullPath(Path.Combine("app", "../assets")));
     }
     
     public int Version => 4;

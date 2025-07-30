@@ -2,6 +2,7 @@
 import { AuthResponse } from '../models/dto/responses/AuthResponse'
 import { ACCESS_TOKEN_KEY } from '../store/store'
 
+//TODO: перейти на jira lolxddxdxdxdxdxdxdxdxdxdxd https://www.youtube.com/watch?v=p4XKVgOnRbc
 //todo: 1. Interceptors - на сервере или на клиенте? -------------------------- ГОТОВО
 //todo: 2. Refresh Token - сделать тоже jwt, это важно ------------------------ ГОТОВО
 //todo: 3. Cookie для Refresh Token, причем httpOnly -------------------------- ГОТОВО

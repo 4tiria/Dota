@@ -1,34 +1,77 @@
-version: '3.8'
-
 services:
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    networks:
-      - default
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-      - ./mongo-keyfile:/data/configdb/keyfile
-      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
-      - ./mongod.conf:/etc/mongod.conf
+  mongo1:
+    image: mongo:6
+    container_name: mongo1
+    hostname: mongo1
+    command: mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_DATABASE: admin
-    entrypoint:
-      - bash
-      - -c
-      - |
-          chmod 400 -R /data/configdb/keyfile
-          chown 999:999 -R /data/configdb/keyfile
-          exec docker-entrypoint.sh $$@
-    command: "mongod --config /etc/mongod.conf --bind_ip_all --replSet rsdota --keyFile /data/configdb/keyfile"
+    volumes:
+      - ./mongo-keyfile:/data/configdb/keyfile
+      - mongo-data-1:/data/db
+    networks:
+      - mongo-net
+
+  mongo2:
+    image: mongo:6
+    container_name: mongo2
+    hostname: mongo2
+    command: mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - ./mongo-keyfile:/data/configdb/keyfile
+      - mongo-data-2:/data/db
+    networks:
+      - mongo-net
+
+  mongo3:
+    image: mongo:6
+    container_name: mongo3
+    hostname: mongo3
+    command: mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    volumes:
+      - ./mongo-keyfile:/data/configdb/keyfile
+      - mongo-data-3:/data/db
+    networks:
+      - mongo-net
+
+  mongo-init:
+    image: mongo:6
+    container_name: mongo-init
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    networks:
+      - mongo-net
+    entrypoint: >
+      sh -c "
+        sleep 5 &&
+        mongosh -u admin -p admin --authenticationDatabase admin --host mongo1 --eval '
+          rs.initiate({
+            _id: \"rsdota\",
+            members: [
+              { _id: 0, host: \"mongo1:27017\" },
+              { _id: 1, host: \"mongo2:27017\" },
+              { _id: 2, host: \"mongo3:27017\" }
+            ]
+          })
+        '
+      "
+    restart: "on-failure"
     healthcheck:
-      test: test $$(mongosh -u admin -p admin --authenticationDatabase admin --port 27017 --quiet --eval "try {rs.initiate({_id:'rsdota',members:[{_id:0,host:\"mongo:27017\"}]})} catch(e) {rs.status().ok}") -eq 1
+      test: >
+        mongosh -u admin -p admin --authenticationDatabase admin --host mongo1:27017 --quiet --eval "rs.status().ok" | grep 1
       interval: 10s
-      start_period: 2s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
 
   rabbitmq:
     image: rabbitmq:management
@@ -41,6 +84,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+    - rabbitmq-data:/var/lib/rabbitmq
     healthcheck:
       test: >
         rabbitmqctl await_startup && rabbitmq-diagnostics -q check_port_listener 5672 || exit 1
@@ -55,17 +100,21 @@ services:
       dockerfile: Dota.API/Dockerfile
     container_name: api      
     ports:
-      - "5000:8080"
+      - "5000:5000"
     networks:
       - default
+      - mongo-net
     environment:
-      - MongoDB__ConnectionURI=mongodb://admin:admin@mongodb:27017,mongodb:27018,mongodb:27019/dota?replicaSet=rsdota&authSource=admin
-      - MongoDB__DatabaseName=dota
+      - ASPNETCORE_ENVIRONMENT=Docker
+    volumes:
+      - "./assets:/assets"
     depends_on:
-      mongodb:
-        condition: service_started
-      statistics:
-        condition: service_started
+      mongo1:
+        condition: service_healthy
+      mongo2:
+        condition: service_healthy
+      mongo3:
+        condition: service_healthy
       rabbitmq:
         condition: service_healthy
 
@@ -75,14 +124,13 @@ services:
       dockerfile: Dota.Auth/Dockerfile
     container_name: auth
     ports:
-      - "5001:8080"
+      - "5001:5001"
     networks:
       - default
     environment:
-      - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
-      - MongoDB__DatabaseName=dota-auth
+      - ASPNETCORE_ENVIRONMENT=Docker
     depends_on:
-      - mongodb
+      - mongo1
 
   statistics:
     build:
@@ -90,15 +138,15 @@ services:
       dockerfile: Dota.Statistics/Dockerfile
     container_name: statistics      
     ports:
-      - "5002:8080"
+      - "5002:5002"
     networks:
       - default
+      - mongo-net
     environment:
-      - MongoDB__ConnectionURI=mongodb://mongodb:27017?connectTimeoutMS=3000&serverSelectionTimeoutMS=3000
-      - MongoDB__DatabaseName=dota-statistics
+      - ASPNETCORE_ENVIRONMENT=Docker
     depends_on:
-      mongodb:
-        condition: service_started
+      mongo-init:
+        condition: service_healthy
       rabbitmq:
         condition: service_healthy
 
@@ -107,16 +155,25 @@ services:
       context: ./front
       dockerfile: Dockerfile 
     container_name: front
+    volumes:
+      - "./assets:/assets"
     ports:
       - "3000:3000"
     networks:
       - default
     environment:
       - NODE_ENV=production
+    env_file:
+      - ./.env.docker
 
 volumes:
-  mongo-data:
+  mongo-data-1:
+  mongo-data-2:
+  mongo-data-3:
+  rabbitmq-data:
 
 networks:
   default:
     name: dota_network
+  mongo-net:
+    driver: bridge

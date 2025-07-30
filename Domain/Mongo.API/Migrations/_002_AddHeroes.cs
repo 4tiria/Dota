@@ -23,7 +23,7 @@ public class _002_AddHeroes : IMigration
         _configuration = configuration;
         _client = new MongoClient(configuration["MongoDB:ConnectionURI"]);
         _mapper = mapper;
-        _heroesJsonPath = Path.Combine(AppContext.BaseDirectory, "assets", "seed", "heroes.json");
+        _heroesJsonPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, configuration["Assets:RelativePath"]!, "seed", "heroes.json"));
     }
 
     public int Version => 2;
