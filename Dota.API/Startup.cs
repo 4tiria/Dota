@@ -1,5 +1,6 @@
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
+using Dota.API.Centrifugo;
 using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.DLX;
@@ -61,6 +62,7 @@ public class Startup(IConfiguration configuration)
         
         services
             .AddNoSql(configuration)
+            .AddSingleton<ICentrifugoService, CentrifugoService>()
             .AddSingleton<IHeroProducerService, HeroProducerService>()
             .AddSingleton<IHeroConsumerService, HeroConsumerService>()
             .AddSingleton<IHeroDlxService, HeroDlxService>()

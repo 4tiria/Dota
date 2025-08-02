@@ -4,8 +4,8 @@
         "paths": {
             "*": ["*"]
         },
-        "target": "es6",
-        "module": "commonjs",
+        "target": "es2024",
+        "module": "esnext",
         "moduleResolution": "node",
         "noResolve": false,
         "noImplicitAny": false,

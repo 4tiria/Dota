@@ -4,8 +4,11 @@ import {
     ThemeOptions,
     ThemeProvider,
 } from '@mui/material'
+import { useCentrifugo } from 'hooks/centrifugo'
+import { useCentrifugoToken } from 'hooks/centrifugoToken'
 import jwt from 'jwt-decode'
 import React, { useEffect } from 'react'
+import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
 import './App.scss'
@@ -17,6 +20,10 @@ import { ACCESS_TOKEN_KEY, IRootState } from './store/store'
 import './styles/App.scss'
 
 export const App: React.FC = () => {
+    const token = useCentrifugoToken()
+
+    useCentrifugo(token)
+
     const dispatch = useDispatch()
     const themeMode = useSelector<IRootState, Palette>((state) => state.palette)
     const themeOptions: ThemeOptions = {
@@ -54,6 +61,7 @@ export const App: React.FC = () => {
             <BrowserRouter>
                 <Navbar />
                 <AppRouter />
+                <Toaster />
             </BrowserRouter>
         </ThemeProvider>
     )
