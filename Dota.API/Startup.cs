@@ -45,6 +45,7 @@ public class Startup(IConfiguration configuration)
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         
+        
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
                 .SetIsOriginAllowed(_ => true)

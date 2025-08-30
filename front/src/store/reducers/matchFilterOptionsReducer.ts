@@ -1,4 +1,6 @@
-﻿import { MatchListFilterModel } from '../../models/filterModels/matchListFilterModel'
+﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Hero } from 'models/Hero'
+import { MatchListFilterModel } from '../../models/filterModels/matchListFilterModel'
 
 const initialState: MatchListFilterModel = {
     minDurationInMinutes: null,
@@ -11,48 +13,30 @@ const initialState: MatchListFilterModel = {
     skip: null,
 }
 
-export enum MatchFilterOptions {
-    DURATION = 'DURATION',
-    START = 'START',
-    SELF_TEAM = 'SELF_TEAM',
-    OTHER_TEAM = 'OTHER_TEAM',
-    TAKE = 'TAKE',
-    SKIP = 'SKIP',
-    RESET = 'RESET',
-}
-
-export interface IMatchFilterAction {
-    type: MatchFilterOptions
-    payload: any
-}
-
-export const matchFilterOptionsReducer = (
-    state = initialState,
-    action: IMatchFilterAction
-) => {
-    switch (action.type) {
-        case MatchFilterOptions.DURATION:
-            return {
-                ...state,
-                minDurationInMinutes: action.payload[0],
-                maxDurationInMinutes: action.payload[1],
-            }
-        case MatchFilterOptions.START:
-            return {
-                ...state,
-                minStartedMillisecondsBefore: action.payload[0],
-                maxStartedMillisecondsBefore: action.payload[1],
-            }
-        case MatchFilterOptions.SELF_TEAM:
-            return { ...state, selfTeam: action.payload }
-        case MatchFilterOptions.OTHER_TEAM:
-            return { ...state, otherTeam: action.payload }
-        case MatchFilterOptions.TAKE:
-            return { ...state, take: action.payload }
-        case MatchFilterOptions.SKIP:
-            return { ...state, skip: action.payload }
-        default:
-        case MatchFilterOptions.RESET:
-            return { ...initialState }
-    }
-}
+export const matchFilterSlice = createSlice({
+    name: 'matchFilter',
+    initialState,
+    reducers: {
+        setDuration: (state, action: PayloadAction<number[]>) => {
+            state.minDurationInMinutes = action.payload[0]
+            state.maxDurationInMinutes = action.payload[1]
+        },
+        setStart: (state, action: PayloadAction<number[]>) => {
+            state.minStartedMillisecondsBefore = action.payload[0]
+            state.maxStartedMillisecondsBefore = action.payload[1]
+        },
+        setSelfTeam: (state, action: PayloadAction<Hero[]>) => {
+            state.selfTeam = action.payload
+        },
+        setOtherTeam: (state, action: PayloadAction<Hero[]>) => {
+            state.otherTeam = action.payload
+        },
+        setTake: (state, action: PayloadAction<number>) => {
+            state.take = action.payload
+        },
+        setSkip: (state, action: PayloadAction<number>) => {
+            state.skip = action.payload
+        },
+        reset: () => initialState,
+    },
+})

@@ -25,6 +25,16 @@ export const useCentrifugo = (token: string) => {
             toast(message)
         })
 
+        sub.on('subscribed', (ctx) => {
+            console.log('✅ Subscribed to channel:', ctx)
+            toast('subscribed')
+        })
+
+        sub.on('error', (err) => {
+            console.error('❌ Subscription error:', err)
+            toast(`${err}`)
+        })
+
         sub.subscribe()
         client.connect()
 

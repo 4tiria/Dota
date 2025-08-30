@@ -1,4 +1,6 @@
-﻿import { HeroFilterModel } from '../../models/filterModels/heroFilter'
+﻿import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { AttackType, MainAttribute } from 'models/Hero'
+import { HeroFilterModel } from '../../models/filterModels/heroFilter'
 
 const initialState: HeroFilterModel = {
     name: '',
@@ -7,36 +9,22 @@ const initialState: HeroFilterModel = {
     roles: [],
 }
 
-export enum HeroFilterOptions {
-    NAME = 'NAME',
-    ATTACK_TYPE = 'ATTACK_TYPE',
-    ATTRIBUTE = 'ATTRIBUTE',
-    TAGS = 'TAGS',
-    RESET = 'RESET',
-}
-
-export interface IHeroFilterAction {
-    type: HeroFilterOptions
-    payload: any
-}
-
-export const heroFilterOptionsReducer = (
-    state = initialState,
-    action: IHeroFilterAction
-): HeroFilterModel => {
-    switch (action.type) {
-        case HeroFilterOptions.NAME:
-            return { ...state, name: action.payload }
-        case HeroFilterOptions.ATTACK_TYPE:
-            return { ...state, attackType: action.payload }
-        case HeroFilterOptions.ATTRIBUTE:
-            return { ...state, mainAttribute: action.payload }
-        case HeroFilterOptions.TAGS:
-            return { ...state, roles: action.payload }
-        default:
-        case HeroFilterOptions.RESET:
-            return { ...initialState }
-    }
-}
-
-export default heroFilterOptionsReducer
+export const heroFilterSlice = createSlice({
+    name: 'heroFilter',
+    initialState,
+    reducers: {
+        setName: (state, action: PayloadAction<string>) => {
+            state.name = action.payload
+        },
+        setAttackType: (state, action: PayloadAction<'All' | AttackType>) => {
+            state.attackType = action.payload
+        },
+        setAttribute: (state, action: PayloadAction<'All' | MainAttribute>) => {
+            state.mainAttribute = action.payload
+        },
+        setTags: (state, action: PayloadAction<string[]>) => {
+            state.roles = action.payload
+        },
+        reset: () => initialState,
+    },
+})

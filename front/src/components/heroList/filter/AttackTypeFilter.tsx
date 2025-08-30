@@ -1,25 +1,33 @@
-﻿import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { AttackType } from "models/Hero";
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from "react-redux";
-import { updateHeroAttackTypeFilter } from "../../../store/actionCreators/heroFilter";
-import { attackTypes } from "../../../styles/attackTypes";
-import "./FilterStyles.scss";
+﻿import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { AttackType } from 'models/Hero'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { heroFilterSlice } from 'store/reducers/heroFilterOptionsReducer'
+import { attackTypes } from '../../../styles/attackTypes'
+import './FilterStyles.scss'
 
-
-const options = attackTypes.map(at => {
-    return {value: at.name, label: <div>{at.name} {at.icon}</div>}
-}).concat({value: "All", label: <div>Any</div>});
+const options = attackTypes
+    .map((at) => {
+        return {
+            value: at.name,
+            label: (
+                <div>
+                    {at.name} {at.icon}
+                </div>
+            ),
+        }
+    })
+    .concat({ value: 'All', label: <div>Any</div> })
 
 const AttackTypeFilter = () => {
-    const dispatch = useDispatch();
-    
-    const [value, setValue] = useState<AttackType | "All">("All");
+    const dispatch = useDispatch()
+
+    const [value, setValue] = useState<AttackType | 'All'>('All')
 
     useEffect(() => {
-        dispatch(updateHeroAttackTypeFilter(value))
-    }, [dispatch, value]);
-    
+        dispatch(heroFilterSlice.actions.setAttackType(value))
+    }, [value])
+
     return (
         <Box className="box-margin">
             <FormControl fullWidth color="secondary">
@@ -30,22 +38,19 @@ const AttackTypeFilter = () => {
                     className="attribute-combobox"
                     value={value}
                     label="Attack Type"
-                    onChange={event =>
-                        setValue(event.target.value as AttackType | "All")
+                    onChange={(event) =>
+                        setValue(event.target.value as AttackType | 'All')
                     }
                 >
-                    {options.map(x =>
-                        <MenuItem 
-                            value={x.value}
-                            key={x.value}
-                        >
+                    {options.map((x) => (
+                        <MenuItem value={x.value} key={x.value}>
                             {x.label}
                         </MenuItem>
-                    )}
+                    ))}
                 </Select>
             </FormControl>
         </Box>
-    );
-};
+    )
+}
 
-export default AttackTypeFilter;
+export default AttackTypeFilter

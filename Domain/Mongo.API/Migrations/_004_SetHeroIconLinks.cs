@@ -7,7 +7,8 @@ namespace Domain.Mongo.API.Migration;
 
 public class _004_SetHeroIconLinks : IMigration
 {
-    private readonly string _iconsPath;
+    private readonly string _iconsFullPath;
+    private readonly string _iconsRelativePath;
     private readonly ILogger<_004_SetHeroIconLinks> _logger;
 
     private readonly Dictionary<string, string> _exclusions = new Dictionary<string, string>()
@@ -17,10 +18,11 @@ public class _004_SetHeroIconLinks : IMigration
 
     public _004_SetHeroIconLinks(ILogger<_004_SetHeroIconLinks> logger, IConfiguration configuration)
     {
-        _iconsPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, configuration["Assets:RelativePath"]!, "icons"));  
+        _iconsFullPath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, configuration["Assets:RelativePath"]!, "icons"));  
+        _iconsRelativePath = Path.Combine(configuration["Assets:Url"]!, "icons");  
         _logger = logger;
         _logger.LogInformation("AppContext.BaseDirectory = {Path}", AppContext.BaseDirectory);
-        _logger.LogInformation("_iconsPath = {Path}", _iconsPath);
+        _logger.LogInformation("_iconsPath = {Path}", _iconsFullPath);
         _logger.LogInformation("assets = {Path}", Path.Combine("app", "../assets"));
         _logger.LogInformation("assets = {Path}", Path.GetFullPath(Path.Combine("app", "../assets")));
     }
@@ -32,15 +34,17 @@ public class _004_SetHeroIconLinks : IMigration
 
         foreach (var hero in heroes)
         {
-            var link = Path.Combine(_iconsPath, $"{hero.LocalizedName.ToCamelCaseWithUnderscore()}_icon.webp");
+            var fullPath = Path.Combine(_iconsFullPath, $"{hero.LocalizedName.ToCamelCaseWithUnderscore()}_icon.webp");
+            var link = Path.Combine(_iconsRelativePath, $"{hero.LocalizedName.ToCamelCaseWithUnderscore()}_icon.webp");
             if (_exclusions.TryGetValue(hero.LocalizedName, out var exclusion))
             {
-                link = Path.Combine(_iconsPath, exclusion);
+                fullPath = Path.Combine(_iconsFullPath, exclusion);
+                link = Path.Combine(_iconsRelativePath, exclusion);
             }
     
-            if (!File.Exists(link))
+            if (!File.Exists(fullPath))
             {
-                _logger.LogInformation($"Could not find icon {link}, skipping...");
+                _logger.LogInformation("Could not find icon {link}, skipping...", link);
                 continue;
             }
 

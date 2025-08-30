@@ -1,4 +1,4 @@
-﻿import {User} from "../../models/dto/User";
+﻿import { User } from '../../models/dto/User'
 
 const initialState: User = {
     accessLevel: null,
@@ -7,25 +7,26 @@ const initialState: User = {
 }
 
 export enum UserOptions {
-    LOGIN = "LOGIN",
-    LOGOUT = "LOGOUT",
-    REFRESH = "REFRESH",
+    LOGIN = 'LOGIN',
+    LOGOUT = 'LOGOUT',
+    REFRESH = 'REFRESH',
 }
-
 
 export interface IUserAction {
-    type: UserOptions;
-    payload: any;
+    type: UserOptions
+    payload: any
 }
 
-export const userReducer = (state: User = initialState,
-                            action: IUserAction): User => {
+export const userReducer = (
+    state: User = initialState,
+    action: IUserAction
+): User => {
     switch (action.type) {
         case UserOptions.LOGIN:
-            return {...action.payload, isAuth: true};
+            return { ...action.payload, isAuth: true }
         case UserOptions.LOGOUT:
-            return {...initialState};
+            return { ...initialState }
         default:
-            return {...state};
+            return { ...state }
     }
 }

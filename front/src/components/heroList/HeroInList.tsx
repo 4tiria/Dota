@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react'
+﻿import { baseUrl } from 'api/http'
+import React, { useEffect, useState } from 'react'
 import { GiBroadsword, GiPocketBow } from 'react-icons/gi'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -18,9 +19,19 @@ const dark = 'rgba(0,0,0,0.8)'
 
 const HeroInList: React.FC<IHeroInList> = ({ hero }) => {
     const [isHovering, setIsHovering] = useState(false)
+    const [normalizedUrl, setNormalizedUrl] = useState('')
 
     const themeMode = useSelector<IRootState, Palette>((state) => state.palette)
     let navigate = useNavigate()
+
+    useEffect(() => {
+        setNormalizedUrl(
+            hero?.imageLink
+                ?.replace(/\\/g, '/')
+                .replace(/"/g, '')
+                .replace(/&quot;/g, '')
+        )
+    }, [hero?.imageLink])
 
     function addOrRedirectToHero() {
         let urlHeroName = ToCamelCase(hero?.name)
@@ -96,7 +107,8 @@ const HeroInList: React.FC<IHeroInList> = ({ hero }) => {
                     }
                     onClick={addOrRedirectToHero}
                     style={{
-                        backgroundImage: `url(${hero.imageLink}), ${
+                        backgroundImage: `url(${baseUrl}${normalizedUrl}),
+                        ${
                             isHovering !== (themeMode === 'dark')
                                 ? `linear-gradient(90deg, ${dark}, rgba(0,0,0,0.2))`
                                 : `linear-gradient(90deg, ${light}, 50%, rgba(0,0,0,0.2) 70%)`

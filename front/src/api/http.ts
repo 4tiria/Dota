@@ -9,6 +9,7 @@ import { ACCESS_TOKEN_KEY } from '../store/store'
 //todo: 4. Почта и подтверждение  --------------------------------------------- ГОТОВО
 //todo: 5. Вынести аутентификацию и авторизацию в отдельный проект
 
+export const baseUrl = process.env.REACT_APP_BASE_URL!
 export const baseApiUrl = process.env.REACT_APP_BASE_API_URL!
 export const baseAuthUrl = process.env.REACT_APP_BASE_AUTH_URL!
 

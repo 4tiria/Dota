@@ -59,40 +59,6 @@ services:
       timeout: 10s
       retries: 3
 
-  mongo-init:
-    image: mongo:6
-    container_name: mongo-init
-    depends_on:
-      - mongo1
-      - mongo2
-      - mongo3
-    networks:
-      - mongo-net
-    entrypoint: >
-      sh -c "
-        sleep 5 &&
-        mongosh -u admin -p admin --authenticationDatabase admin --host mongo1 --eval '
-          if (!rs.status().ok) {
-            rs.initiate({
-              _id: \"rsdota\",
-              members: [
-                { _id: 0, host: \"mongo1:27017\" },
-                { _id: 1, host: \"mongo2:27017\" },
-                { _id: 2, host: \"mongo3:27017\" }
-              ]
-            })
-          }
-        '
-      "
-    restart: "on-failure"
-    healthcheck:
-      test: >
-        mongosh -u admin -p admin --authenticationDatabase admin --host mongo1:27017 --quiet --eval "rs.status().ok" | grep 1
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 5s
-
   rabbitmq:
     image: rabbitmq:management
     container_name: rabbitmq
@@ -165,7 +131,11 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
     depends_on:
-      mongo-init:
+      mongo1:
+        condition: service_healthy
+      mongo2:
+        condition: service_healthy
+      mongo3:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
