@@ -1,11 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Centrifugo.AspNetCore.Abstractions;
+using Centrifugo.AspNetCore.Models.Request;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Dota.API.Centrifugo;
 
-public class CentrifugoService(IConfiguration configuration) : ICentrifugoService
+public class CentrifugoService(ICentrifugoClient centrifugoClient, IConfiguration configuration) : ICentrifugoService
 {
     public string GenerateCentrifugoToken(string userId)
     {
@@ -23,20 +25,10 @@ public class CentrifugoService(IConfiguration configuration) : ICentrifugoServic
     
     public async Task PublishToCentrifugoAsync(string channel, object data)
     {
-        var client = new HttpClient();
-        client.DefaultRequestHeaders.Add("Authorization", $"apikey {configuration["Centrifugo:Token:Secret"]}");
-
-        var payload = new
+        await centrifugoClient.Publish(new PublishParams
         {
-            method = "publish",
-            @params = new
-            {
-                channel = channel,
-                data = data
-            }
-        };
-
-        var response = await client.PostAsJsonAsync(configuration["Centrifugo:Server"], payload);
-        response.EnsureSuccessStatusCode();
+            Channel = "channel1",
+            Data = new { text = "hello" }
+        });
     }
 }

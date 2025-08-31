@@ -14,8 +14,9 @@ public class TestCentrifugoController(ICentrifugoService centrifugoService) : Co
     }
     
     [HttpGet("test")]
-    public IActionResult Test()
+    public async Task<IActionResult> Test()
     {
-        return Ok(centrifugoService.PublishToCentrifugoAsync("channel1", "Hear me now, you, Demigods"));
+        await centrifugoService.PublishToCentrifugoAsync("channel1", "Hear me now, you, Demigods");
+        return Ok();
     }
 }

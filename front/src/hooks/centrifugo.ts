@@ -1,6 +1,6 @@
 import { Centrifuge } from 'centrifuge'
 import { useEffect } from 'react'
-import { toast } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 
 export const useCentrifugo = (token: string) => {
     useEffect(() => {
@@ -17,22 +17,12 @@ export const useCentrifugo = (token: string) => {
             console.log('❌ Disconnected:', ctx)
         })
 
-        const sub = client.newSubscription('channel1')
+        const sub = client.newSubscription('wtf:channel1')
 
         sub.on('publication', (ctx) => {
             const message = ctx.data
             console.log('📨 New message:', message)
-            toast(message)
-        })
-
-        sub.on('subscribed', (ctx) => {
-            console.log('✅ Subscribed to channel:', ctx)
-            toast('subscribed')
-        })
-
-        sub.on('error', (err) => {
-            console.error('❌ Subscription error:', err)
-            toast(`${err}`)
+            toast(message.text)
         })
 
         sub.subscribe()

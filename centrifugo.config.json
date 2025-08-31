@@ -3,6 +3,9 @@
     "token": {
       "hmac_secret_key": "QDVtuA6Sw1fn5l4JzzeTZZDvon-tESBkaut-CXnsp8617AK4cNnypaDmdcA6nc0HhAADuNldwXR7WAFUBrYclA"
     },
+    "without_namespace": {
+      "allow_subscribe_for_client": true
+    },
     "allowed_origins": [
       "http://localhost:3000"
     ]
@@ -11,18 +14,8 @@
     "key": "U7A62au0Zbjgo92Jdj-XmpSGl6SDGhcMu-Aqa4FbsvB06N3OReQ8lG22HO6_jyTOLRtSHJQ_JqMnN0x5Upd6sQ"
   },
   "admin": {
-    "enabled": false,
+    "enabled": true,
     "password": "mcJZrml9Lxf_1RKuMeF6GQ",
     "secret": "S70kbx1tZpq4nn4ssxDbGFlXRUqO2wE-fkNVAdYlrUypctIODRYDsPIqCWAPs6kGMOcVsQVnv2EsmxgMD1X9MQ"
-  },
-  "channel": {
-    "without_namespace": {
-      "allow_subscribe_for_client": true
-    }
-  },
-  "channel1": {
-    "without_namespace": {
-      "allow_subscribe_for_client": true
-    }
   }
 }

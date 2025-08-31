@@ -1,3 +1,5 @@
+using Centrifugo.AspNetCore.Configuration;
+using Centrifugo.AspNetCore.Extensions;
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
 using Dota.API.Centrifugo;
@@ -45,7 +47,6 @@ public class Startup(IConfiguration configuration)
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         
-        
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
                 .SetIsOriginAllowed(_ => true)
@@ -60,6 +61,11 @@ public class Startup(IConfiguration configuration)
             new EnumRepresentationConvention(MongoDB.Bson.BsonType.String)
         };
         ConventionRegistry.Register("EnumAsString", conventionPack, type => type.IsEnum);
+
+        services.AddCentrifugoClient(new CentrifugoOptions {    
+            Url = configuration["Centrifugo:Server"],
+            ApiKey = configuration["Centrifugo:ApiKey"]
+        });
         
         services
             .AddNoSql(configuration)
