@@ -1,8 +1,5 @@
-using Centrifugo.AspNetCore.Configuration;
-using Centrifugo.AspNetCore.Extensions;
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
-using Dota.API.Centrifugo;
 using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.DLX;
@@ -61,15 +58,9 @@ public class Startup(IConfiguration configuration)
             new EnumRepresentationConvention(MongoDB.Bson.BsonType.String)
         };
         ConventionRegistry.Register("EnumAsString", conventionPack, type => type.IsEnum);
-
-        services.AddCentrifugoClient(new CentrifugoOptions {    
-            Url = configuration["Centrifugo:Server"],
-            ApiKey = configuration["Centrifugo:ApiKey"]
-        });
         
         services
             .AddNoSql(configuration)
-            .AddSingleton<ICentrifugoService, CentrifugoService>()
             .AddSingleton<IHeroProducerService, HeroProducerService>()
             .AddSingleton<IHeroConsumerService, HeroConsumerService>()
             .AddSingleton<IHeroDlxService, HeroDlxService>()

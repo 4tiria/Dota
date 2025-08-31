@@ -13,7 +13,6 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1"/>
-        <PackageReference Include="Centrifugo.AspNetCore" Version="1.0.16" />
         <PackageReference Include="MailKit" Version="3.4.3"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.2"/>
