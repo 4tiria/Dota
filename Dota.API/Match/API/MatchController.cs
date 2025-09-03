@@ -4,29 +4,27 @@ using Domain.Mongo.API.Helpers;
 using Domain.Mongo.API.Models;
 using Dota.API.Models.EntitiesJs;
 using Dota.API.Models.FilterModels;
+using Dota.API.WebSocket;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using MongoDB.Driver;
 
 namespace Dota.API.Controllers;
 
 [ApiController, Route("api/match")]
-public class MatchController(MongoDbContext context, IMapper mapper) : Controller
+public class MatchController(MongoDbContext context, IMapper mapper, IHubContext<NotificationHub, INotificationClient> hubContext) : Controller
 {
-    private readonly Random _random = new();
-    private readonly MongoDbContext _context = context;
-    private readonly IMapper _mapper = mapper;
-
     [HttpGet]
     public IActionResult GetAllMatches()
     {
-        var matches = _context.Matches.Find(match => true);
+        var matches = context.Matches.Find(match => true);
         if (!matches.Any())
             return NoContent();
 
         return Ok(matches
             .ToList()
-            .Select(_mapper.Map<MatchJs>)
+            .Select(mapper.Map<MatchJs>)
             .OrderByDescending(x => x.End)
             .ToList());
     }
@@ -41,12 +39,28 @@ public class MatchController(MongoDbContext context, IMapper mapper) : Controlle
         if (matchFilterModel.Take.HasValue)
             result = result.Take(matchFilterModel.Take.Value);
 
-        return Ok(result.ToList().Select(_mapper.Map<MatchJs>));
+        return Ok(result.ToList().Select(mapper.Map<MatchJs>));
     }
 
+    [HttpPost("addRandom/{count:int}")]
+    public IActionResult AddRandomMatches(int count)
+    {
+        var matches = MockMatchGenerator.CreateMatches(context, count);
+        context.Matches.InsertMany(matches);
+        
+        return Ok();
+    }
+
+    [HttpGet("test")]
+    public IActionResult TestWebSocket()
+    {
+        hubContext.Clients.All.SendMessage("test message");
+        return Ok();
+    }
+    
     private IEnumerable<Match> ApplyFilters(MatchFilterModel matchFilterModel)
     {
-        var result = _context.Matches.Find(match => true).ToEnumerable();
+        var result = context.Matches.Find(match => true).ToEnumerable();
 
         if (matchFilterModel.DaysAgo.HasValue)
         {
@@ -84,15 +98,5 @@ public class MatchController(MongoDbContext context, IMapper mapper) : Controlle
         //todo: add other filters
 
         return result;
-    }
-
-    [HttpPost("addRandom/{count:int}")]
-
-    public IActionResult AddRandomMatches(int count)
-    {
-        var matches = MockMatchGenerator.CreateMatches(_context, count);
-        _context.Matches.InsertMany(matches);
-        
-        return Ok();
     }
 }

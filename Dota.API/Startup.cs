@@ -9,6 +9,7 @@ using Dota.API.Models;
 using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
+using Dota.API.WebSocket;
 using Dota.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
@@ -43,6 +44,7 @@ public class Startup(IConfiguration configuration)
         
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+        services.AddSignalR();
         
         services.AddCors(x => x.AddPolicy("CorsPolicy",
             options => options
@@ -102,9 +104,9 @@ public class Startup(IConfiguration configuration)
 
         app.UseAuthentication();
         app.UseAuthorization();
-        
         app.UseEndpoints(endpoints =>
         {
+            endpoints.MapHub<NotificationHub>("/notifications");
             endpoints.MapControllerRoute(
                 "default",
                 "api/{controller}/{action}/{id?}");
