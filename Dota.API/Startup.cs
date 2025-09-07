@@ -1,11 +1,11 @@
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
+using Dota.API.Common;
 using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.DLX;
 using Dota.API.Hero.RabbitMq.Producers;
 using Dota.API.Mappers;
-using Dota.API.Models;
 using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;

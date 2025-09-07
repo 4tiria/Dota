@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using Dota.API.Models.DTO;
 
 namespace Dota.API.Helpers
@@ -18,7 +16,6 @@ namespace Dota.API.Helpers
         {
             return value.Name.ToCamelCase();
         }
-
 
         public static string FromCamelCase(this string value)
         {

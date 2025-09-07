@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Dota.API.Models;
+namespace Dota.API.Common;
 
 public class AuthOptions
 {
