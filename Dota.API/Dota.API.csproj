@@ -37,10 +37,6 @@
         <ProjectReference Include="..\Domain\Mongo.API\Mongo.API.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Application\Account\" />
-    </ItemGroup>
-
     <Target Name="CopyAssets" AfterTargets="Build">
         <ItemGroup>
             <assets Include="..\assets\**\*"/>
