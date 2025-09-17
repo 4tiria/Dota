@@ -1,19 +1,17 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
 using Dota.Generator.Model;
+using StackExchange.Redis;
 
 namespace Dota.Generator.BackgroundWorkers;
 
 public class AccountGeneratorWorker(ILogger<AccountGeneratorWorker> logger, IConfiguration configuration) : BackgroundService
 {
-    private readonly ProducerConfig _config = new()
-    {
-        BootstrapServers = configuration["Kafka:Url"]
-    };
-    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using var producer = new ProducerBuilder<string, string>(_config).Build();
+        var redis = await ConnectionMultiplexer.ConnectAsync(configuration["Redis:Url"]!);
+        var redisDatabase = redis.GetDatabase();
+        var subscriber = redis.GetSubscriber();
         
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -31,26 +29,20 @@ public class AccountGeneratorWorker(ILogger<AccountGeneratorWorker> logger, ICon
                 Email = null,
                 Avatar = null
             };
-            
-            var message = new Message<string, string>
-            {
-                Key = account.Id.ToString(),
-                Value = JsonSerializer.Serialize(account)
-            };
 
-            try
-            {
-                var result = await producer.ProduceAsync("accounts", message, stoppingToken);
-                logger.LogInformation("Sent account {Id} to Kafka partition {Partition} offset {Offset}",
-                    account.Id, result.Partition, result.Offset);
-            }
-            catch (ProduceException<string, string> e)
-            {
-                logger.LogError(e, "Delivery failed: {Reason}", e.Error.Reason);
-                throw;
-            }
+            var accountJson = JsonSerializer.Serialize(account);
+            var result = redisDatabase.StringSet($"account:{account.Id}", accountJson);
+            await subscriber.PublishAsync(new RedisChannel("accounts", RedisChannel.PatternMode.Literal), accountJson);
             
-            logger.LogInformation("Generated account {@Account}", account);
+            if (result)
+            {
+                logger.LogInformation("{CreationDate} Added account {Id} nickname {NickName}",
+                    account.CreationDate, account.Id, account.NickName);
+            }
+            else
+            {
+                logger.LogInformation("Unable to set key for id {Id}", account.Id);
+            }
         }
     }
 }
