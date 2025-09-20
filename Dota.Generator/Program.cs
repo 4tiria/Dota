@@ -1,4 +1,5 @@
 using Dota.Generator.BackgroundWorkers;
+using Dota.Generator.BackgroundWorkers.TriggerStrategy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,19 @@ builder.Configuration
 
 builder.Services.AddHostedService<RedisToKafkaWorker>();
 builder.Services.AddHostedService<AccountGeneratorWorker>();
+
+builder.Services.AddSingleton<ITriggerStrategy>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var type = configuration["Trigger:Type"]!;
+    return type.ToLower() switch
+    {
+        "console" => new ConsoleTriggerStrategy(),
+        "timer" => new ConstantTimeTriggerStrategy(TimeSpan.FromSeconds(
+            int.TryParse(configuration["Trigger:IntervalSeconds"], out var seconds) ? seconds : 30)),
+        _ => throw new InvalidOperationException($"Unknown trigger type: {type}")
+    };
+});
 
 var app = builder.Build();
 
