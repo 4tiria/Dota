@@ -1,5 +1,6 @@
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
+using Dota.API.BackgroundWorkers;
 using Dota.API.Common;
 using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
@@ -81,7 +82,8 @@ public class Startup(IConfiguration configuration)
                 serviceProvider.GetRequiredService<IConnectionFactory>().CreateConnection())
             .AddSingleton<IModel>(
                 serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
-
+        
+        services.AddHostedService<RedisToKafkaWorker>();
         services.AddHostedService<HeroBackgroundService>();
     }
 

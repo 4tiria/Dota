@@ -1,15 +1,16 @@
 ﻿using System.Text.Json;
 using Confluent.Kafka;
-using Dota.Generator.Model;
+using Dota.API.Commands.CreateAccount;
 using StackExchange.Redis;
 
-namespace Dota.Generator.BackgroundWorkers;
+namespace Dota.API.BackgroundWorkers;
 
 public class RedisToKafkaWorker(ILogger<RedisToKafkaWorker> logger, IConfiguration configuration) : BackgroundService
 {
     private readonly ProducerConfig _config = new()
     {
-        BootstrapServers = configuration["Kafka:Url"]
+        //can be configured, but I'm too lazy for it
+        BootstrapServers = configuration["Kafka:Url:Localhost"]
     };
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -23,7 +24,7 @@ public class RedisToKafkaWorker(ILogger<RedisToKafkaWorker> logger, IConfigurati
             {
                 using var producer = new ProducerBuilder<string, string>(_config).Build();
                 var accountJson = message.ToString();
-                var account = JsonSerializer.Deserialize<GenerateAccountRequest>(accountJson);
+                var account = JsonSerializer.Deserialize<CreateAccountRequest>(accountJson);
                 if (account is null)
                 {
                     logger.LogInformation("Account is null");

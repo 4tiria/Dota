@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1"/>
+        <PackageReference Include="Confluent.Kafka" Version="2.11.1" />
         <PackageReference Include="MailKit" Version="3.4.3"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17"/>
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.2"/>
@@ -29,12 +30,20 @@
         <PackageReference Include="MySql.EntityFrameworkCore" Version="8.0.2"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
         <PackageReference Include="RabbitMQ.Client" Version="6.8.1"/>
+        <PackageReference Include="StackExchange.Redis" Version="2.9.17" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Common\Dota.Common\Dota.Common.csproj"/>
         <ProjectReference Include="..\Domain\Mongo.API\Mongo.API.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Application\Queries\" />
+      <Folder Include="Domain\" />
+      <Folder Include="Infrastructure\" />
+      <Folder Include="Infrastructure\RabbitMq\Statistics\" />
     </ItemGroup>
 
     <Target Name="CopyAssets" AfterTargets="Build">

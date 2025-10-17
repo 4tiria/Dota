@@ -1,8 +1,7 @@
-﻿using System.ComponentModel;
-using System.Text.Json;
+﻿using System.Text.Json;
 using Dota.Generator.BackgroundWorkers.TriggerStrategy;
-using Dota.Generator.Model;
 using StackExchange.Redis;
+using Dota.Generator.Application.Commands.GenerateAccount;
 
 namespace Dota.Generator.BackgroundWorkers;
 

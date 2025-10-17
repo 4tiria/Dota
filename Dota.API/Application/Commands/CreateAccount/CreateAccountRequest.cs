@@ -1,8 +1,8 @@
 ﻿using System.Reflection.Metadata;
 
-namespace Dota.Generator.Model;
+namespace Dota.API.Commands.CreateAccount;
 
-public class GenerateAccountRequest
+public class CreateAccountRequest
 {
     public Guid Id { get; set; }
 

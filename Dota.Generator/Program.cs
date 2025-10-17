@@ -11,7 +11,6 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-builder.Services.AddHostedService<RedisToKafkaWorker>();
 builder.Services.AddHostedService<AccountGeneratorWorker>();
 
 builder.Services.AddSingleton<ITriggerStrategy>(sp =>
