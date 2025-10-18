@@ -1,5 +1,7 @@
+using Dota.Generator.Application.Commands.GenerateAccount;
 using Dota.Generator.BackgroundWorkers;
 using Dota.Generator.BackgroundWorkers.TriggerStrategy;
+using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,14 +28,37 @@ builder.Services.AddSingleton<ITriggerStrategy>(sp =>
     };
 });
 
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+builder.Services.AddMassTransit(busRegistrationConfiguration =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    busRegistrationConfiguration.UsingInMemory();
+
+    busRegistrationConfiguration.AddRider(rider =>
+    {
+        rider.AddProducer<string, GenerateAccountRequest>("accounts");
+
+        rider.UsingKafka((context, kafkaFactoryConfigurator) =>
+        {
+            kafkaFactoryConfigurator.Host(builder.Configuration["Kafka:Url:localhost"]);
+        });
+    });
+});
+
+var app = builder.Build();
+var bus = app.Services.GetRequiredService<IBusControl>();
+await bus.StartAsync();
+try
+{
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseHttpsRedirection();
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.Run();
+finally
+{
+    await bus.StopAsync();
+}

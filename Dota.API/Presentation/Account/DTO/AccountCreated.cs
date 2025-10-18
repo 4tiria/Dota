@@ -1,8 +1,9 @@
 ﻿using System.Reflection.Metadata;
+using MediatR;
 
 namespace Dota.API.Account.DTO;
 
-public class CreateAccountInfo
+public class AccountCreated : IRequest
 {
     public Guid Id { get; set; }
 

@@ -1,5 +1,7 @@
+using System.Reflection;
 using Domain.Mongo.API;
 using Domain.Mongo.API.Mappers;
+using Dota.API.Account.DTO;
 using Dota.API.BackgroundWorkers;
 using Dota.API.Common;
 using Dota.API.Hero.RabbitMq;
@@ -11,7 +13,8 @@ using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.API.WebSocket;
-using Dota.Common;
+using MassTransit;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +29,9 @@ public class Startup(IConfiguration configuration)
 {
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddMediatR(mediatrConfiguration => 
+            mediatrConfiguration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        
         services
             .AddAutoMapper(
                 typeof(AppMappingProfile), 
@@ -83,12 +89,38 @@ public class Startup(IConfiguration configuration)
             .AddSingleton<IModel>(
                 serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
         
+        services.AddMassTransit(x =>
+        {
+            x.UsingInMemory(); // чтобы работали временные очереди, без брокера
+
+            x.AddRider(rider =>
+            {
+                rider.AddProducer<string, AccountCreated>("accounts");
+
+                rider.AddConsumer<AccountsConsumer>();
+
+                rider.UsingKafka((context, k) =>
+                {
+                    k.Host(configuration["Kafka:Url:localhost"]);
+
+                    k.TopicEndpoint<string, AccountCreated>("accounts", "accounts-group", e =>
+                    {
+                        e.ConfigureConsumer<AccountsConsumer>(context);
+                        e.AutoOffsetReset = Confluent.Kafka.AutoOffsetReset.Latest;
+                    });
+                });
+            });
+        });
+        
         services.AddHostedService<HeroBackgroundService>();
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IEnumerable<ISeed> seeds)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
 
         app.UseStaticFiles(new StaticFileOptions
         {
@@ -112,8 +144,6 @@ public class Startup(IConfiguration configuration)
                 "default",
                 "api/{controller}/{action}/{id?}");
         });
-
-        foreach (var seed in seeds) seed.SeedData();
     }
 
     private void AddAuthentication(IServiceCollection services)

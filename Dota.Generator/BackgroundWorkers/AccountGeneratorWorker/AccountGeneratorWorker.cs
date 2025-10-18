@@ -4,12 +4,18 @@ using Confluent.Kafka;
 using Dota.Generator.BackgroundWorkers.TriggerStrategy;
 using StackExchange.Redis;
 using Dota.Generator.Application.Commands.GenerateAccount;
+using MassTransit;
 
 namespace Dota.Generator.BackgroundWorkers;
 
-public class AccountGeneratorWorker(ILogger<AccountGeneratorWorker> logger, IConfiguration configuration, ITriggerStrategy triggerStrategy) : BackgroundService
+public class AccountGeneratorWorker(
+    ILogger<AccountGeneratorWorker> logger, 
+    IConfiguration configuration, 
+    ITriggerStrategy triggerStrategy, 
+    ITopicProducer<string, GenerateAccountRequest> accountProducer) : BackgroundService
 {
     private readonly Random _random = new();
+    private const string AccountTopicName = "accounts";
     
     private readonly ProducerConfig _config = new()
     {
@@ -34,8 +40,6 @@ public class AccountGeneratorWorker(ILogger<AccountGeneratorWorker> logger, ICon
 
             try
             {
-                using var producer = new ProducerBuilder<string, string>(_config).Build();
-                
                 var account = new GenerateAccountRequest
                 {
                     Id = Guid.NewGuid(),
@@ -51,9 +55,9 @@ public class AccountGeneratorWorker(ILogger<AccountGeneratorWorker> logger, ICon
                     Value = JsonSerializer.Serialize(account)
                 };
                 
-                var result = await producer.ProduceAsync("accounts", kafkaMessage, stoppingToken);
-                logger.LogInformation("Sent account {Id} to Kafka partition {Partition} offset {Offset}",
-                    account.Id, result.Partition, result.Offset);
+                await accountProducer.Produce(AccountTopicName, kafkaMessage, stoppingToken);
+                
+                logger.LogInformation("Sent account {Id} to Kafka", account.Id);
             }
             catch (JsonException e)
             {

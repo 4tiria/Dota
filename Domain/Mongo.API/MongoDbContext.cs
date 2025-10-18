@@ -20,5 +20,6 @@ public class MongoDbContext
     public IMongoCollection<News> News => _database.GetCollection<News>("News");
     public IMongoCollection<Hero> Heroes => _database.GetCollection<Hero>("Heroes");
     public IMongoCollection<Match> Matches => _database.GetCollection<Match>("Matches");
+    public IMongoCollection<Account> Accounts => _database.GetCollection<Account>("Accounts");
     public IMongoCollection<Models.Migration> Migrations => _database.GetCollection<Models.Migration>("Migrations");
 }

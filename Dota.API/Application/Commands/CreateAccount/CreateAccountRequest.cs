@@ -1,8 +1,9 @@
 ﻿using System.Reflection.Metadata;
+using MediatR;
 
 namespace Dota.API.Commands.CreateAccount;
 
-public class CreateAccountRequest
+public class CreateAccountRequest : IRequest
 {
     public Guid Id { get; set; }
 

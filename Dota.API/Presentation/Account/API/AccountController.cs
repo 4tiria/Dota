@@ -9,7 +9,7 @@ public class AccountController : Controller
 {
     [HttpGet("add")]
     //TODO: защититься от DDoS
-    public IActionResult GetHeroes([FromBody] CreateAccountInfo account)
+    public IActionResult GetHeroes([FromBody] AccountCreated account)
     {
         throw new NotImplementedException();
     }

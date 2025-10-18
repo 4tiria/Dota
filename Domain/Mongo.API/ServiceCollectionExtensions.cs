@@ -4,8 +4,6 @@ using Domain.Mongo.API.Migration;
 using Domain.Mongo.API.Migrator;
 using Domain.Mongo.API.Repositories.Migrations;
 using Domain.Mongo.API.Repositories.NewsRepository;
-using Domain.Mongo.API.Seeds;
-using Dota.Common;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
@@ -27,7 +25,6 @@ public static class ServiceCollectionExtensions
             .AddTransient<IMigratorService, MigratorService>()
             .AddTransient<IHeroRepository, HeroRepository>()
             .AddTransient<IMatchRepository, MatchRepository>()
-            .AddTransient<INewsRepository, NewsRepository>()
-            .AddTransient<ISeed, NewsSeed>();
+            .AddTransient<INewsRepository, NewsRepository>();
     }
 }

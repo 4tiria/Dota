@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Mongo.API.Models;
+using Dota.API.Account.DTO;
+using Dota.API.Commands.CreateAccount;
 using Dota.API.Helpers;
 using Dota.API.Models.EntitiesJs;
 
@@ -27,6 +29,9 @@ public class AppMappingProfile : Profile
             .ForMember(matchJs => matchJs.DaysAgo,
                 dest => dest.MapFrom(
                     src => GetDaysAgo(src.Start)));
+
+        CreateMap<CreateAccountRequest, Domain.Mongo.API.Account>();
+        CreateMap<AccountCreated, CreateAccountRequest>();
     }
 
     private int GetDaysAgo(DateTime dateTime)
