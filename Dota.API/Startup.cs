@@ -83,7 +83,6 @@ public class Startup(IConfiguration configuration)
             .AddSingleton<IModel>(
                 serviceProvider => serviceProvider.GetRequiredService<IConnection>().CreateModel());
         
-        services.AddHostedService<RedisToKafkaWorker>();
         services.AddHostedService<HeroBackgroundService>();
     }
 
