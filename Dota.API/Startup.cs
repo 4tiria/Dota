@@ -13,6 +13,7 @@ using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.API.WebSocket;
+using Dota.API.WebSocket.Account;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -106,7 +107,6 @@ public class Startup(IConfiguration configuration)
                     k.TopicEndpoint<string, AccountCreated>("accounts", "accounts-group", e =>
                     {
                         e.ConfigureConsumer<AccountsConsumer>(context);
-                        e.AutoOffsetReset = Confluent.Kafka.AutoOffsetReset.Latest;
                     });
                 });
             });
@@ -139,7 +139,8 @@ public class Startup(IConfiguration configuration)
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapHub<NotificationHub>("/notifications");
+            endpoints.MapHub<NotificationHub>("hubs/notifications");
+            endpoints.MapHub<AccountFeedHub>("hubs/account/feed");
             endpoints.MapControllerRoute(
                 "default",
                 "api/{controller}/{action}/{id?}");

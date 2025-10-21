@@ -2,6 +2,7 @@
 using Domain.Mongo.API.Models;
 using Dota.API.Account.DTO;
 using Dota.API.Commands.CreateAccount;
+using Dota.API.Commands.UpdateAccountFeed;
 using Dota.API.Helpers;
 using Dota.API.Models.EntitiesJs;
 
@@ -32,6 +33,7 @@ public class AppMappingProfile : Profile
 
         CreateMap<CreateAccountRequest, Domain.Mongo.API.Account>();
         CreateMap<AccountCreated, CreateAccountRequest>();
+        CreateMap<AccountCreated, UpdateAccountFeedRequest>();
     }
 
     private int GetDaysAgo(DateTime dateTime)

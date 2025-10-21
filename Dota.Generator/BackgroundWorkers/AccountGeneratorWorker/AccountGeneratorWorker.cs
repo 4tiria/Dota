@@ -36,6 +36,7 @@ public class AccountGeneratorWorker(
         
         while (!stoppingToken.IsCancellationRequested)
         {
+            // TODO: should be able to work with both trigger strategies simultaniously
             await triggerStrategy.WaitForTriggerAsync(stoppingToken);
 
             try

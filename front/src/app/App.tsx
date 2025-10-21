@@ -10,12 +10,13 @@ import React, { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import AppRouter from '../components/AppRouter'
+import Navbar from '../components/navbar/navbar'
+import { setPaletteFromLocalStorage } from '../store/actionCreators/palette'
+import { login, logout } from '../store/actionCreators/user'
+import { ACCESS_TOKEN_KEY, IRootState } from '../store/store'
 import './App.scss'
-import AppRouter from './components/AppRouter'
-import Navbar from './components/navbar/navbar'
-import { setPaletteFromLocalStorage } from './store/actionCreators/palette'
-import { login, logout } from './store/actionCreators/user'
-import { ACCESS_TOKEN_KEY, IRootState } from './store/store'
+import { SignalRProvider } from './SignalR/SignalRProvider'
 import './styles/App.scss'
 
 export const App: React.FC = () => {
@@ -53,12 +54,15 @@ export const App: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <BrowserRouter>
-                <Navbar />
-                <AppRouter />
-                <Toaster />
-            </BrowserRouter>
+            {/* TODO: different hubs */}
+            <SignalRProvider url="http://localhost:5000/hubs/account/feed">
+                <CssBaseline />
+                <BrowserRouter>
+                    <Navbar />
+                    <AppRouter />
+                    <Toaster />
+                </BrowserRouter>
+            </SignalRProvider>
         </ThemeProvider>
     )
 }
