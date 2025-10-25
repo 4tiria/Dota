@@ -3,7 +3,7 @@ import { MainAttribute } from 'models/Hero'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { heroFilterSlice } from 'store/reducers/heroFilterOptionsReducer'
-import { attributes } from '../../../styles/attributes'
+import { attributes } from '../../../app/styles/attributes'
 import './FilterStyles.scss'
 
 const options = attributes

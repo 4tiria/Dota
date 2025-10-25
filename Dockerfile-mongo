@@ -1,0 +1,4 @@
+FROM mongo:6
+COPY mongo-keyfile /data/configdb/keyfile
+RUN chmod 600 /data/configdb/keyfile
+CMD ["mongod","--replSet","rsdota","--bind_ip_all","--keyFile","/data/configdb/keyfile"]

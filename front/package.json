@@ -26,7 +26,6 @@
     "react-redux": "^9.0.0",
     "react-router-dom": "^6.4.4",
     "react-scripts": "^5.0.1",
-    "react-signalr": "^0.2.24",
     "redux": "^5.0.1",
     "redux-thunk": "^3.1.0",
     "sass": "1.38.1",

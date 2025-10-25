@@ -43,9 +43,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Application\Queries\" />
       <Folder Include="Domain\" />
       <Folder Include="Infrastructure\RabbitMq\Statistics\" />
+      <Folder Include="Presentation\Middlewares\" />
     </ItemGroup>
 
     <Target Name="CopyAssets" AfterTargets="Build">

@@ -1,6 +1,6 @@
-﻿import {Account} from "../../Account";
+﻿import { UserAccount } from '../../UserAccount'
 
-export class AuthResponse{
-    accessToken: string;
-    account: Account;
+export class AuthResponse {
+    accessToken: string
+    account: UserAccount
 }

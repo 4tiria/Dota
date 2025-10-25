@@ -13,8 +13,32 @@ export const baseUrl = process.env.REACT_APP_BASE_URL!
 export const baseApiUrl = process.env.REACT_APP_BASE_API_URL!
 export const baseAuthUrl = process.env.REACT_APP_BASE_AUTH_URL!
 
+const dateReviver = (key: string, value: any) => {
+    if (typeof value === 'number' && value > 1e11) {
+        return new Date(value) // ms timestamp
+    }
+
+    if (typeof value === 'string' && /^\d{13}$/.test(value)) {
+        return new Date(Number(value))
+    }
+
+    return value
+}
+
 export const api = axios.create({
     withCredentials: true,
+    transformResponse: [
+        (data: any) => {
+            if (typeof data === 'string') {
+                try {
+                    return JSON.parse(data, dateReviver)
+                } catch {
+                    return data
+                }
+            }
+            return data
+        },
+    ],
 })
 
 api.interceptors.request.use((config) => {

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Dota.API.Commands.UpdateAccountFeed;
 
-public class UpdateAccountFeedRequest : IRequest
+public class UpdateAccountFeedNotification : INotification
 {
     public Guid Id { get; set; }
 

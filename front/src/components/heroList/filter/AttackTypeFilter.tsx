@@ -3,7 +3,7 @@ import { AttackType } from 'models/Hero'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { heroFilterSlice } from 'store/reducers/heroFilterOptionsReducer'
-import { attackTypes } from '../../../styles/attackTypes'
+import { attackTypes } from '../../../app/styles/attackTypes'
 import './FilterStyles.scss'
 
 const options = attackTypes

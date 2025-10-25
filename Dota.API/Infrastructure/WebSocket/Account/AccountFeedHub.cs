@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace Dota.API.WebSocket.Account;
+namespace Dota.API.Infrastructure.WebSocket.Account;
 
 public class AccountFeedHub : Hub<IAccountFeedClient>
 {

@@ -4,23 +4,22 @@ import {
     ThemeOptions,
     ThemeProvider,
 } from '@mui/material'
-import { useWebSocket } from 'hooks/web-socket'
 import jwt from 'jwt-decode'
 import React, { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import AppRouter from '../components/AppRouter'
 import Navbar from '../components/navbar/navbar'
 import { setPaletteFromLocalStorage } from '../store/actionCreators/palette'
 import { login, logout } from '../store/actionCreators/user'
 import { ACCESS_TOKEN_KEY, IRootState } from '../store/store'
 import './App.scss'
+import AppRouter from './AppRouter'
 import { SignalRProvider } from './SignalR/SignalRProvider'
 import './styles/App.scss'
 
 export const App: React.FC = () => {
-    useWebSocket()
+    // useWebSocket()
     const dispatch = useDispatch()
     const themeMode = useSelector<IRootState, Palette>((state) => state.palette)
     const themeOptions: ThemeOptions = {
@@ -57,11 +56,13 @@ export const App: React.FC = () => {
             {/* TODO: different hubs */}
             <SignalRProvider url="http://localhost:5000/hubs/account/feed">
                 <CssBaseline />
-                <BrowserRouter>
-                    <Navbar />
-                    <AppRouter />
-                    <Toaster />
-                </BrowserRouter>
+                <div className="app-container">
+                    <BrowserRouter>
+                        <Navbar />
+                        <AppRouter />
+                        <Toaster />
+                    </BrowserRouter>
+                </div>
             </SignalRProvider>
         </ThemeProvider>
     )

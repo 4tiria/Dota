@@ -1,13 +1,13 @@
 ﻿import { baseUrl } from 'api/http'
+import { ToCamelCase } from 'helpers/stringHelper'
+import { Hero } from 'models/Hero'
 import React, { useEffect, useState } from 'react'
 import { GiBroadsword, GiPocketBow } from 'react-icons/gi'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { ToCamelCase } from '../../helpers/stringHelper'
-import { Hero } from '../../models/Hero'
-import { IRootState } from '../../store/store'
-import '../../styles/App.scss'
-import { attributes } from '../../styles/attributes'
+import { IRootState } from 'store/store'
+import '../../app/styles/App.scss'
+import { attributes } from '../../app/styles/attributes'
 import './HeroList.scss'
 
 interface IHeroInList {

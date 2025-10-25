@@ -1,11 +1,12 @@
-﻿import {UserOptions} from "../reducers/userReducer";
-import {User} from "../../models/dto/User";
-import {Account} from "../../models/Account";
+﻿import { UserOptions } from '../reducers/userReducer'
 
 export const login = (userId: string, accessLevel: string) => {
-    return {type: UserOptions.LOGIN, payload: {userId: userId, accessLevel: accessLevel}};
-};
+    return {
+        type: UserOptions.LOGIN,
+        payload: { userId: userId, accessLevel: accessLevel },
+    }
+}
 
 export const logout = () => {
-    return {type: UserOptions.LOGOUT};
-};
+    return { type: UserOptions.LOGOUT }
+}

@@ -17,3 +17,17 @@
 //#Light :root{
 //  background: #ffffff;
 //}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: auto;
+}
+
+.replace-me-with-tailwind {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}

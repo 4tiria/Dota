@@ -1,6 +1,6 @@
-﻿namespace Dota.API.Infrastructure.WebSocket.Account;
+﻿namespace Dota.API.Queries.GetAllAccounts;
 
-public class UpdateAccountFeedDto
+public class AccountDto
 {
     public Guid Id { get; set; }
 

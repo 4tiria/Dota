@@ -4,7 +4,9 @@ using Dota.API.Account.DTO;
 using Dota.API.Commands.CreateAccount;
 using Dota.API.Commands.UpdateAccountFeed;
 using Dota.API.Helpers;
+using Dota.API.Infrastructure.WebSocket.Account;
 using Dota.API.Models.EntitiesJs;
+using Dota.API.Queries.GetAllAccounts;
 
 namespace Dota.API.Mappers;
 
@@ -33,7 +35,9 @@ public class AppMappingProfile : Profile
 
         CreateMap<CreateAccountRequest, Domain.Mongo.API.Account>();
         CreateMap<AccountCreated, CreateAccountRequest>();
-        CreateMap<AccountCreated, UpdateAccountFeedRequest>();
+        CreateMap<AccountCreated, UpdateAccountFeedNotification>();
+        CreateMap<Domain.Mongo.API.Account, AccountDto>();
+        CreateMap<UpdateAccountFeedDto, UpdateAccountFeedNotification>();
     }
 
     private int GetDaysAgo(DateTime dateTime)

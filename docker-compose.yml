@@ -1,17 +1,16 @@
 services:
+
   mongo1:
-    image: mongo:6
+    build:
+      context: .
+      dockerfile: Dockerfile-mongo
+    image: local-mongo:6
     container_name: mongo1
     hostname: mongo1
-    command: >
-      bash -c "cp /config/keyfile /data/configdb/keyfile &&
-               chmod 600 /data/configdb/keyfile &&
-               exec mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
-      - ./mongo-keyfile:/config/keyfile:ro
       - mongo-data-1:/data/db
     networks:
       - mongo-net
@@ -25,18 +24,13 @@ services:
       - 27017:27017
       
   mongo2:
-    image: mongo:6
+    image: local-mongo:6
     container_name: mongo2
     hostname: mongo2
-    command: >
-      bash -c "cp /config/keyfile /data/configdb/keyfile &&
-               chmod 600 /data/configdb/keyfile &&
-               exec mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
-      - ./mongo-keyfile:/config/keyfile:ro
       - mongo-data-2:/data/db
     networks:
       - mongo-net
@@ -50,18 +44,13 @@ services:
       - 27018:27017
 
   mongo3:
-    image: mongo:6
+    image: local-mongo:6
     container_name: mongo3
     hostname: mongo3
-    command: >
-      bash -c "cp /config/keyfile /data/configdb/keyfile &&
-               chmod 600 /data/configdb/keyfile &&
-               exec mongod --replSet rsdota --bind_ip_all --keyFile /data/configdb/keyfile"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
     volumes:
-      - ./mongo-keyfile:/config/keyfile:ro
       - mongo-data-3:/data/db
     networks:
       - mongo-net

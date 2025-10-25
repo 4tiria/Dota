@@ -8,12 +8,13 @@ using Dota.API.Hero.RabbitMq;
 using Dota.API.Hero.RabbitMq.Consumers;
 using Dota.API.Hero.RabbitMq.DLX;
 using Dota.API.Hero.RabbitMq.Producers;
+using Dota.API.Infrastructure.WebSocket.Account;
 using Dota.API.Mappers;
+using Dota.API.Presentation.Converters;
 using Dota.API.RabbitMQ;
 using Dota.API.Statistics.RabbitMq.DLX;
 using Dota.API.Statistics.RabbitMq.Producers;
 using Dota.API.WebSocket;
-using Dota.API.WebSocket.Account;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -48,13 +49,17 @@ public class Startup(IConfiguration configuration)
 
         services
             .AddControllers()
-            .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            .AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.Converters.Add(new MillisecondsDateTimeConverter());
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
         
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddSignalR();
         
-        services.AddCors(x => x.AddPolicy("CorsPolicy",
+        services.AddCors(corsOptions => corsOptions.AddPolicy("CorsPolicy",
             options => options
                 .SetIsOriginAllowed(_ => true)
                 .AllowAnyMethod()
@@ -131,19 +136,19 @@ public class Startup(IConfiguration configuration)
         
         app.UseSwagger();
         app.UseSwaggerUI();
-        app.UseCors("CorsPolicy");
         app.UseHttpsRedirection();
         app.UseRouting();
+        app.UseCors("CorsPolicy");
 
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapHub<NotificationHub>("hubs/notifications");
-            endpoints.MapHub<AccountFeedHub>("hubs/account/feed");
             endpoints.MapControllerRoute(
                 "default",
                 "api/{controller}/{action}/{id?}");
+            endpoints.MapHub<NotificationHub>("hubs/notifications");
+            endpoints.MapHub<AccountFeedHub>("hubs/account/feed");
         });
     }
 

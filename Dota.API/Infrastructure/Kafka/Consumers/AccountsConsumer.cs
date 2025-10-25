@@ -11,7 +11,7 @@ public class AccountsConsumer(IMediator mediator, IMapper mapper) : IConsumer<Ac
 {
     public async Task Consume(ConsumeContext<AccountCreated> context)
     {
-        _ = mediator.Publish(mapper.Map<UpdateAccountFeedRequest>(context.Message));
+        _ = mediator.Publish(mapper.Map<UpdateAccountFeedNotification>(context.Message));
         await mediator.Send(mapper.Map<CreateAccountRequest>(context.Message));
     }
 }

@@ -1,6 +1,6 @@
-import { Account } from 'models/Account'
+import { UserAccount } from 'models/UserAccount'
 
 export type SignalREvents = {
-    AccountFeedUpdated: Account
+    AccountFeedUpdated: UserAccount
     NewNotification: Notification
 }
